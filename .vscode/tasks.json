@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install dependencies",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "yarn",
+      "args": ["install"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Start",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "npm",
+      "args": ["start"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "custom",
+        "pattern": {
+          "regexp": "__________"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ": Compiling\\.\\.\\.$",
+          "endsPattern": ": Compiled"
+        }
+      }
+    }
+  ]
+}

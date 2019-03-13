@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Api",
+      "type": "node",
+      "request": "attach",
+      "restart": true,
+      "port": 9230
+    },
+    {
+      "name": "Client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "preLaunchTask": "Start"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "All",
+      "configurations": ["Api", "Client"]
+    }
+  ]
+}

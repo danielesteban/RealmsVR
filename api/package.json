@@ -1,0 +1,40 @@
+{
+  "name": "realmsvr_api",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon --inspect=127.0.0.1:9230 src"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "boom": "^7.3.0",
+    "callsite-record": "^4.1.3",
+    "colors": "^1.3.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "express-ws": "^4.0.0",
+    "gl-matrix": "^3.0.0",
+    "helmet": "^3.15.1",
+    "hsv-rgb": "^1.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.12",
+    "mongoose-url-slugs": "^1.0.2",
+    "multer": "^1.4.1",
+    "nocache": "^2.0.0",
+    "noisejs": "^2.1.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "sharp": "^0.21.3",
+    "swagger-jsdoc": "^3.2.7",
+    "swagger-ui-express": "^4.0.2",
+    "uuid": "^3.3.2",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

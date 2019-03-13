@@ -1,0 +1,37 @@
+{
+  "name": "realmsvr",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "npm-run-all install:*",
+    "install:api": "yarn --cwd api install",
+    "install:client": "yarn --cwd client install",
+    "clean": "npm-run-all clean:*",
+    "clean:api": "rimraf api/node_modules",
+    "clean:client": "rimraf client/node_modules",
+    "lint": "npm-run-all --parallel lint:*",
+    "lint:api": "eslint --cache --ext .js api/src",
+    "lint:client": "eslint --cache --ext .js,.jsx client/src",
+    "start": "concurrently -k -n \"  API  ,WEBPACK\" -c \"bgGreen.white,bgBlue.white\" \"npm:start:api\" \"npm:start:client\"",
+    "start:api": "npm --prefix api start",
+    "start:client": "npm --prefix client start"
+  },
+  "pre-commit": {
+    "run": "lint",
+    "silent": true
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0",
+    "npm-run-all": "^4.1.5",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^2.6.3"
+  },
+  "dependencies": {}
+}

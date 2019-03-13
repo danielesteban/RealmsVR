@@ -1,0 +1,24 @@
+{
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "debug.internalConsoleOptions": "neverOpen",
+  "debug.openDebug": "neverOpen",
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.shellArgs.windows": ["-l"],
+  "search.exclude": {
+    ".vscode/": true,
+    "**/node_modules/": true,
+    "client/dist/": true,
+    "**/yarn.lock": true,
+    ".eslintcache": true
+  },
+  "files.exclude": {
+    ".vscode/": true,
+    "**/node_modules/": true,
+    "client/dist/": true,
+    "**/yarn.lock": true,
+    ".eslintcache": true
+  }
+}
