@@ -4,9 +4,11 @@ import {
   FogExp2,
   Object3D,
   PerspectiveCamera,
+  Quaternion,
   Raycaster,
   Scene,
   ShaderChunk,
+  Vector3,
   WebGLRenderer,
 } from 'three';
 import Hands from './hands';
@@ -24,6 +26,12 @@ class Renderer extends Component {
     this.room.add(this.camera);
     this.hands = new Hands();
     this.room.add(this.hands);
+    this.head = {
+      offset: new Vector3(),
+      position: new Vector3(),
+      rotation: new Quaternion(),
+      scale: new Vector3(),
+    };
     this.scene = new Scene();
     this.scene.add(this.room);
     this.scene.fog = new FogExp2(0, 0.015);
@@ -70,6 +78,19 @@ class Renderer extends Component {
     };
     hands.update();
     renderer.render(scene, camera);
+  }
+
+  onBeforeRender(renderer, scene, camera) {
+    const { head, room } = this;
+    camera.matrixWorld
+      .decompose(
+        head.position,
+        head.rotation,
+        head.scale
+      );
+    head.offset
+      .copy(head.position)
+      .sub(room.position);
   }
 
   onResize() {
