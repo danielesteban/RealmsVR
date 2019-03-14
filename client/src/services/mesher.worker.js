@@ -77,13 +77,13 @@ const meshVoxels = ({ size, voxels }) => {
           // TOP
           if (!test(x, y + 1, z)) {
             pushFace(
-              [x - 0.5, y + 1, z + 0.5],
+              [x, y + 1, z + 1],
               [test(x - 1, y + 1, z), test(x, y + 1, z + 1), test(x - 1, y + 1, z + 1)],
-              [x + 0.5, y + 1, z + 0.5],
+              [x + 1, y + 1, z + 1],
               [test(x + 1, y + 1, z), test(x, y + 1, z + 1), test(x + 1, y + 1, z + 1)],
-              [x + 0.5, y + 1, z - 0.5],
+              [x + 1, y + 1, z],
               [test(x + 1, y + 1, z), test(x, y + 1, z - 1), test(x + 1, y + 1, z - 1)],
-              [x - 0.5, y + 1, z - 0.5],
+              [x, y + 1, z],
               [test(x - 1, y + 1, z), test(x, y + 1, z - 1), test(x - 1, y + 1, z - 1)],
               [r, g, b],
               [0, 1, 0]
@@ -92,14 +92,14 @@ const meshVoxels = ({ size, voxels }) => {
           // BOTTOM
           if (!test(x, y - 1, z)) {
             pushFace(
-              [x - 0.5, y, z - 0.5],
-              [test(x - 1, y - 1, z - 1), test(x, y - 1, z - 1), test(x - 1, y - 1, z - 1)],
-              [x + 0.5, y, z - 0.5],
-              [test(x + 1, y - 1, z - 1), test(x, y - 1, z - 1), test(x + 1, y - 1, z - 1)],
-              [x + 0.5, y, z + 0.5],
-              [test(x + 1, y - 1, z + 1), test(x, y - 1, z + 1), test(x + 1, y - 1, z + 1)],
-              [x - 0.5, y, z + 0.5],
-              [test(x - 1, y - 1, z + 1), test(x, y - 1, z + 1), test(x - 1, y - 1, z + 1)],
+              [x, y, z],
+              [test(x - 1, y - 1, z), test(x, y - 1, z - 1), test(x - 1, y - 1, z - 1)],
+              [x + 1, y, z],
+              [test(x + 1, y - 1, z), test(x, y - 1, z - 1), test(x + 1, y - 1, z - 1)],
+              [x + 1, y, z + 1],
+              [test(x + 1, y - 1, z), test(x, y - 1, z + 1), test(x + 1, y - 1, z + 1)],
+              [x, y, z + 1],
+              [test(x - 1, y - 1, z), test(x, y - 1, z + 1), test(x - 1, y - 1, z + 1)],
               [r, g, b],
               [0, -1, 0]
             );
@@ -107,13 +107,13 @@ const meshVoxels = ({ size, voxels }) => {
           // SOUTH
           if (!test(x, y, z + 1)) {
             pushFace(
-              [x - 0.5, y, z + 0.5],
+              [x, y, z + 1],
               [test(x - 1, y, z + 1), test(x, y - 1, z + 1), test(x - 1, y - 1, z + 1)],
-              [x + 0.5, y, z + 0.5],
+              [x + 1, y, z + 1],
               [test(x + 1, y, z + 1), test(x, y - 1, z + 1), test(x + 1, y - 1, z + 1)],
-              [x + 0.5, y + 1, z + 0.5],
+              [x + 1, y + 1, z + 1],
               [test(x + 1, y, z + 1), test(x, y + 1, z + 1), test(x + 1, y + 1, z + 1)],
-              [x - 0.5, y + 1, z + 0.5],
+              [x, y + 1, z + 1],
               [test(x - 1, y, z + 1), test(x, y + 1, z + 1), test(x - 1, y + 1, z + 1)],
               [r, g, b],
               [0, 0, 1]
@@ -122,13 +122,13 @@ const meshVoxels = ({ size, voxels }) => {
           // NORTH
           if (!test(x, y, z - 1)) {
             pushFace(
-              [x + 0.5, y, z - 0.5],
+              [x + 1, y, z],
               [test(x + 1, y, z - 1), test(x, y - 1, z - 1), test(x + 1, y - 1, z - 1)],
-              [x - 0.5, y, z - 0.5],
+              [x, y, z],
               [test(x - 1, y, z - 1), test(x, y - 1, z - 1), test(x - 1, y - 1, z - 1)],
-              [x - 0.5, y + 1, z - 0.5],
+              [x, y + 1, z],
               [test(x - 1, y, z - 1), test(x, y + 1, z - 1), test(x - 1, y + 1, z - 1)],
-              [x + 0.5, y + 1, z - 0.5],
+              [x + 1, y + 1, z],
               [test(x + 1, y, z - 1), test(x, y + 1, z - 1), test(x + 1, y + 1, z - 1)],
               [r, g, b],
               [0, 0, -1]
@@ -137,13 +137,13 @@ const meshVoxels = ({ size, voxels }) => {
           // WEST
           if (!test(x + 1, y, z)) {
             pushFace(
-              [x + 0.5, y, z + 0.5],
+              [x + 1, y, z + 1],
               [test(x + 1, y, z + 1), test(x + 1, y - 1, z), test(x + 1, y - 1, z + 1)],
-              [x + 0.5, y, z - 0.5],
+              [x + 1, y, z],
               [test(x + 1, y, z - 1), test(x + 1, y - 1, z), test(x + 1, y - 1, z - 1)],
-              [x + 0.5, y + 1, z - 0.5],
+              [x + 1, y + 1, z],
               [test(x + 1, y, z - 1), test(x + 1, y + 1, z), test(x + 1, y + 1, z - 1)],
-              [x + 0.5, y + 1, z + 0.5],
+              [x + 1, y + 1, z + 1],
               [test(x + 1, y, z + 1), test(x + 1, y + 1, z), test(x + 1, y + 1, z + 1)],
               [r, g, b],
               [1, 0, 0]
@@ -152,13 +152,13 @@ const meshVoxels = ({ size, voxels }) => {
           // EAST
           if (!test(x - 1, y, z)) {
             pushFace(
-              [x - 0.5, y, z - 0.5],
+              [x, y, z],
               [test(x - 1, y, z - 1), test(x - 1, y - 1, z), test(x - 1, y - 1, z - 1)],
-              [x - 0.5, y, z + 0.5],
+              [x, y, z + 1],
               [test(x - 1, y, z + 1), test(x - 1, y - 1, z), test(x - 1, y - 1, z + 1)],
-              [x - 0.5, y + 1, z + 0.5],
+              [x, y + 1, z + 1],
               [test(x - 1, y, z + 1), test(x - 1, y + 1, z), test(x - 1, y + 1, z + 1)],
-              [x - 0.5, y + 1, z - 0.5],
+              [x, y + 1, z],
               [test(x - 1, y, z - 1), test(x - 1, y + 1, z), test(x - 1, y + 1, z - 1)],
               [r, g, b],
               [-1, 0, 0]

@@ -48,8 +48,6 @@ export function updateVoxels({
 }) {
   return (dispatch, getState) => {
     const { realm: { size, voxels: current } } = getState();
-    point.x += 0.5;
-    point.z += 0.5;
     const [x, y, z] = ['x', 'y', 'z'].map((axis) => {
       let position = Math.floor(point[axis] + (normal[axis] * 0.5 * (remove ? -1 : 1)));
       while (position < 0) position += size;
