@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { updateVoxels } from '@/actions/realm';
 import Renderer from '@/components/renderer';
 import Voxels from './voxels';
 
@@ -14,25 +15,43 @@ class RealmRenderer extends Renderer {
 
   componentWillReceiveProps({ geometry, size }) {
     const { room, voxels } = this;
-    const { geometry: currentGeometry } = this.props;
-    if (geometry !== currentGeometry) {
-      voxels.update({
-        ...geometry,
-        size,
-      });
-      // room.position.set(
-      //   size * 0.5,
-      //   size * 0.5,
-      //   size * 0.5
-      // );
+    const { geometry: currentGeometry, size: currentSize } = this.props;
+    if (size !== currentSize) {
       room.position.set(
-        0, 2, 4
+        size * 0.5,
+        size * 0.5,
+        size * 0.5
       );
+      voxels.resize(size);
+    }
+    if (geometry !== currentGeometry) {
+      voxels.update(geometry);
     }
   }
 
   onBeforeRender({ animation, vr }, scene, camera) {
-    const { size } = this.props;
+    const { hands, raycaster, voxels } = this;
+    const { size, updateVoxels } = this.props;
+    hands.children.forEach((hand) => {
+      hand.setupRaycaster(raycaster);
+      const hit = raycaster.intersectObjects(voxels.children)[0] || false;
+      if (!hit) {
+        hand.pointer.visible = false;
+        return;
+      }
+      const { distance } = hit;
+      hand.pointer.scale.z = distance - 0.175;
+      hand.pointer.visible = true;
+      if (hand.buttons.triggerDown || hand.buttons.gripDown) {
+        const { point, face: { normal } } = hit;
+        updateVoxels({
+          color: { r: 0xFF, g: 0xFF, b: 0xFF },
+          point,
+          normal,
+          remove: hand.buttons.gripDown,
+        });
+      }
+    });
     if (!vr.enabled && size) {
       const { delta, time } = animation;
       const rotation = Math.sin(time * 0.1) * 0.001;
@@ -60,6 +79,7 @@ RealmRenderer.propTypes = {
     normal: PropTypes.instanceOf(Float32Array),
   }).isRequired,
   size: PropTypes.number,
+  updateVoxels: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -71,5 +91,8 @@ export default connect(
   }) => ({
     geometry,
     size,
-  })
+  }),
+  {
+    updateVoxels,
+  }
 )(RealmRenderer);

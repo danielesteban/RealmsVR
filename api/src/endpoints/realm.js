@@ -10,8 +10,9 @@ module.exports.create = [
     .trim(),
   checkValidationResult,
   (req, res, next) => {
-    const generator = 'CSD';
-    const size = 24;
+    const generator = 'Platform';
+    // const generator = 'CSD';
+    const size = 16;
     const realm = new Realm({
       creator: req.user._id,
       name: req.body.name,

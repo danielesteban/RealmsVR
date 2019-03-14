@@ -4,22 +4,29 @@ import {
   FogExp2,
   Object3D,
   PerspectiveCamera,
+  Raycaster,
   Scene,
   ShaderChunk,
   WebGLRenderer,
 } from 'three';
+import Hands from './hands';
 
 class Renderer extends Component {
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
     this.camera = new PerspectiveCamera(90, 1, 0.1, 1024);
+    this.camera.position.set(0, 1.6, 0);
     this.clock = new Clock();
+    this.raycaster = new Raycaster();
+    this.raycaster.far = 32;
     this.room = new Object3D();
     this.room.add(this.camera);
+    this.hands = new Hands();
+    this.room.add(this.hands);
     this.scene = new Scene();
     this.scene.add(this.room);
-    this.scene.fog = new FogExp2(0, 0.008);
+    this.scene.fog = new FogExp2(0, 0.015);
     this.scene.fog.color.setRGB(0, 0, 0.1);
     this.onAnimationTick = this.onAnimationTick.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -53,6 +60,7 @@ class Renderer extends Component {
     const {
       camera,
       clock,
+      hands,
       renderer,
       scene,
     } = this;
@@ -60,6 +68,7 @@ class Renderer extends Component {
       delta: clock.getDelta(),
       time: clock.oldTime / 1000,
     };
+    hands.update();
     renderer.render(scene, camera);
   }
 
@@ -78,50 +87,50 @@ class Renderer extends Component {
   }
 
   setupVR() {
+    const { hands, renderer } = this;
     const hasWebXR = 'xr' in navigator;
     const hasWebVR = 'getVRDisplays' in navigator;
     if (hasWebXR) {
       // TODO:
       // Verify that this actually works
       const enterVR = () => {
-        if (this.renderer.vr.isPresenting()) return;
-        const display = this.renderer.vr.getDevice();
+        if (renderer.vr.isPresenting()) return;
+        const display = renderer.vr.getDevice();
         if (!display) {
           navigator.xr.requestDevice().then((display) => {
-            this.renderer.vr.enabled = true;
-            this.renderer.vr.setDevice(display);
+            renderer.vr.enabled = true;
+            renderer.vr.setDevice(display);
           });
           return;
         }
         display
           .requestSession({ immersive: true, exclusive: true /* DEPRECATED */ })
           .then((session) => {
-            this.renderer.vr.setSession(session, { frameOfReferenceType: 'stage' });
-            this.scene.onEnterVR();
+            renderer.vr.setSession(session, { frameOfReferenceType: 'stage' });
           });
       };
       window.addEventListener('mousedown', enterVR, false);
       enterVR();
     } else if (hasWebVR) {
       const enterVR = () => {
-        if (this.renderer.vr.isPresenting()) return;
-        const display = this.renderer.vr.getDevice();
+        if (renderer.vr.isPresenting()) return;
+        const display = renderer.vr.getDevice();
         if (!display) {
           navigator.getVRDisplays().then((displays) => {
             if (!displays.length) return;
             const [display] = displays;
-            this.renderer.vr.enabled = true;
-            this.renderer.vr.setDevice(display);
+            renderer.vr.enabled = true;
+            renderer.vr.setDevice(display);
           });
           return;
         }
-        display.requestPresent([{ source: this.renderer.domElement }]);
-        this.scene.onEnterVR();
+        display.requestPresent([{ source: renderer.domElement }]);
       };
       window.addEventListener('mousedown', enterVR, false);
       window.addEventListener('vrdisplayactivate', enterVR, false);
       enterVR();
     }
+    hands.standingMatrix = renderer.vr.getStandingMatrix();
   }
 
   render() {

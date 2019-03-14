@@ -63,6 +63,7 @@ const voxels = (
 ) => {
   switch (action.type) {
     case types.REALM_FETCH_FULFILLED:
+    case types.REALM_UPDATE_VOXELS:
       return action.payload.voxels;
     case types.REALM_RESET:
       return new Uint32Array();
