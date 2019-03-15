@@ -1,0 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
