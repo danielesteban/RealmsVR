@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Renderer from '@/components/lobby/renderer';
 import Session from '@/components/lobby/session';
 
 const Wrapper = styled.div`
@@ -9,6 +10,7 @@ const Wrapper = styled.div`
 
 const Lobby = () => (
   <Wrapper>
+    <Renderer />
     <Session />
   </Wrapper>
 );

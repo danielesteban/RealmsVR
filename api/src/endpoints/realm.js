@@ -8,10 +8,12 @@ module.exports.create = [
     .not().isEmpty()
     .isLength({ min: 1, max: 25 })
     .trim(),
+  body('generator')
+    .optional()
+    .isIn(['default', 'csd']),
   checkValidationResult,
   (req, res, next) => {
-    const generator = 'Platform';
-    // const generator = 'CSD';
+    const generator = req.body.generator || 'default';
     const size = 16;
     const realm = new Realm({
       creator: req.user._id,
@@ -80,6 +82,25 @@ module.exports.getVoxels = [
               .send(voxels)
           ));
       })
+      .catch(next);
+  },
+];
+
+module.exports.list = [
+  param('page')
+    .isInt(),
+  checkValidationResult,
+  (req, res, next) => {
+    Realm
+      .find()
+      .select('creator name size')
+      .populate('creator', 'name')
+      .then(realms => (
+        res.json(realms.map(realm => ({
+          ...realm._doc,
+          creator: realm.creator.name,
+        })))
+      ))
       .catch(next);
   },
 ];

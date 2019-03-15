@@ -1,8 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import Loader from '@/components/realm/loader';
 import Mesher from '@/components/realm/mesher';
 import Renderer from '@/components/realm/renderer';
-import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: 100vw;

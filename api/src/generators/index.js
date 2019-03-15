@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 module.exports = {
-  Platform: require('./platform'),
-  CSD: require('./csd'),
+  default: require('./default'),
+  csd: require('./csd'),
 };
 /* eslint-enable global-require */

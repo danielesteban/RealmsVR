@@ -28,6 +28,10 @@ module.exports = (api) => {
    *              name:
    *                description: Realm name
    *                type: string
+   *              generator:
+   *                description: Realm generator
+   *                type: string
+   *                enum: [default, csd]
    *     responses:
    *       200:
    *         description: New realm slug
@@ -120,6 +124,33 @@ module.exports = (api) => {
   api.get(
     '/realm/:id/voxels',
     realm.getVoxels
+  );
+
+  /**
+   * @swagger
+   * /realms/{page}:
+   *   get:
+   *     description: List realms
+   *     tags: [Lobby]
+   *     security: []
+   *     parameters:
+   *       - name: page
+   *         in: path
+   *         description: Page
+   *         required: true
+   *         schema:
+   *           type: number
+   *     responses:
+   *       200:
+   *         description: Realms list
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.get(
+    '/realms/:page',
+    preventCache,
+    requireAuth,
+    realm.list
   );
 
   /**
