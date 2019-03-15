@@ -21,7 +21,7 @@ const swaggerSpec = swaggerJSDoc({
         description: 'Local server (dev environment)',
       },
       {
-        url: 'https://realmsvr.gatunes.com/api/',
+        url: 'https://projects.gatunes.com/realmsvr/',
         description: 'Production server (uses live data)',
       },
     ],
