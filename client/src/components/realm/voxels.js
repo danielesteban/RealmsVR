@@ -14,6 +14,7 @@ class Voxels extends Object3D {
     this.material = new MeshBasicMaterial({
       vertexColors: VertexColors,
     });
+    this.visible = false;
   }
 
   resize(size) {
@@ -29,6 +30,7 @@ class Voxels extends Object3D {
             geometry,
             material
           );
+          instance.matrixAutoUpdate = false;
           instance.position.set(x * size, y * size, z * size);
           instance.updateMatrix();
           this.add(instance);
@@ -69,6 +71,7 @@ class Voxels extends Object3D {
       geometry.setIndex(new BufferAttribute(index, 1));
     }
     geometry.computeBoundingSphere();
+    this.visible = true;
   }
 }
 

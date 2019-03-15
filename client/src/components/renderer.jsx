@@ -42,7 +42,12 @@ class Renderer extends Component {
 
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
-    const renderer = new WebGLRenderer({ alpha: false, antialias: true, canvas });
+    const renderer = new WebGLRenderer({
+      antialias: true,
+      canvas,
+      powerPreference: 'high-performance',
+      stencil: false,
+    });
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setClearColor(this.scene.fog.color);
     this.renderer = renderer;

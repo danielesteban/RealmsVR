@@ -20,11 +20,10 @@ class Mesher extends Component {
     const { worker } = this;
     const { voxels: currentVoxels } = this.props;
     if (voxels !== currentVoxels) {
-      const copy = new Uint32Array(voxels);
       worker.postMessage({
         size,
-        voxels: copy,
-      }, [copy.buffer]);
+        voxels,
+      });
     }
   }
 

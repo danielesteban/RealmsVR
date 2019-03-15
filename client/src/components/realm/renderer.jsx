@@ -2,19 +2,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateVoxels } from '@/actions/realm';
 import Renderer from '@/components/renderer';
+import Picker from './picker';
 import Voxels from './voxels';
 
 class RealmRenderer extends Renderer {
   constructor(props) {
     super(props);
-    const { scene } = this;
+    const { hands, scene } = this;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
+    this.picker = new Picker();
+    hands.children[1].add(this.picker);
+    this.intersects = [this.picker];
     this.voxels = new Voxels();
     scene.add(this.voxels);
   }
 
   componentWillReceiveProps({ geometry, size }) {
-    const { room, voxels } = this;
+    const { picker, room, voxels } = this;
     const { geometry: currentGeometry, size: currentSize } = this.props;
     if (size !== currentSize) {
       room.position.set(
@@ -23,6 +27,10 @@ class RealmRenderer extends Renderer {
         size * 0.5
       );
       voxels.resize(size);
+      this.intersects = [
+        picker,
+        ...voxels.children,
+      ];
     }
     if (geometry !== currentGeometry) {
       voxels.update(geometry);
@@ -35,26 +43,33 @@ class RealmRenderer extends Renderer {
     const {
       hands,
       head,
+      intersects,
+      picker,
       raycaster,
       room,
-      voxels,
     } = this;
 
     // Handle controls
     hands.children.forEach((hand) => {
+      const { buttons, pointer } = hand;
       hand.setupRaycaster(raycaster);
-      const hit = raycaster.intersectObjects(voxels.children)[0] || false;
+      const hit = raycaster.intersectObjects(intersects)[0] || false;
       if (!hit) {
-        hand.pointer.visible = false;
+        pointer.visible = false;
         return;
       }
-      const { distance, face: { normal }, point } = hit;
-      // Hand pointer feedback
-      hand.pointer.scale.z = distance - 0.175;
-      hand.pointer.visible = true;
-      // Translocation
+      const {
+        distance,
+        face: { normal },
+        object,
+        point,
+      } = hit;
+      // Pointer feedback
+      pointer.scale.z = distance - 0.175;
+      pointer.visible = true;
       if (
-        hand.buttons.padDown
+        // Translocation
+        buttons.padDown
         && normal.x === 0
         && normal.y === 1
         && normal.z === 0
@@ -72,16 +87,25 @@ class RealmRenderer extends Renderer {
         });
         room.position.set(x, y, z);
       }
-      // Voxel update
       if (
-        hand.buttons.triggerDown
-        || hand.buttons.gripDown
+        // Color picker
+        buttons.trigger
+        && object === picker
+      ) {
+        picker.onPointer({
+          isDown: buttons.triggerDown,
+          point,
+        });
+      } else if (
+        // Voxel update
+        buttons.triggerDown
+        || buttons.gripDown
       ) {
         updateVoxels({
           color: { r: 0xFF, g: 0xFF, b: 0xFF },
           point,
           normal,
-          remove: hand.buttons.gripDown,
+          remove: buttons.gripDown,
         });
       }
     });
