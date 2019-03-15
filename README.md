@@ -1,7 +1,7 @@
 [RealmsVR](https://realmsvr.gatunes.com/)
 ===
 
-> HyperVoxels.es VR port
+> A WIP VR port of HyperVoxels.es
 
 #### Dev environment
 
