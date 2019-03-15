@@ -11,7 +11,7 @@ script:
 - npm --prefix client run build
 deploy:
   on:
-    branch: production
+    branch: master
   provider: script
   script: npm --prefix client run deploy -- -r https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
   skip_cleanup: true
