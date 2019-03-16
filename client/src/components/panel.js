@@ -7,11 +7,12 @@ import {
 } from 'three';
 
 class Panel extends Mesh {
-  constructor() {
+  constructor({ anisotropy }) {
     const renderer = document.createElement('canvas');
     renderer.width = 512;
     renderer.height = 512;
     const texture = new CanvasTexture(renderer);
+    texture.anisotropy = anisotropy;
     super(
       new PlaneBufferGeometry(1, 1),
       new MeshBasicMaterial({

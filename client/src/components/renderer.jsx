@@ -36,6 +36,7 @@ class Renderer extends Component {
     this.scene.add(this.room);
     this.scene.fog = new FogExp2(0, 0.015);
     this.scene.fog.color.setRGB(0, 0, 0.1);
+    this.scene.onBeforeRender = this.onBeforeRender.bind(this);
     this.onAnimationTick = this.onAnimationTick.bind(this);
     this.onResize = this.onResize.bind(this);
   }
@@ -63,7 +64,6 @@ class Renderer extends Component {
 
   componentWillUnmount() {
     const { renderer } = this;
-    renderer.setAnimationLoop(null);
     renderer.dispose();
     renderer.forceContextLoss();
     window.removeEventListener('resize', this.onResize);

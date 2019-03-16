@@ -10,7 +10,7 @@ class Mesher extends Component {
     this.onMessage = this.onMessage.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const worker = new Worker();
     worker.onmessage = this.onMessage;
     this.worker = worker;
@@ -33,7 +33,7 @@ class Mesher extends Component {
 
   componentWillUnmount() {
     const { worker } = this;
-    worker.destroy();
+    worker.terminate();
   }
 
   onMessage({ data: { geometry } }) {

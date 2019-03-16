@@ -2,8 +2,8 @@ import { Color } from 'three';
 import Panel from '@/components/panel';
 
 class Picker extends Panel {
-  constructor() {
-    super();
+  constructor({ anisotropy }) {
+    super({ anisotropy });
     const { renderer } = this;
     this.position.set(-0.15, 0.15, 0.075);
     this.rotation.set(0, Math.PI * 0.5, Math.PI * 0.1, 'ZYX');

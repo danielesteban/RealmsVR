@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { fetch, reset } from '@/actions/realm';
 
 class Loader extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const {
       match: { params: { slug } },
       fetch,

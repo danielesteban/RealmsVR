@@ -3,16 +3,22 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { fetchRealms } from '@/actions/lobby';
 import Renderer from '@/components/renderer';
+import Floor from './floor';
 import Menu from './menu';
 
 class LobbyRenderer extends Renderer {
-  constructor(props) {
-    super(props);
-    const { scene } = this;
+  componentDidMount() {
+    super.componentDidMount();
+    const { renderer, scene } = this;
+    const { fetchRealms, history } = this.props;
+    this.floor = new Floor();
+    scene.add(this.floor);
     this.menu = new Menu({
-      history: props.history,
+      anisotropy: renderer.capabilities.getMaxAnisotropy(),
+      history,
     });
     scene.add(this.menu);
+    fetchRealms({ page: 0 });
   }
 
   componentWillReceiveProps({ realms }) {
@@ -20,12 +26,6 @@ class LobbyRenderer extends Renderer {
     if (realms !== currentRealms) {
       this.menu.update(realms);
     }
-  }
-
-  componentDidMount() {
-    const { fetchRealms } = this.props;
-    super.componentDidMount();
-    fetchRealms({ page: 0 });
   }
 
   onBeforeRender(renderer, scene, camera) {
@@ -37,27 +37,31 @@ class LobbyRenderer extends Renderer {
     } = this;
 
     // Handle controls
+    let hasHit = false;
     hands.children.forEach((hand) => {
       const { buttons, pointer } = hand;
       hand.setupRaycaster(raycaster);
-      const hit = raycaster.intersectObject(menu)[0] || false;
+      const hit = raycaster.intersectObjects(menu.children)[0] || false;
       if (!hit) {
         pointer.visible = false;
         return;
       }
+      hasHit = true;
       const {
         distance,
-        point,
+        object,
       } = hit;
       // Pointer feedback
       pointer.scale.z = distance - 0.175;
       pointer.visible = true;
       // Menu
-      menu.onPointer({
+      object.onPointer({
         isDown: buttons.triggerDown,
-        point,
       });
     });
+    if (!hasHit) {
+      menu.setHover();
+    }
   }
 }
 

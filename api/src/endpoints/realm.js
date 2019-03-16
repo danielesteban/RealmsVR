@@ -95,7 +95,7 @@ module.exports.list = [
     const pageSize = 4;
     Realm
       .find()
-      .select('creator name slug')
+      .select('creator name slug createdAt')
       .sort('-createdAt')
       .skip(page * pageSize)
       .limit(pageSize)

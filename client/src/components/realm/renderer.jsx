@@ -6,11 +6,12 @@ import Picker from './picker';
 import Voxels from './voxels';
 
 class RealmRenderer extends Renderer {
-  constructor(props) {
-    super(props);
-    const { hands, scene } = this;
-    scene.onBeforeRender = this.onBeforeRender.bind(this);
-    this.picker = new Picker();
+  componentDidMount() {
+    super.componentDidMount();
+    const { hands, renderer, scene } = this;
+    this.picker = new Picker({
+      anisotropy: renderer.capabilities.getMaxAnisotropy(),
+    });
     hands.children[1].add(this.picker);
     this.intersects = [this.picker];
     this.voxels = new Voxels();
