@@ -40,6 +40,13 @@ export function reset() {
   };
 }
 
+export function updateGeometry(geometry) {
+  return {
+    type: types.REALM_UPDATE_GEOMETRY,
+    payload: { geometry },
+  };
+}
+
 export function updateVoxels({
   color,
   normal,
@@ -70,12 +77,5 @@ export function updateVoxels({
       type: types.REALM_UPDATE_VOXELS,
       payload: { voxels },
     });
-  };
-}
-
-export function updateGeometry(geometry) {
-  return {
-    type: types.REALM_UPDATE_GEOMETRY,
-    payload: { geometry },
   };
 }
