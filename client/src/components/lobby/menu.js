@@ -1,8 +1,9 @@
 import Panel from '@/components/panel';
 
 class Menu extends Panel {
-  constructor() {
+  constructor({ history }) {
     super();
+    this.history = history;
     this.position.set(0, 1.6, -1);
     this.realms = [];
     this.draw();
@@ -11,6 +12,7 @@ class Menu extends Panel {
   draw() {
     const {
       context: ctx,
+      hover,
       realms,
       renderer,
     } = this;
@@ -24,8 +26,8 @@ class Menu extends Panel {
       y,
       width,
       height,
-    }) => {
-      ctx.fillStyle = '#333';
+    }, i) => {
+      ctx.fillStyle = hover === i ? '#555' : '#333';
       ctx.fillRect(
         x,
         y + renderer.height * 0.01,
@@ -41,6 +43,40 @@ class Menu extends Panel {
     });
   }
 
+  onPointer({
+    isDown,
+    point,
+  }) {
+    const { history, pointer, realms } = this;
+    super.onPointer(point);
+    for (let i = 0; i < realms.length; i += 1) {
+      const {
+        slug,
+        x,
+        y,
+        width,
+        height,
+      } = realms[i];
+      if (
+        pointer.x >= x
+        && pointer.x <= x + width
+        && pointer.y >= y
+        && pointer.y <= y + height
+      ) {
+        if (isDown) {
+          history.push(`/${slug}`);
+          return;
+        }
+        if (this.hover !== i) {
+          this.hover = i;
+          this.draw();
+        }
+        return;
+      }
+    }
+    delete this.hover;
+  }
+
   update(realms) {
     const { renderer } = this;
     this.realms = realms.map(({ name, slug }, i) => ({
@@ -52,28 +88,6 @@ class Menu extends Panel {
       height: renderer.height * 0.2,
     }));
     this.draw();
-  }
-
-  onPointer(point) {
-    const { pointer, realms } = this;
-    super.onPointer(point);
-    realms.forEach(({
-      slug,
-      x,
-      y,
-      width,
-      height,
-    }) => {
-      if (
-        pointer.x < x
-        || pointer.x > x + width
-        || pointer.y < y
-        || pointer.y > y + height
-      ) {
-        return;
-      }
-      console.log(slug);
-    });
   }
 }
 
