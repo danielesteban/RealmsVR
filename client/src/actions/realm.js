@@ -55,9 +55,9 @@ export function updateVoxels({
       return position;
     });
     const randomized = {
-      r: Math.min(Math.max(Math.round(color.r + (Math.random() * 8) - 4), 0), 255),
-      g: Math.min(Math.max(Math.round(color.g + (Math.random() * 8) - 4), 0), 255),
-      b: Math.min(Math.max(Math.round(color.b + (Math.random() * 8) - 4), 0), 255),
+      r: Math.min(Math.max(Math.round((color.r * 0xFF) + (Math.random() * 8) - 4), 0), 255),
+      g: Math.min(Math.max(Math.round((color.g * 0xFF) + (Math.random() * 8) - 4), 0), 255),
+      b: Math.min(Math.max(Math.round((color.b * 0xFF) + (Math.random() * 8) - 4), 0), 255),
     };
     const value = remove ? (
       0x00

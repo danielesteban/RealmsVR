@@ -8,9 +8,17 @@ import Voxels from './voxels';
 class RealmRenderer extends Renderer {
   constructor(props) {
     super(props);
-    const { hands, scene } = this;
+    const {
+      hands,
+      // room,
+      scene,
+    } = this;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
     this.picker = new Picker();
+    // this.picker.position.set(0, 1.5, -0.5);
+    // this.picker.rotation.set(0, 0, 0);
+    // this.picker.updateMatrix();
+    // room.add(this.picker);
     hands.children[1].add(this.picker);
     this.intersects = [this.picker];
     this.voxels = new Voxels();
@@ -67,8 +75,15 @@ class RealmRenderer extends Renderer {
       // Pointer feedback
       pointer.scale.z = distance - 0.175;
       pointer.visible = true;
+      // Color picker
+      if (object === picker) {
+        if (buttons.triggerDown) {
+          picker.onPointer(point);
+        }
+        return;
+      }
+      // Translocation
       if (
-        // Translocation
         buttons.padDown
         && normal.x === 0
         && normal.y === 1
@@ -87,22 +102,13 @@ class RealmRenderer extends Renderer {
         });
         room.position.set(x, y, z);
       }
+      // Voxel update
       if (
-        // Color picker
-        buttons.trigger
-        && object === picker
-      ) {
-        picker.onPointer({
-          isDown: buttons.triggerDown,
-          point,
-        });
-      } else if (
-        // Voxel update
         buttons.triggerDown
         || buttons.gripDown
       ) {
         updateVoxels({
-          color: { r: 0xFF, g: 0xFF, b: 0xFF },
+          color: picker.color,
           point,
           normal,
           remove: buttons.gripDown,
@@ -111,23 +117,23 @@ class RealmRenderer extends Renderer {
     });
 
     // Animation for non-vr browsers
-    const { animation, vr } = renderer;
-    if (!vr.enabled && size) {
-      const { delta, time } = animation;
-      const rotation = Math.sin(time * 0.1) * 0.001;
-      camera.rotateY(rotation);
-      camera.rotateX(rotation);
-      camera.translateZ(delta * 0.5);
-      camera.updateMatrixWorld();
-      ['x', 'y', 'z'].forEach((axis) => {
-        if (camera.position[axis] < 0) {
-          camera.position[axis] += size;
-        }
-        if (camera.position[axis] >= size) {
-          camera.position[axis] -= size;
-        }
-      });
-    }
+    // const { animation, vr } = renderer;
+    // if (!vr.enabled && size) {
+    //   const { delta, time } = animation;
+    //   const rotation = Math.sin(time * 0.1) * 0.001;
+    //   camera.rotateY(rotation);
+    //   camera.rotateX(rotation);
+    //   camera.translateZ(delta * 0.5);
+    //   camera.updateMatrixWorld();
+    //   ['x', 'y', 'z'].forEach((axis) => {
+    //     if (camera.position[axis] < 0) {
+    //       camera.position[axis] += size;
+    //     }
+    //     if (camera.position[axis] >= size) {
+    //       camera.position[axis] -= size;
+    //     }
+    //   });
+    // }
   }
 }
 
