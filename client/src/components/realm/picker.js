@@ -1,34 +1,10 @@
-import {
-  CanvasTexture,
-  Color,
-  Mesh,
-  MeshBasicMaterial,
-  PlaneBufferGeometry,
-  Vector3,
-} from 'three';
+import { Color } from 'three';
+import Panel from '@/components/panel';
 
-class Picker extends Mesh {
+class Picker extends Panel {
   constructor() {
-    const renderer = document.createElement('canvas');
-    renderer.width = 512;
-    renderer.height = 512;
-    const texture = new CanvasTexture(renderer);
-    super(
-      new PlaneBufferGeometry(1, 1),
-      new MeshBasicMaterial({
-        map: texture,
-      })
-    );
-    {
-      const backplate = new Mesh(
-        new PlaneBufferGeometry(1, 1),
-        new MeshBasicMaterial({
-          color: 0x111111,
-        })
-      );
-      backplate.geometry.rotateY(Math.PI);
-      this.add(backplate);
-    }
+    super();
+    const { renderer } = this;
     this.position.set(-0.15, 0.15, 0.075);
     this.rotation.set(0, Math.PI * 0.5, Math.PI * 0.1, 'ZYX');
     this.scale.set(0.3, 0.3, 1);
@@ -48,10 +24,6 @@ class Picker extends Mesh {
     this.color = new Color();
     this.blockColor.setRGB(1, 0, 0);
     this.color.copy(this.blockColor);
-    this.context = renderer.getContext('2d');
-    this.pointer = new Vector3();
-    this.renderer = renderer;
-    this.texture = texture;
     this.draw();
   }
 
@@ -63,11 +35,9 @@ class Picker extends Mesh {
       context: ctx,
       renderer,
       strip,
-      texture,
     } = this;
 
-    ctx.fillStyle = '#111';
-    ctx.fillRect(0, 0, renderer.width, renderer.height);
+    super.draw();
 
     {
       const {
@@ -127,8 +97,6 @@ class Picker extends Mesh {
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
     }
-
-    texture.needsUpdate = true;
   }
 
   onPointer(point) {
@@ -138,12 +106,9 @@ class Picker extends Mesh {
       color,
       context: ctx,
       pointer,
-      renderer,
       strip,
     } = this;
-    this.worldToLocal(pointer.copy(point));
-    const px = (pointer.x + 0.5) * renderer.width;
-    const py = (1 - (pointer.y + 0.5)) * renderer.height;
+    super.onPointer(point);
     [block, strip].forEach(({
       x,
       y,
@@ -151,15 +116,15 @@ class Picker extends Mesh {
       height,
     }, i) => {
       if (
-        px < x
-        || px > x + width
-        || py < y
-        || py > y + height
+        pointer.x < x
+        || pointer.x > x + width
+        || pointer.y < y
+        || pointer.y > y + height
       ) {
         return;
       }
       const isStrip = i === 1;
-      const imageData = ctx.getImageData(px, py, 1, 1).data;
+      const imageData = ctx.getImageData(pointer.x, pointer.y, 1, 1).data;
       if (isStrip) {
         blockColor.setRGB(
           imageData[0] / 0xFF,

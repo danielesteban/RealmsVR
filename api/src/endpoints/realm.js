@@ -93,7 +93,7 @@ module.exports.list = [
   (req, res, next) => {
     Realm
       .find()
-      .select('creator name size')
+      .select('creator name slug')
       .populate('creator', 'name')
       .then(realms => (
         res.json(realms.map(realm => ({
