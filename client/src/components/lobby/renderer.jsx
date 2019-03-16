@@ -37,16 +37,15 @@ class LobbyRenderer extends Renderer {
     } = this;
 
     // Handle controls
-    let hasHit = false;
-    hands.children.forEach((hand) => {
+    hands.children.forEach((hand, i) => {
       const { buttons, pointer } = hand;
       hand.setupRaycaster(raycaster);
       const hit = raycaster.intersectObjects(menu.children)[0] || false;
       if (!hit) {
         pointer.visible = false;
+        menu.setHover({ hand: i });
         return;
       }
-      hasHit = true;
       const {
         distance,
         object,
@@ -56,12 +55,10 @@ class LobbyRenderer extends Renderer {
       pointer.visible = true;
       // Menu
       object.onPointer({
+        hand: i,
         isDown: buttons.triggerDown,
       });
     });
-    if (!hasHit) {
-      menu.setHover();
-    }
   }
 }
 

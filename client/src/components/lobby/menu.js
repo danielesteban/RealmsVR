@@ -39,20 +39,21 @@ class Menu extends Object3D {
     super();
     this.anisotropy = anisotropy;
     this.history = history;
+    this.hover = {};
     this.position.set(0, 1, -1);
   }
 
-  setHover(realm) {
+  setHover({ hand, realm }) {
     const { hover } = this;
-    if (hover) {
-      hover.isHover = false;
-      hover.draw();
+    if (hover[hand]) {
+      hover[hand].isHover = false;
+      hover[hand].draw();
     }
     if (realm) {
       realm.isHover = true;
       realm.draw();
     }
-    this.hover = realm;
+    this.hover[hand] = realm;
   }
 
   update(realms) {
@@ -69,8 +70,8 @@ class Menu extends Object3D {
       const panel = new Realm({
         ...realm,
         anisotropy,
-        onPointer: ({ isDown }) => {
-          this.setHover(panel);
+        onPointer: ({ hand, isDown }) => {
+          this.setHover({ hand, realm: panel });
           if (isDown) {
             // history.push(`/${realm.slug}`);
             window.location = `/${realm.slug}`;
