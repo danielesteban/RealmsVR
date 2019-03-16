@@ -74,7 +74,10 @@ class Menu extends Panel {
         return;
       }
     }
-    delete this.hover;
+    if (this.hover) {
+      delete this.hover;
+      this.draw();
+    }
   }
 
   update(realms) {
