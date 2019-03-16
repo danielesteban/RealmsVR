@@ -12,6 +12,8 @@ const RealmSchema = new mongoose.Schema({
   name: { type: String, required: true },
   size: { type: Number, required: true },
   voxels: { type: Buffer, required: true },
+  createdAt: { type: Date, index: -1 },
+  updatedAt: Date,
 }, { timestamps: true });
 
 RealmSchema.plugin(URLSlugs('name'));

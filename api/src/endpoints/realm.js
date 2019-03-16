@@ -91,9 +91,14 @@ module.exports.list = [
     .isInt(),
   checkValidationResult,
   (req, res, next) => {
+    const { page } = req.params;
+    const pageSize = 4;
     Realm
       .find()
       .select('creator name slug')
+      .sort('-createdAt')
+      .skip(page * pageSize)
+      .limit(pageSize)
       .populate('creator', 'name')
       .then(realms => (
         res.json(realms.map(realm => ({

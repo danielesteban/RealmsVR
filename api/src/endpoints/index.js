@@ -149,7 +149,6 @@ module.exports = (api) => {
   api.get(
     '/realms/:page',
     preventCache,
-    requireAuth,
     realm.list
   );
 
