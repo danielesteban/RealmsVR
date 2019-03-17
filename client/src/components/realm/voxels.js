@@ -23,6 +23,12 @@ class Voxels extends Object3D {
     while (children.length) {
       this.remove(children[0]);
     }
+    // TODO:
+    // This should really use an InstancedBufferGeometry
+    // But I need to figure out how to keep the raycasting
+    // and fustrum culling functionality
+    // Maybe I'll use an hybrid approach... Like:
+    // The closest chunks as full meshes and the further chunks instanced
     for (let z = -radius; z <= radius; z += 1) {
       for (let y = -radius; y <= radius; y += 1) {
         for (let x = -radius; x <= radius; x += 1) {
