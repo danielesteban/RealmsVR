@@ -112,7 +112,7 @@ class Realm extends PureComponent {
           z: head.z - room.position.z,
         };
         const [x, y, z] = ['x', 'y', 'z'].map((axis) => {
-          let position = Math.floor(point[axis] - offset[axis]);
+          let position = point[axis] - offset[axis];
           while (position < 0) position += size;
           while (position >= size) position -= size;
           return position;

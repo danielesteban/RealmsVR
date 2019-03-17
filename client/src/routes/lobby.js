@@ -5,6 +5,7 @@ import { fetchRealms } from '@/actions/lobby';
 import Renderer from '@/components/renderer';
 import Floor from '@/components/lobby/floor';
 import Menu from '@/components/lobby/menu';
+import Title from '@/components/lobby/title';
 
 class Lobby extends PureComponent {
   componentDidMount() {
@@ -13,10 +14,12 @@ class Lobby extends PureComponent {
       renderer: { current: renderer },
       fetchRealms,
     } = this.props;
+    const anisotropy = renderer.getMaxAnisotropy();
     const scene = renderer.resetScene();
     scene.add(new Floor());
+    scene.add(new Title({ anisotropy }));
     this.menu = new Menu({
-      anisotropy: renderer.getMaxAnisotropy(),
+      anisotropy,
       history,
     });
     scene.add(this.menu);
