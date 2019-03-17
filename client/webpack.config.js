@@ -202,7 +202,7 @@ module.exports = {
       filename: 'code/[name].[contenthash].css',
     }),
     ...(mode === 'production' ? [
-      new CleanWebpackPlugin(['dist']),
+      new CleanWebpackPlugin(),
       new webpack.HashedModuleIdsPlugin(),
       new RobotstxtPlugin({
         policy: [{
