@@ -40,9 +40,7 @@ module.exports = ({ size }) => {
       /* Paint it with a random hue using perlin noise */
       const [r, g, b] = HSV2RGB(
         Math.min(Math.floor(Math.abs(noise.perlin3(z / 16, x / 16, y / 16)) * 359), 359),
-        Math.min(Math.floor(
-          Math.abs(0.75) * 100
-        ), 100),
+        75,
         Math.min(Math.floor(
           Math.abs(noise.perlin3(z / radius, x / radius, y / size) + 0.5) * 100
         ), 100)
