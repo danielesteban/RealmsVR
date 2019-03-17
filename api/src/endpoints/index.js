@@ -216,6 +216,7 @@ module.exports = (api) => {
    *   get:
    *     description: Get user photo
    *     tags: [User]
+   *     security: []
    *     parameters:
    *       - name: user
    *         in: path
@@ -233,7 +234,6 @@ module.exports = (api) => {
    */
   api.get(
     '/user/:user/photo',
-    requireAuth,
     user.getPhoto
   );
 };
