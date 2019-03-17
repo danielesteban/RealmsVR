@@ -40,7 +40,7 @@ class Menu extends Object3D {
     this.anisotropy = anisotropy;
     this.history = history;
     this.hover = {};
-    this.position.set(0, 1, -1);
+    this.position.set(0, 1.25, -1);
   }
 
   setHover({ hand, realm }) {
@@ -60,7 +60,7 @@ class Menu extends Object3D {
     const {
       anisotropy,
       children,
-      // history,
+      history,
     } = this;
     while (children.length) {
       this.remove(children[0]);
@@ -73,8 +73,7 @@ class Menu extends Object3D {
         onPointer: ({ hand, isDown }) => {
           this.setHover({ hand, realm: panel });
           if (isDown) {
-            // history.push(`/${realm.slug}`);
-            window.location = `/${realm.slug}`;
+            history.push(`/${realm.slug}`);
           }
         },
       });

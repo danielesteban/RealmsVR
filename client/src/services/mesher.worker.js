@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-globals
 const context = self;
 
-const meshVoxels = ({ size, voxels }) => {
+const meshVoxels = ({ promiseId, size, voxels }) => {
   const cache = {};
   const getVoxel = (x, y, z) => {
     if (x < 0) x += size;
@@ -176,6 +176,7 @@ const meshVoxels = ({ size, voxels }) => {
   };
   context.postMessage({
     geometry,
+    promiseId,
   }, [
     geometry.index.buffer,
     geometry.position.buffer,
@@ -184,6 +185,6 @@ const meshVoxels = ({ size, voxels }) => {
   ]);
 };
 
-context.addEventListener('message', ({ data: { size, voxels } }) => (
-  setImmediate(() => meshVoxels({ size, voxels }))
+context.addEventListener('message', ({ data: { promiseId, size, voxels } }) => (
+  setImmediate(() => meshVoxels({ promiseId, size, voxels }))
 ));

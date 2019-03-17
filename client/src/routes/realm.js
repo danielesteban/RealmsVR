@@ -1,27 +1,38 @@
 import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { updateVoxels } from '@/actions/realm';
+import { Vector3 } from 'three';
+import { fetch, reset, updateVoxels } from '@/actions/realm';
 import Renderer from '@/components/renderer';
-import Picker from './picker';
-import Voxels from './voxels';
+import Picker from '@/components/realm/picker';
+import Voxels from '@/components/realm/voxels';
 
-class RealmRenderer extends Renderer {
+class Realm extends PureComponent {
   componentDidMount() {
-    super.componentDidMount();
-    const { hands, renderer, scene } = this;
+    const {
+      match: { params: { slug } },
+      renderer: { current: renderer },
+      fetch,
+    } = this.props;
+    const scene = renderer.resetScene();
     this.picker = new Picker({
-      anisotropy: renderer.capabilities.getMaxAnisotropy(),
+      anisotropy: renderer.getMaxAnisotropy(),
     });
-    hands.children[1].add(this.picker);
+    renderer.hands.children[1].add(this.picker);
     this.intersects = [this.picker];
     this.voxels = new Voxels();
     scene.add(this.voxels);
+    this.head = new Vector3();
+    this.renderer = renderer;
+    this.scene = scene;
+    scene.onBeforeRender = this.onBeforeRender.bind(this);
+    fetch(slug);
   }
 
-  componentWillReceiveProps({ geometry, size }) {
-    const { picker, room, voxels } = this;
-    const { geometry: currentGeometry, size: currentSize } = this.props;
-    if (size !== currentSize) {
+  componentDidUpdate({ geometry: previousGeometry, size: previousSize }) {
+    const { geometry, size } = this.props;
+    const { renderer: { room }, picker, voxels } = this;
+    if (size !== previousSize) {
       room.position.set(
         size * 0.5,
         size * 0.5,
@@ -33,21 +44,33 @@ class RealmRenderer extends Renderer {
         ...voxels.children,
       ];
     }
-    if (geometry !== currentGeometry) {
+    if (geometry !== previousGeometry) {
       voxels.update(geometry);
     }
   }
 
+  componentWillUnmount() {
+    const { renderer, scene } = this;
+    const { reset } = this.props;
+    renderer.hands.children[1].remove(this.picker);
+    delete scene.onBeforeRender;
+    reset();
+  }
+
   onBeforeRender(renderer, scene, camera) {
-    super.onBeforeRender(renderer, scene, camera);
-    const { size, updateVoxels } = this.props;
     const {
-      hands,
       head,
       intersects,
       picker,
-      raycaster,
-      room,
+      props: {
+        size,
+        updateVoxels,
+      },
+      renderer: {
+        hands,
+        raycaster,
+        room,
+      },
     } = this;
 
     // Handle controls
@@ -82,10 +105,11 @@ class RealmRenderer extends Renderer {
         && normal.y === 1
         && normal.z === 0
       ) {
+        head.setFromMatrixPosition(camera.matrixWorld);
         const offset = {
-          x: -head.offset.x,
+          x: head.x - room.position.x,
           y: 0,
-          z: -head.offset.z,
+          z: head.z - room.position.z,
         };
         const [x, y, z] = ['x', 'y', 'z'].map((axis) => {
           let position = Math.floor(point[axis] - offset[axis]);
@@ -128,16 +152,30 @@ class RealmRenderer extends Renderer {
       });
     }
   }
+
+  render() {
+    return null;
+  }
 }
 
-RealmRenderer.propTypes = {
+Realm.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      slug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   geometry: PropTypes.shape({
     index: PropTypes.instanceOf(Uint32Array),
     position: PropTypes.instanceOf(Float32Array),
     color: PropTypes.instanceOf(Float32Array),
     normal: PropTypes.instanceOf(Float32Array),
   }).isRequired,
-  size: PropTypes.number,
+  size: PropTypes.number.isRequired,
+  renderer: PropTypes.shape({
+    current: PropTypes.instanceOf(Renderer),
+  }).isRequired,
+  fetch: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   updateVoxels: PropTypes.func.isRequired,
 };
 
@@ -152,6 +190,8 @@ export default connect(
     size,
   }),
   {
+    fetch,
+    reset,
     updateVoxels,
   }
-)(RealmRenderer);
+)(Realm);

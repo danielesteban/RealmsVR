@@ -6,8 +6,8 @@ const geometry = (
   action
 ) => {
   switch (action.type) {
-    case types.REALM_UPDATE_GEOMETRY:
-      return action.payload.geometry;
+    case types.REALM_UPDATE_GEOMETRY_FULFILLED:
+      return action.payload;
     case types.REALM_RESET:
       return {};
     default:

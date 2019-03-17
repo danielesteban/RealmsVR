@@ -4,11 +4,9 @@ import {
   FogExp2,
   Object3D,
   PerspectiveCamera,
-  Quaternion,
   Raycaster,
   Scene,
   ShaderChunk,
-  Vector3,
   WebGLRenderer,
 } from 'three';
 import Hands from './hands';
@@ -17,6 +15,12 @@ class Renderer extends Component {
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
+    this.onAnimationTick = this.onAnimationTick.bind(this);
+    this.onResize = this.onResize.bind(this);
+  }
+
+  componentDidMount() {
+    const { canvas: { current: canvas } } = this;
     this.camera = new PerspectiveCamera(90, 1, 0.1, 1024);
     this.camera.position.set(0, 1.6, 0);
     this.clock = new Clock();
@@ -26,23 +30,7 @@ class Renderer extends Component {
     this.room.add(this.camera);
     this.hands = new Hands();
     this.room.add(this.hands);
-    this.head = {
-      offset: new Vector3(),
-      position: new Vector3(),
-      rotation: new Quaternion(),
-      scale: new Vector3(),
-    };
-    this.scene = new Scene();
-    this.scene.add(this.room);
-    this.scene.fog = new FogExp2(0, 0.015);
-    this.scene.fog.color.setRGB(0, 0, 0.1);
-    this.scene.onBeforeRender = this.onBeforeRender.bind(this);
-    this.onAnimationTick = this.onAnimationTick.bind(this);
-    this.onResize = this.onResize.bind(this);
-  }
-
-  componentDidMount() {
-    const { canvas: { current: canvas } } = this;
+    this.resetScene();
     const renderer = new WebGLRenderer({
       antialias: true,
       canvas,
@@ -51,22 +39,15 @@ class Renderer extends Component {
     });
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setClearColor(this.scene.fog.color);
+    renderer.setAnimationLoop(this.onAnimationTick);
+    window.addEventListener('resize', this.onResize, false);
     this.renderer = renderer;
     this.onResize();
     this.setupVR();
-    window.addEventListener('resize', this.onResize, false);
-    renderer.setAnimationLoop(this.onAnimationTick);
   }
 
   shouldComponentUpdate() {
     return false;
-  }
-
-  componentWillUnmount() {
-    const { renderer } = this;
-    renderer.dispose();
-    renderer.forceContextLoss();
-    window.removeEventListener('resize', this.onResize);
   }
 
   onAnimationTick() {
@@ -85,19 +66,6 @@ class Renderer extends Component {
     renderer.render(scene, camera);
   }
 
-  onBeforeRender(renderer, scene, camera) {
-    const { head, room } = this;
-    camera.matrixWorld
-      .decompose(
-        head.position,
-        head.rotation,
-        head.scale
-      );
-    head.offset
-      .copy(head.position)
-      .sub(room.position);
-  }
-
   onResize() {
     const {
       canvas: { current: canvas },
@@ -110,6 +78,11 @@ class Renderer extends Component {
     }
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+  }
+
+  getMaxAnisotropy() {
+    const { renderer } = this;
+    return renderer.capabilities.getMaxAnisotropy();
   }
 
   setupVR() {
@@ -157,6 +130,15 @@ class Renderer extends Component {
       enterVR();
     }
     hands.standingMatrix = renderer.vr.getStandingMatrix();
+  }
+
+  resetScene() {
+    this.room.position.set(0, 0, 0);
+    this.scene = new Scene();
+    this.scene.add(this.room);
+    this.scene.fog = new FogExp2(0, 0.015);
+    this.scene.fog.color.setRGB(0, 0, 0.1);
+    return this.scene;
   }
 
   render() {

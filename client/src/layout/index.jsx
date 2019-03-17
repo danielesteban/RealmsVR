@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import LoadingBar from 'react-redux-loading-bar';
 import styled from 'styled-components';
+import Session from '@/components/session';
 
-const Route = styled.div`
-  display: flex;
+const Wrapper = styled.div`
+  width: 100vw;
   height: 100vh;
 `;
 
@@ -16,9 +17,10 @@ const loadingBarStyle = {
 const Layout = ({ children }) => (
   <div>
     <LoadingBar style={loadingBarStyle} />
-    <Route>
+    <Session />
+    <Wrapper>
       { children }
-    </Route>
+    </Wrapper>
   </div>
 );
 

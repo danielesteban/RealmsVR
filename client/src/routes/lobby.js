@@ -1,39 +1,50 @@
 import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { fetchRealms } from '@/actions/lobby';
 import Renderer from '@/components/renderer';
-import Floor from './floor';
-import Menu from './menu';
+import Floor from '@/components/lobby/floor';
+import Menu from '@/components/lobby/menu';
 
-class LobbyRenderer extends Renderer {
+class Lobby extends PureComponent {
   componentDidMount() {
-    super.componentDidMount();
-    const { renderer, scene } = this;
-    const { fetchRealms, history } = this.props;
-    this.floor = new Floor();
-    scene.add(this.floor);
+    const {
+      history,
+      renderer: { current: renderer },
+      fetchRealms,
+    } = this.props;
+    const scene = renderer.resetScene();
+    scene.add(new Floor());
     this.menu = new Menu({
-      anisotropy: renderer.capabilities.getMaxAnisotropy(),
+      anisotropy: renderer.getMaxAnisotropy(),
       history,
     });
     scene.add(this.menu);
+    this.renderer = renderer;
+    this.scene = scene;
+    scene.onBeforeRender = this.onBeforeRender.bind(this);
     fetchRealms({ page: 0 });
   }
 
-  componentWillReceiveProps({ realms }) {
-    const { realms: currentRealms } = this.props;
-    if (realms !== currentRealms) {
+  componentDidUpdate({ realms: previousRealms }) {
+    const { realms } = this.props;
+    if (realms !== previousRealms) {
       this.menu.update(realms);
     }
   }
 
-  onBeforeRender(renderer, scene, camera) {
-    super.onBeforeRender(renderer, scene, camera);
+  componentWillUnmount() {
+    const { scene } = this;
+    delete scene.onBeforeRender;
+  }
+
+  onBeforeRender() {
     const {
-      hands,
       menu,
-      raycaster,
+      renderer: {
+        hands,
+        raycaster,
+      },
     } = this;
 
     // Handle controls
@@ -60,19 +71,26 @@ class LobbyRenderer extends Renderer {
       });
     });
   }
+
+  render() {
+    return null;
+  }
 }
 
-LobbyRenderer.propTypes = {
+Lobby.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
   realms: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
   })).isRequired,
+  renderer: PropTypes.shape({
+    current: PropTypes.instanceOf(Renderer),
+  }).isRequired,
   fetchRealms: PropTypes.func.isRequired,
 };
 
-export default withRouter(connect(
+export default connect(
   ({
     lobby: {
       realms,
@@ -83,4 +101,4 @@ export default withRouter(connect(
   {
     fetchRealms,
   }
-)(LobbyRenderer));
+)(Lobby);

@@ -1,48 +1,51 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { connect } from 'react-redux';
-import { Route as RouteComponent, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import Renderer from '@/components/renderer';
 import Layout from '@/layout';
 import Lobby from './lobby';
 import Realm from './realm';
-import NotFound from './404';
 
-const Route = connect(
-  ({ user: { isAuth } }) => ({ isAuth })
-)(({
+const Scene = ({
   component: Component,
-  isAuth,
-  requiresAuth,
-  requiresNoAuth,
+  renderer,
   ...rest
-}) => {
-  const isForbidden = (
-    (requiresAuth && !isAuth)
-    || (requiresNoAuth && isAuth)
-  );
-  return (
-    <RouteComponent
-      {...rest}
-      render={props => (
-        (isForbidden) ? (
-          <Redirect to="/" />
-        ) : (
-          <Component {...props} />
-        )
-      )}
-    />
-  );
-});
-
-const Root = () => (
-  <Layout>
-    <Switch>
-      <Route exact path="/" component={Lobby} />
-      <Route exact path="/404" component={NotFound} />
-      <Route exact path="/:slug" component={Realm} />
-      <Route path="*" component={NotFound} />
-    </Switch>
-  </Layout>
+}) => (
+  <Route
+    {...rest}
+    render={props => (
+      <Component {...props} renderer={renderer} />
+    )}
+  />
 );
+
+Scene.propTypes = {
+  component: PropTypes.func.isRequired,
+  renderer: PropTypes.shape({
+    current: PropTypes.instanceOf(Renderer),
+  }).isRequired,
+};
+
+class Root extends Component {
+  constructor(props) {
+    super(props);
+    this.renderer = React.createRef();
+  }
+
+  render() {
+    const { renderer } = this;
+    return (
+      <Layout>
+        <Renderer ref={renderer} />
+        <Switch>
+          <Scene exact path="/" component={Lobby} renderer={renderer} />
+          <Scene exact path="/:slug" component={Realm} renderer={renderer} />
+          <Redirect to="/" />
+        </Switch>
+      </Layout>
+    );
+  }
+}
 
 export default hot(module)(Root);

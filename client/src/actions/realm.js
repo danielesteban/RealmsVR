@@ -1,5 +1,6 @@
 import * as types from './types';
 import API from '@/services/api';
+import Mesher from '@/services/mesher';
 
 export function create({
   name,
@@ -16,8 +17,15 @@ export function create({
   };
 }
 
-export function fetch(slug) {
+export function generateGeometry({ size, voxels }) {
   return {
+    type: types.REALM_UPDATE_GEOMETRY,
+    payload: Mesher.generate({ size, voxels }),
+  };
+}
+
+export function fetch(slug) {
+  return dispatch => dispatch({
     type: types.REALM_FETCH,
     payload: API.fetch({
       endpoint: `realm/${slug}`,
@@ -26,24 +34,21 @@ export function fetch(slug) {
         API.fetch({
           endpoint: `realm/${realm._id}/voxels`,
         })
-          .then(voxels => ({
-            ...realm,
-            voxels: new Uint32Array(voxels),
-          }))
+          .then((voxels) => {
+            voxels = new Uint32Array(voxels);
+            dispatch(generateGeometry({ size: realm.size, voxels }));
+            return {
+              ...realm,
+              voxels,
+            };
+          })
       )),
-  };
+  });
 }
 
 export function reset() {
   return {
     type: types.REALM_RESET,
-  };
-}
-
-export function updateGeometry(geometry) {
-  return {
-    type: types.REALM_UPDATE_GEOMETRY,
-    payload: { geometry },
   };
 }
 
@@ -73,6 +78,7 @@ export function updateVoxels({
     );
     const voxels = new Uint32Array(current);
     voxels[z * size * size + y * size + x] = value;
+    dispatch(generateGeometry({ size, voxels }));
     return dispatch({
       type: types.REALM_UPDATE_VOXELS,
       payload: { voxels },
