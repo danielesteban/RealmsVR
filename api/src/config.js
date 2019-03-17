@@ -26,7 +26,6 @@ module.exports = {
     clientOrigin: process.env.GOOGLE_CLIENT_ORIGIN || 'http://localhost:8080',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_AUTH_CALLBACK || 'http://localhost:8081/user/google/authenticate',
-    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
   },
   mongoURI: (
     process.env.MONGO_URI
