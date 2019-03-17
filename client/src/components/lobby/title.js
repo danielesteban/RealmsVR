@@ -23,7 +23,7 @@ class Title extends Mesh {
     this.position.set(0, 2, -3);
     this.renderer = renderer;
     this.texture = texture;
-    setImmediate(() => this.draw());
+    setTimeout(() => this.draw(), 250);
   }
 
   draw() {
