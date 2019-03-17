@@ -20,7 +20,7 @@ class Realm extends Panel {
       renderer,
     } = this;
     super.draw();
-    ctx.fillStyle = isHover ? '#555' : '#333';
+    ctx.fillStyle = isHover ? '#333' : '#111';
     ctx.fillRect(0, 0, renderer.width, renderer.height);
     ctx.font = '80px Roboto';
     ctx.textAlign = 'center';
