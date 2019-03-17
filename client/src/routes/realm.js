@@ -50,9 +50,9 @@ class Realm extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { renderer, scene } = this;
+    const { picker, renderer, scene } = this;
     const { reset } = this.props;
-    renderer.hands.children[1].remove(this.picker);
+    renderer.hands.children[1].remove(picker);
     delete scene.onBeforeRender;
     reset();
   }
