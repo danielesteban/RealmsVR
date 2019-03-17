@@ -6,7 +6,7 @@ const expressWS = require('express-ws');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const config = require('./config');
-const population = require('./services/population');
+const populate = require('./services/population');
 const setupEndpoints = require('./endpoints');
 const { setup: setupErrorHandler } = require('./services/errorHandler');
 const { setup: setupPassport } = require('./services/passport');
@@ -19,6 +19,13 @@ mongoose.set('useNewUrlParser', true);
 mongoose.connection.on('error', console.error);
 mongoose.connection.on('disconnected', () => mongoose.connect(config.mongoURI));
 mongoose.connect(config.mongoURI);
+
+// Populate db
+if (!config.production) {
+  mongoose.connection.once('connected', () => (
+    populate()
+  ));
+}
 
 // Setup express
 const api = express();
@@ -38,7 +45,6 @@ setupErrorHandler(api);
 const server = api.listen(config.port, () => {
   if (!config.production) {
     console.log(colors.yellow(`Listening on: http://localhost:${config.port}/`));
-    population();
   }
 });
 
