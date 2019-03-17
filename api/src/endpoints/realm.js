@@ -48,7 +48,7 @@ module.exports.get = [
         }
         res.json({
           ...realm._doc,
-          creator: realm.creator.name,
+          creator: realm.creator ? realm.creator.name : undefined,
         });
       })
       .catch(next);
@@ -103,7 +103,7 @@ module.exports.list = [
       .then(realms => (
         res.json(realms.map(realm => ({
           ...realm._doc,
-          creator: realm.creator.name,
+          creator: realm.creator ? realm.creator.name : undefined,
         })))
       ))
       .catch(next);

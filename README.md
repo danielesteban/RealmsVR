@@ -5,8 +5,15 @@
 
 > A WIP VR port of HyperVoxels.es
 
+#### Dev dependencies
+
+ * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.5
+ * [Node.js](https://nodejs.org/en/download/) >= 10.15.1 LTS
+ * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.13.0 Stable
+
 #### Dev environment
 
  * git clone https://github.com/danielesteban/RealmsVR.git
+ * write your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET into api/.env
  * yarn install
  * npm start (or press F5 in vscode)

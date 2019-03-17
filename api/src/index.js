@@ -6,6 +6,7 @@ const expressWS = require('express-ws');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const config = require('./config');
+const population = require('./services/population');
 const setupEndpoints = require('./endpoints');
 const { setup: setupErrorHandler } = require('./services/errorHandler');
 const { setup: setupPassport } = require('./services/passport');
@@ -37,6 +38,7 @@ setupErrorHandler(api);
 const server = api.listen(config.port, () => {
   if (!config.production) {
     console.log(colors.yellow(`Listening on: http://localhost:${config.port}/`));
+    population();
   }
 });
 
