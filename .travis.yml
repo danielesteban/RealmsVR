@@ -1,9 +1,17 @@
 matrix:
   include:
-  - services:
+  # API
+  - language: generic
+    services:
     - docker
+    env:
+      global:
+      - secure: oV0tp0KO0XmKAcaD0eM66agaZxG97SglJmh71H1CZAAa57YAdI9LcJp/E60MJXdzvrqxAd5QhUj76fXdQorlQWTC3WFTcFCi9Ssd/GaalJBmpyrgjgPNp9htLUcwnella9pJCP7ZsRjG9JdmRvwdRT8iblfM2AuxMYk0djC7TqBZQRBO5CBX2n2t7VGp83RVRtwRqO21uKnXG4otqm5GxREJTUqnJSXcylmvviFGAozYdliRf6zcMCsQA/s1KlX9o/bTggoy6tsXlsZHCBPi5WUFpLETI2RDCN6b5jMnnpnrLx7u7fn1DPRJF2bgfYzlkVcbCn2OHhSIMjDtDTi+qhsP9Py+fYyGXJSXqCfehsDtNMqGwDWGU4mOCSCE4CNBuoPrO2Q2oI52/KkxX0ZpmQllAOlqq9+7AXj3B3ZVmVlg/XxnK7c/CPJf0wTfQz1R5GaAUiMTXbszs8GX3o7o4URtVG/gCESpoE1+C84dTt9gO3EP6kDgjvjUxdMBST9BDkELA6V7lsDfsgoDojO8YtCHFeH45YzW19mIFcIOENqNlOmKI/qrDMPXwdNrZoorvzI1jjKa9NCxZxFCgEGmh5PTH1S64TFo9Og1CZHtRd1jB8HmdanNZSNLcz3GCzwxE05/Gv/u6scy0se8AhzMxoTwGrdIA+FQ9KUYj6tVA9Q=
     script:
+    - echo "$DOCKER_PASSWORD" | docker login -u danigatunes --password-stdin
     - docker build -t danigatunes/realmsvr_api api
+    - docker push danigatunes/realmsvr_api
+  # Client
   - language: node_js
     node_js: lts/*
     cache:
