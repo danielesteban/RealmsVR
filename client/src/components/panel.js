@@ -8,31 +8,34 @@ import {
 
 class Panel extends Mesh {
   constructor({ anisotropy }) {
+    if (
+      !Panel.backplate
+      || !Panel.geometry
+    ) {
+      Panel.setup();
+    }
     const renderer = document.createElement('canvas');
     renderer.width = 512;
     renderer.height = 512;
     const texture = new CanvasTexture(renderer);
     texture.anisotropy = anisotropy;
     super(
-      new PlaneBufferGeometry(1, 1),
+      Panel.geometry,
       new MeshBasicMaterial({
         map: texture,
       })
     );
-    {
-      const backplate = new Mesh(
-        new PlaneBufferGeometry(1, 1),
-        new MeshBasicMaterial({
-          color: 0x111111,
-        })
-      );
-      backplate.geometry.rotateY(Math.PI);
-      this.add(backplate);
-    }
+    this.add(Panel.backplate.clone());
     this.context = renderer.getContext('2d');
     this.pointer = new Vector3();
     this.renderer = renderer;
     this.texture = texture;
+  }
+
+  dispose() {
+    const { material, texture } = this;
+    material.dispose();
+    texture.dispose();
   }
 
   draw() {
@@ -54,6 +57,23 @@ class Panel extends Mesh {
       (1 - (pointer.y + 0.5)) * renderer.height,
       0
     );
+  }
+
+  static setup() {
+    if (!Panel.backplate) {
+      const backplate = new Mesh(
+        new PlaneBufferGeometry(1, 1),
+        new MeshBasicMaterial({
+          color: 0x111111,
+        })
+      );
+      backplate.geometry.rotateY(Math.PI);
+      Panel.backplate = backplate;
+    }
+
+    if (!Panel.geometry) {
+      Panel.geometry = new PlaneBufferGeometry(1, 1);
+    }
   }
 }
 

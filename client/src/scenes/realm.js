@@ -14,18 +14,20 @@ class Realm extends PureComponent {
       renderer: { current: renderer },
       fetch,
     } = this.props;
+    // Setup scene
     const scene = renderer.resetScene();
     this.picker = new Picker({
       anisotropy: renderer.getMaxAnisotropy(),
     });
     renderer.hands.children[1].add(this.picker);
-    this.intersects = [this.picker];
     this.voxels = new Voxels();
     scene.add(this.voxels);
     this.head = new Vector3();
+    this.intersects = [this.picker];
     this.renderer = renderer;
     this.scene = scene;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
+    // Fetch realm
     fetch(slug);
   }
 
@@ -33,6 +35,7 @@ class Realm extends PureComponent {
     const { geometry, size } = this.props;
     const { renderer: { room }, picker, voxels } = this;
     if (size !== previousSize) {
+      // Resize voxels
       room.position.set(
         size * 0.5,
         size * 0.5,
@@ -45,6 +48,7 @@ class Realm extends PureComponent {
       ];
     }
     if (geometry !== previousGeometry) {
+      // Update voxels
       voxels.update(geometry);
     }
   }
@@ -53,6 +57,7 @@ class Realm extends PureComponent {
     const { picker, renderer, scene } = this;
     const { reset } = this.props;
     renderer.hands.children[1].remove(picker);
+    picker.dispose();
     delete scene.onBeforeRender;
     reset();
     if (!renderer.renderer.vr.enabled) {

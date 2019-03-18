@@ -15,6 +15,7 @@ class Lobby extends PureComponent {
       renderer: { current: renderer },
       fetchRealms,
     } = this.props;
+    // Setup scene
     const anisotropy = renderer.getMaxAnisotropy();
     const scene = renderer.resetScene();
     scene.add(new Floor());
@@ -27,16 +28,25 @@ class Lobby extends PureComponent {
     this.renderer = renderer;
     this.scene = scene;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
-    fetchRealms({ page: 0 });
+    // Input for non-vr browsers
     if (!renderer.renderer.vr.enabled) {
-      this.touches = Touches(window, { filtered: true, target: renderer.canvas.current })
+      this.touches = Touches(
+        window,
+        {
+          filtered: true,
+          target: renderer.canvas.current,
+        }
+      )
         .on('start', this.onPointerDown.bind(this));
     }
+    // Fetch realms list
+    fetchRealms({ page: 0 });
   }
 
   componentDidUpdate({ realms: previousRealms }) {
     const { realms } = this.props;
     if (realms !== previousRealms) {
+      // Update realms
       this.menu.update(realms);
     }
   }

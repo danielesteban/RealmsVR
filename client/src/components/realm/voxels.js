@@ -17,6 +17,12 @@ class Voxels extends Object3D {
     this.visible = false;
   }
 
+  dispose() {
+    const { geometry, material } = this;
+    geometry.dispose();
+    material.dispose();
+  }
+
   resize(size) {
     const { children, geometry, material } = this;
     const radius = 8;

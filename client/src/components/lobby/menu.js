@@ -43,6 +43,11 @@ class Menu extends Object3D {
     this.position.set(0, 1.25, -1);
   }
 
+  dispose() {
+    const { children } = this;
+    children.forEach(child => child.dispose());
+  }
+
   setHover({ hand, realm }) {
     const { hover } = this;
     if (hover[hand]) {

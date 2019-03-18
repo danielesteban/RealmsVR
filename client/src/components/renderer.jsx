@@ -141,6 +141,11 @@ class Renderer extends Component {
   }
 
   resetScene() {
+    if (this.scene) {
+      this.scene.children.forEach((child) => {
+        if (child.dispose) child.dispose();
+      });
+    }
     this.room.position.set(0, 0, 0);
     this.scene = new Scene();
     this.scene.add(this.room);

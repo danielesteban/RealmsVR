@@ -26,6 +26,13 @@ class Title extends Mesh {
     setTimeout(() => this.draw(), 250);
   }
 
+  dispose() {
+    const { geometry, material, texture } = this;
+    geometry.dispose();
+    material.dispose();
+    texture.dispose();
+  }
+
   draw() {
     const { renderer, texture } = this;
     const ctx = renderer.getContext('2d');
