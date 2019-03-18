@@ -1,17 +1,23 @@
-language: node_js
-node_js: lts/*
-cache:
-  yarn: true
-  directories:
-  - node_modules
-env:
-  global:
-  - secure: PEQR6AXJuSC96R1r+yrYY0ZeUD2a+iHBWbQUMSfwTS5F2aDdGInIMzPFiL8FNbxVoKJS6NAwuTWGx7gvHpkZKT4qkOIoudZ5bwfcwp3whDreunoTrF1KegVsj58hPNLwZ7VMQo3ZEbMnCHA/dRmBWVfzy4s76XCl+aIaXJagmMFQUMHwOapZOfy1I58f4q4ltqt4HMGEu0zHCbBREL/P6VVl2LqKCpndO1RSlFaAFF9TIgBwtLMVgRioEKKSannf+U/T6nssQArUwRu8YiEiAsPGQ+LcQlkmzUDDP0mYI2lWhb3IpKOrgq17vee3IHXwPCV0dOHUSsPSpGNK0PqjILwpOjPQUc2kik11jG/NAIweOfJ62Ak3vjy+gS1Dalr6xNCMUW9FiLPGdidoz1j2xLSe2LMWZZSa0Ik00J4h2BQxyiXulA7il6ADsVfUmTrGw20ic7trSVH0VDojEwqbW6RMw560gAtfAoxL0OhzOB0CZLFU3c68l2kwOBSFSd2rDtvx2hds/+LaWcMzak+64n5rHXhoyNR+uDNHbCQtvdjLZytf7teE8zeaP590vC+ZiuwyupXoTFHyaBz+zXtlRxK2Kuh1PEJuYgXwkP8URT34vGzWyvw2vvojizJY8ZnWnPQc9nRONQJEUXi17+tZIBJCPYXDhZJ5LE3CV0zvvSI=
-script:
-- npm --prefix client run build
-deploy:
-  on:
-    branch: master
-  provider: script
-  script: npm --prefix client run deploy -- -r https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
-  skip_cleanup: true
+matrix:
+  include:
+  - services:
+    - docker
+    script:
+    - docker build -t danigatunes/realmsvr_api api
+  - language: node_js
+    node_js: lts/*
+    cache:
+      yarn: true
+      directories:
+      - node_modules
+    env:
+      global:
+      - secure: PEQR6AXJuSC96R1r+yrYY0ZeUD2a+iHBWbQUMSfwTS5F2aDdGInIMzPFiL8FNbxVoKJS6NAwuTWGx7gvHpkZKT4qkOIoudZ5bwfcwp3whDreunoTrF1KegVsj58hPNLwZ7VMQo3ZEbMnCHA/dRmBWVfzy4s76XCl+aIaXJagmMFQUMHwOapZOfy1I58f4q4ltqt4HMGEu0zHCbBREL/P6VVl2LqKCpndO1RSlFaAFF9TIgBwtLMVgRioEKKSannf+U/T6nssQArUwRu8YiEiAsPGQ+LcQlkmzUDDP0mYI2lWhb3IpKOrgq17vee3IHXwPCV0dOHUSsPSpGNK0PqjILwpOjPQUc2kik11jG/NAIweOfJ62Ak3vjy+gS1Dalr6xNCMUW9FiLPGdidoz1j2xLSe2LMWZZSa0Ik00J4h2BQxyiXulA7il6ADsVfUmTrGw20ic7trSVH0VDojEwqbW6RMw560gAtfAoxL0OhzOB0CZLFU3c68l2kwOBSFSd2rDtvx2hds/+LaWcMzak+64n5rHXhoyNR+uDNHbCQtvdjLZytf7teE8zeaP590vC+ZiuwyupXoTFHyaBz+zXtlRxK2Kuh1PEJuYgXwkP8URT34vGzWyvw2vvojizJY8ZnWnPQc9nRONQJEUXi17+tZIBJCPYXDhZJ5LE3CV0zvvSI=
+    script:
+    - npm --prefix client run build
+    deploy:
+      on:
+        branch: master
+      provider: script
+      script: npm --prefix client run deploy -- -r https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
+      skip_cleanup: true
