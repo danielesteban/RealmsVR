@@ -10,7 +10,7 @@ import thunkMiddleware from 'redux-thunk';
 import { refreshSession } from '@/actions/user';
 import syncTranslationWithStore, { load as reloadLocales } from '@/locales';
 import rootReducer from '@/reducers';
-import Root from '@/routes';
+import Layout from '@/layout';
 
 // Create Redux Store
 const devCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -49,7 +49,7 @@ const mount = document.getElementById('mount');
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Root />
+      <Layout />
     </Router>
   </Provider>,
   mount

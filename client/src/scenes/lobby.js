@@ -26,7 +26,7 @@ class Lobby extends PureComponent {
     this.renderer = renderer;
     this.scene = scene;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
-    fetchRealms({ page: 0 });
+    fetchRealms({ page: 0 });    
   }
 
   componentDidUpdate({ realms: previousRealms }) {

@@ -22,7 +22,6 @@ class Renderer extends Component {
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
     this.camera = new PerspectiveCamera(90, 1, 0.1, 1024);
-    this.camera.position.set(0, 1.6, 0);
     this.clock = new Clock();
     this.raycaster = new Raycaster();
     this.raycaster.far = 32;
@@ -30,6 +29,7 @@ class Renderer extends Component {
     this.room.add(this.camera);
     this.hands = new Hands();
     this.room.add(this.hands);
+    this.resetCamera();
     this.resetScene();
     const renderer = new WebGLRenderer({
       antialias: true,
@@ -130,6 +130,12 @@ class Renderer extends Component {
       enterVR();
     }
     hands.standingMatrix = renderer.vr.getStandingMatrix();
+  }
+
+  resetCamera() {
+    const { camera } = this;
+    camera.position.set(0, 1.6, 0);
+    camera.rotation.set(0, 0, 0);
   }
 
   resetScene() {

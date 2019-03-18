@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { hot } from 'react-hot-loader';
 import LoadingBar from 'react-redux-loading-bar';
 import styled from 'styled-components';
+import Renderer from '@/components/renderer';
 import Session from '@/components/session';
+import Scenes from '@/scenes';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -14,18 +16,25 @@ const loadingBarStyle = {
   zIndex: 1,
 };
 
-const Layout = ({ children }) => (
-  <div>
-    <LoadingBar style={loadingBarStyle} />
-    <Session />
-    <Wrapper>
-      { children }
-    </Wrapper>
-  </div>
-);
+class Layout extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.renderer = React.createRef();
+  }
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  render() {
+    const { renderer } = this;
+    return (
+      <div>
+        <LoadingBar style={loadingBarStyle} />
+        <Wrapper>
+          <Renderer ref={renderer} />
+        </Wrapper>
+        <Scenes renderer={renderer} />
+        <Session />
+      </div>
+    );
+  }
+}
 
-export default Layout;
+export default hot(module)(Layout);
