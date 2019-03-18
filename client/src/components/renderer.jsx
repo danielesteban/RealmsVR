@@ -73,6 +73,8 @@ class Renderer extends Component {
       renderer,
     } = this;
     const { width, height } = canvas.parentNode.getBoundingClientRect();
+    this.width = width;
+    this.height = height;
     if (!renderer.vr.isPresenting()) {
       renderer.setSize(width, height);
     }

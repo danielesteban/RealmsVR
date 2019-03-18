@@ -7,12 +7,11 @@ import Realm from './realm';
 
 const Scene = ({
   component: Component,
-  path,
   renderer,
+  ...rest
 }) => (
   <Route
-    exact
-    path={path}
+    {...rest}
     render={props => (
       <Component {...props} renderer={renderer} />
     )}
@@ -21,7 +20,6 @@ const Scene = ({
 
 Scene.propTypes = {
   component: PropTypes.func.isRequired,
-  path: PropTypes.string.isRequired,
   renderer: PropTypes.shape({
     current: PropTypes.instanceOf(Renderer),
   }).isRequired,
@@ -29,8 +27,8 @@ Scene.propTypes = {
 
 const Scenes = ({ renderer }) => (
   <Switch>
-    <Scene path="/" component={Lobby} renderer={renderer} />
-    <Scene path="/:slug" component={Realm} renderer={renderer} />
+    <Scene exact path="/" component={Lobby} renderer={renderer} />
+    <Scene exact path="/:slug" component={Realm} renderer={renderer} />
     <Redirect to="/" />
   </Switch>
 );

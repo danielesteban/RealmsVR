@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import Touches from 'touches';
 import { fetchRealms } from '@/actions/lobby';
 import Renderer from '@/components/renderer';
 import Floor from '@/components/lobby/floor';
@@ -27,6 +28,10 @@ class Lobby extends PureComponent {
     this.scene = scene;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
     fetchRealms({ page: 0 });
+    if (!renderer.renderer.vr.enabled) {
+      this.touches = Touches(window, { filtered: true, target: renderer.canvas.current })
+        .on('start', this.onPointerDown.bind(this));
+    }
   }
 
   componentDidUpdate({ realms: previousRealms }) {
@@ -37,8 +42,11 @@ class Lobby extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { scene } = this;
+    const { scene, touches } = this;
     delete scene.onBeforeRender;
+    if (touches) {
+      touches.disable();
+    }
   }
 
   onBeforeRender() {
@@ -72,6 +80,31 @@ class Lobby extends PureComponent {
         hand: i,
         isDown: buttons.triggerDown,
       });
+    });
+  }
+
+  onPointerDown(e, [x, y]) {
+    // Handle non-vr browsers input
+    const {
+      menu,
+      renderer: {
+        camera,
+        raycaster,
+        width,
+        height,
+      },
+    } = this;
+    raycaster.setFromCamera({
+      x: Math.min(Math.max(0.5 - (x / width), -0.5), 0.5) * -2,
+      y: Math.min(Math.max(0.5 - (y / height), -0.5), 0.5) * 2,
+    }, camera);
+    const hit = raycaster.intersectObjects(menu.children)[0] || false;
+    if (!hit) {
+      return;
+    }
+    hit.object.onPointer({
+      hand: 0,
+      isDown: true,
     });
   }
 
