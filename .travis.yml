@@ -5,10 +5,9 @@ matrix:
     services:
     - docker
     env:
-      global:
       - secure: oV0tp0KO0XmKAcaD0eM66agaZxG97SglJmh71H1CZAAa57YAdI9LcJp/E60MJXdzvrqxAd5QhUj76fXdQorlQWTC3WFTcFCi9Ssd/GaalJBmpyrgjgPNp9htLUcwnella9pJCP7ZsRjG9JdmRvwdRT8iblfM2AuxMYk0djC7TqBZQRBO5CBX2n2t7VGp83RVRtwRqO21uKnXG4otqm5GxREJTUqnJSXcylmvviFGAozYdliRf6zcMCsQA/s1KlX9o/bTggoy6tsXlsZHCBPi5WUFpLETI2RDCN6b5jMnnpnrLx7u7fn1DPRJF2bgfYzlkVcbCn2OHhSIMjDtDTi+qhsP9Py+fYyGXJSXqCfehsDtNMqGwDWGU4mOCSCE4CNBuoPrO2Q2oI52/KkxX0ZpmQllAOlqq9+7AXj3B3ZVmVlg/XxnK7c/CPJf0wTfQz1R5GaAUiMTXbszs8GX3o7o4URtVG/gCESpoE1+C84dTt9gO3EP6kDgjvjUxdMBST9BDkELA6V7lsDfsgoDojO8YtCHFeH45YzW19mIFcIOENqNlOmKI/qrDMPXwdNrZoorvzI1jjKa9NCxZxFCgEGmh5PTH1S64TFo9Og1CZHtRd1jB8HmdanNZSNLcz3GCzwxE05/Gv/u6scy0se8AhzMxoTwGrdIA+FQ9KUYj6tVA9Q=
     script:
-    - echo "$DOCKER_PASSWORD" | docker login -u danigatunes --password-stdin
+    - echo $DOCKER_PASSWORD | docker login -u danigatunes --password-stdin
     - docker build -t danigatunes/realmsvr_api api
     - docker push danigatunes/realmsvr_api
   # Client
@@ -19,7 +18,6 @@ matrix:
       directories:
       - node_modules
     env:
-      global:
       - secure: PEQR6AXJuSC96R1r+yrYY0ZeUD2a+iHBWbQUMSfwTS5F2aDdGInIMzPFiL8FNbxVoKJS6NAwuTWGx7gvHpkZKT4qkOIoudZ5bwfcwp3whDreunoTrF1KegVsj58hPNLwZ7VMQo3ZEbMnCHA/dRmBWVfzy4s76XCl+aIaXJagmMFQUMHwOapZOfy1I58f4q4ltqt4HMGEu0zHCbBREL/P6VVl2LqKCpndO1RSlFaAFF9TIgBwtLMVgRioEKKSannf+U/T6nssQArUwRu8YiEiAsPGQ+LcQlkmzUDDP0mYI2lWhb3IpKOrgq17vee3IHXwPCV0dOHUSsPSpGNK0PqjILwpOjPQUc2kik11jG/NAIweOfJ62Ak3vjy+gS1Dalr6xNCMUW9FiLPGdidoz1j2xLSe2LMWZZSa0Ik00J4h2BQxyiXulA7il6ADsVfUmTrGw20ic7trSVH0VDojEwqbW6RMw560gAtfAoxL0OhzOB0CZLFU3c68l2kwOBSFSd2rDtvx2hds/+LaWcMzak+64n5rHXhoyNR+uDNHbCQtvdjLZytf7teE8zeaP590vC+ZiuwyupXoTFHyaBz+zXtlRxK2Kuh1PEJuYgXwkP8URT34vGzWyvw2vvojizJY8ZnWnPQc9nRONQJEUXi17+tZIBJCPYXDhZJ5LE3CV0zvvSI=
     script:
     - npm --prefix client run build
