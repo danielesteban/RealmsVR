@@ -5,30 +5,21 @@ import Renderer from '@/components/renderer';
 import Lobby from './lobby';
 import Realm from './realm';
 
-const Scene = ({
-  component: Component,
-  renderer,
-  ...rest
-}) => (
-  <Route
-    {...rest}
-    render={props => (
-      <Component {...props} renderer={renderer} />
-    )}
-  />
-);
-
-Scene.propTypes = {
-  component: PropTypes.func.isRequired,
-  renderer: PropTypes.shape({
-    current: PropTypes.instanceOf(Renderer),
-  }).isRequired,
-};
-
 const Scenes = ({ renderer }) => (
   <Switch>
-    <Scene exact path="/" component={Lobby} renderer={renderer} />
-    <Scene exact path="/:slug" component={Realm} renderer={renderer} />
+    {[
+      { path: '/', Component: Lobby },
+      { path: '/:slug', Component: Realm },
+    ].map(({ path, Component }) => (
+      <Route
+        exact
+        key={path}
+        path={path}
+        render={props => (
+          <Component {...props} renderer={renderer} />
+        )}
+      />
+    ))}
     <Redirect to="/" />
   </Switch>
 );
