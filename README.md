@@ -4,7 +4,7 @@
 
 [![screenshot](client/src/screenshot.jpg)](https://realmsvr.gatunes.com/)
 
-> A WIP VR port of HyperVoxels.es
+> A recursive VR experience
 
 #### Dev dependencies
 
