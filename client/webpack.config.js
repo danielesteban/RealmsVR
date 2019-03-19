@@ -18,6 +18,7 @@ const api = process.env.API || (mode === 'production' ? 'https://projects.gatune
 const basename = process.env.BASENAME || '/';
 const fontsCDN = 'https://fonts.googleapis.com/';
 const robotoCDN = 'https://fonts.gstatic.com/s/roboto/';
+const soundcloudCDN = 'https://*.soundcloud.com/ https://*.sndcdn.com';
 const domain = process.env.DOMAIN || 'realmsvr.gatunes.com';
 
 let version;
@@ -184,10 +185,11 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       csp: (
-        `default-src 'self' ws: wss: ${api} 'unsafe-eval';`
+        `default-src 'self' ws: wss: ${soundcloudCDN} ${api} 'unsafe-eval';`
         + `img-src 'self' blob: data: ${api};`
-        + `font-src ${robotoCDN};`
+        + `font-src 'self' ${robotoCDN};`
         + `frame-src 'self' https://accounts.google.com/ ${api};`
+        + "media-src 'self' blob:;"
         + `style-src 'self' ${fontsCDN} 'unsafe-inline';`
       ),
       minify: { collapseWhitespace: true },

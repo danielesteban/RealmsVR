@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { hot } from 'react-hot-loader';
 import LoadingBar from 'react-redux-loading-bar';
 import styled from 'styled-components';
+import Music from '@/components/music';
 import Renderer from '@/components/renderer';
 import Session from '@/components/session';
 import Scenes from '@/scenes';
@@ -32,6 +33,7 @@ class Layout extends PureComponent {
         </Wrapper>
         <Scenes renderer={renderer} />
         <Session />
+        <Music />
       </div>
     );
   }
