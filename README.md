@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/danielesteban/RealmsVR.svg?branch=master)](https://travis-ci.org/danielesteban/RealmsVR)
 ===
 
-[![screenshot](client/src/screenshot.jpg)](https://3dpixels.gatunes.com/)
+[![screenshot](client/src/screenshot.jpg)](https://realmsvr.gatunes.com/)
 
 > A WIP VR port of HyperVoxels.es
 
