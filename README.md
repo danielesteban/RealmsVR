@@ -7,9 +7,9 @@
 
 #### Dev dependencies
 
- * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.5
- * [Node.js](https://nodejs.org/en/download/) >= 10.15.1 LTS
- * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.13.0 Stable
+ * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.6
+ * [Node.js](https://nodejs.org/en/download/) >= 10.15.3 LTS
+ * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.15.2 Stable
 
 #### Dev environment
 
