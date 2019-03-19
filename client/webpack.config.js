@@ -192,7 +192,9 @@ module.exports = {
         + "media-src 'self' blob:;"
         + `style-src 'self' ${fontsCDN} 'unsafe-inline';`
       ),
+      domain,
       minify: { collapseWhitespace: true },
+      description: 'A recursive VR experience',
       template: path.join(srcPath, 'index.ejs'),
       title: 'RealmsVR',
     }),

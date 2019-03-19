@@ -3,6 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="<%= htmlWebpackPlugin.options.csp %>">
+    <meta property="og:url" content="https://<%= htmlWebpackPlugin.options.domain %>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>">
+    <meta property="og:image" content="https://<%= htmlWebpackPlugin.options.domain %><%= require.context('./', true, /^\.\/.*\.jpg$/)('./screenshot.jpg') %>">
+    <meta property="og:description" content="<%= htmlWebpackPlugin.options.description %>">
+    <meta property="og:site_name" content="<%= htmlWebpackPlugin.options.title %>">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@DaniGatunes">
+    <meta name="twitter:url" content="https://<%= htmlWebpackPlugin.options.domain %>">
+    <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>">
+    <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.description %>">
+    <meta name="twitter:image" content="https://<%= htmlWebpackPlugin.options.domain %><%= require.context('./', true, /^\.\/.*\.jpg$/)('./screenshot.jpg') %>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
