@@ -41,7 +41,7 @@ class Music extends PureComponent {
     // Initialize state
     this.player = document.createElement('audio');
     this.player.onended = this.next.bind(this);
-    this.player.volume = 0.8;
+    this.player.volume = 0.5;
     this.state = { track: undefined };
     this.tracks = tracks;
     this.track = 0;
