@@ -47,9 +47,10 @@ class Renderer extends Component {
     this.setupVR();
     if (!__PRODUCTION__) {
       this.stats = new Stats();
-      this.stats.dom.style.position = 'absolute';
       this.stats.dom.style.top = 'auto';
+      this.stats.dom.style.left = 'auto';
       this.stats.dom.style.bottom = '0';
+      this.stats.dom.style.right = '0';
       document.body.appendChild(this.stats.dom);
     }
   }

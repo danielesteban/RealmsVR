@@ -186,10 +186,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       csp: (
         `default-src 'self' ws: wss: ${soundcloudCDN} ${api} 'unsafe-eval';`
-        + `img-src 'self' blob: data: ${api};`
+        + `img-src 'self' blob: data: ${soundcloudCDN} ${api};`
         + `font-src 'self' ${robotoCDN};`
         + `frame-src 'self' https://accounts.google.com/ ${api};`
-        + "media-src 'self' blob:;"
+        + `media-src 'self' ${soundcloudCDN};`
         + `style-src 'self' ${fontsCDN} 'unsafe-inline';`
       ),
       domain,

@@ -1,4 +1,31 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  > img {
+    width: 100px;
+    height: 100px;
+    background: #000;
+  }
+  > div {
+    background: rgba(0, 0, 0, .5);
+    font-size: 1.4em;
+    line-height: 1.5em;
+    padding: 0.5rem 1rem;
+    border-radius: 0 4px 0 0;
+    > div:nth-child(1) {
+      color: #eee;
+    }
+    > div:nth-child(2) {
+      color: #aaa;
+    }
+  }
+`;
 
 class Music extends PureComponent {
   constructor(props) {
@@ -11,19 +38,17 @@ class Music extends PureComponent {
       tracks[index] = tracks[random];
       tracks[random] = temp;
     }
+    // Initialize state
+    this.player = document.createElement('audio');
+    this.player.onended = this.next.bind(this);
+    this.player.volume = 0.8;
+    this.state = { track: undefined };
     this.tracks = tracks;
     this.track = 0;
   }
 
   componentDidMount() {
-    // Load soundcloud API
-    const script = document.createElement('script');
-    script.async = true;
-    script.defer = true;
-    script.src = 'https://connect.soundcloud.com/sdk/sdk-3.3.1.js';
-    document.body.appendChild(script);
     this.waitForFirstInteraction();
-    this.waitForSoundcloudApi();
   }
 
   waitForFirstInteraction() {
@@ -31,33 +56,11 @@ class Music extends PureComponent {
       window.removeEventListener('mousedown', first);
       window.removeEventListener('touchstart', first);
       window.removeEventListener('vrdisplayactivate', first);
-      this.hasInteracted = true;
-      if (this.api) {
-        this.play();
-      }
+      this.play();
     };
     window.addEventListener('mousedown', first, false);
     window.addEventListener('touchstart', first, false);
     window.addEventListener('vrdisplayactivate', first, false);
-  }
-
-  waitForSoundcloudApi() {
-    if (!window.SC) {
-      setTimeout(this.waitForSoundcloudApi.bind(this), 10);
-      return;
-    }
-    // Initialize
-    this.api = window.SC;
-    this.api.initialize({
-      client_id: 'eb5fcff9e107aab508431b4c3c416415',
-    });
-    // this.api.resolve('https://soundcloud.com/mikey-rogowski/sets/space-ambient').then(({ tracks }) => {
-    //   console.log(JSON.stringify(tracks.map(({ id }) => (id))));
-    // });
-    // Start playing
-    if (this.hasInteracted) {
-      this.play();
-    }
   }
 
   next() {
@@ -67,34 +70,50 @@ class Music extends PureComponent {
 
   play() {
     const {
-      api,
       player,
       track,
       tracks,
     } = this;
-    // Dispose current player (if any)
-    if (player) {
-      player.kill();
-      delete this.player;
-    }
-    // Stream the current track
+    // Fetch the current track
+    const clientId = 'client_id=eb5fcff9e107aab508431b4c3c416415';
     const id = tracks[track];
     if (!__PRODUCTION__) {
       console.log(`playing: ${id}`);
     }
-    api.stream(`/tracks/${id}`).then((player) => {
-      this.player = player;
-      player.on('audio_error', () => this.next());
-      player.on('finish', () => this.next());
-      player.setVolume(0.8);
-      player.play();
-    }).catch(() => {
-      this.next();
-    });
+    player.src = null;
+    fetch(`https://api.soundcloud.com/tracks/${id}?format=json&${clientId}`)
+      .then(res => res.json())
+      .then((track) => {
+        // Play the track
+        player.src = `${track.stream_url}?${clientId}`;
+        player.play();
+        this.setState({ track });
+      })
+      .catch(() => (
+        this.next()
+      ));
   }
 
   render() {
-    return null;
+    const { track } = this.state;
+    if (!track) {
+      return null;
+    }
+    const {
+      title,
+      artwork_url: artwork,
+      user: { username },
+      waveform_url: waveform,
+    } = track;
+    return (
+      <Wrapper>
+        <img alt={title} src={artwork || waveform} />
+        <div>
+          <div>{title}</div>
+          <div>{username}</div>
+        </div>
+      </Wrapper>
+    );
   }
 }
 
