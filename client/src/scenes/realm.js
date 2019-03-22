@@ -20,7 +20,9 @@ class Realm extends PureComponent {
       anisotropy: renderer.getMaxAnisotropy(),
     });
     renderer.hands.children[1].add(this.picker);
-    this.voxels = new Voxels();
+    this.voxels = new Voxels({
+      // instanced: !!renderer.renderer.extensions.get('ANGLE_instanced_arrays'),
+    });
     scene.add(this.voxels);
     this.head = new Vector3();
     this.intersects = [this.picker];
@@ -44,7 +46,7 @@ class Realm extends PureComponent {
       voxels.resize(size);
       this.intersects = [
         picker,
-        ...voxels.children,
+        ...voxels.intersects,
       ];
     }
     if (geometry !== previousGeometry) {
@@ -79,7 +81,10 @@ class Realm extends PureComponent {
         raycaster,
         room,
       },
+      voxels,
     } = this;
+
+    voxels.updateFrustum(camera);
 
     // Handle controls
     hands.children.forEach((hand) => {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Stats from 'stats.js';
 import {
   Clock,
   FogExp2,
@@ -44,6 +45,13 @@ class Renderer extends Component {
     this.renderer = renderer;
     this.onResize();
     this.setupVR();
+    if (!__PRODUCTION__) {
+      this.stats = new Stats();
+      this.stats.dom.style.position = 'absolute';
+      this.stats.dom.style.top = 'auto';
+      this.stats.dom.style.bottom = '0';
+      document.body.appendChild(this.stats.dom);
+    }
   }
 
   shouldComponentUpdate() {
@@ -57,13 +65,16 @@ class Renderer extends Component {
       hands,
       renderer,
       scene,
+      stats,
     } = this;
+    if (stats) stats.begin();
     renderer.animation = {
       delta: clock.getDelta(),
       time: clock.oldTime / 1000,
     };
     hands.update();
     renderer.render(scene, camera);
+    if (stats) stats.end();
   }
 
   onResize() {

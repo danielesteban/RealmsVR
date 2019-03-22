@@ -10,7 +10,7 @@ module.exports.create = [
     .trim(),
   body('generator')
     .optional()
-    .isIn(['default', 'csd', 'sphere']),
+    .isIn(['default', 'cave', 'csd', 'sphere']),
   checkValidationResult,
   (req, res, next) => {
     const generator = req.body.generator || 'default';
