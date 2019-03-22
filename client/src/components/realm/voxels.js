@@ -12,6 +12,7 @@ import {
   UniformsUtils,
   ShaderLib,
   VertexColors,
+  Vector3,
 } from 'three';
 
 class Voxels extends Object3D {
@@ -61,7 +62,6 @@ class Voxels extends Object3D {
 
     const radius = 8;
     this.instances = [];
-    this.intersects = [];
     for (let z = -radius; z <= radius; z += 1) {
       for (let y = -radius; y <= radius; y += 1) {
         for (let x = -radius; x <= radius; x += 1) {
@@ -69,21 +69,27 @@ class Voxels extends Object3D {
             geometry,
             material
           );
+          instance.chunk = { x, y, z };
           instance.matrixAutoUpdate = false;
           instance.position.set(x * size, y * size, z * size);
           instance.updateMatrix();
           instance.updateMatrixWorld();
           this.instances.push(instance);
-          if (
-            x >= -2 && x <= 2
-            && y >= -2 && y <= 2
-            && z >= -2 && z <= 2
-          ) {
-            this.intersects.push(instance);
-          }
         }
       }
     }
+    const origin = new Vector3();
+    this.instances.sort(({ position: a }, { position: b }) => (
+      a.distanceTo(origin) - b.distanceTo(origin)
+    ));
+    this.intersects = this.instances.filter((instance) => {
+      const { chunk: { x, y, z } } = instance;
+      return (
+        x >= -2 && x <= 2
+        && y >= -2 && y <= 2
+        && z >= -2 && z <= 2
+      );
+    });
 
     if (instanced) {
       const mesh = new Mesh(

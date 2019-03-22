@@ -21,7 +21,7 @@ class Realm extends PureComponent {
     });
     renderer.hands.children[1].add(this.picker);
     this.voxels = new Voxels({
-      // instanced: !!renderer.renderer.extensions.get('ANGLE_instanced_arrays'),
+      instanced: !!renderer.renderer.extensions.get('ANGLE_instanced_arrays'),
     });
     scene.add(this.voxels);
     this.head = new Vector3();
