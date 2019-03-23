@@ -111,6 +111,36 @@ module.exports.list = [
   },
 ];
 
+module.exports.regenerate = [
+  param('id')
+    .isMongoId(),
+  body('generator')
+    .optional()
+    .isIn(['default', 'cave', 'csd', 'hourglass', 'sphere']),
+  checkValidationResult,
+  (req, res, next) => {
+    Realm
+      .findOne({
+        _id: req.params.id,
+        creator: req.user._id,
+      })
+      .then((realm) => {
+        if (!realm) {
+          throw notFound();
+        }
+        const generator = req.body.generator || 'default';
+        const size = 16;
+        realm.voxels = Realm.generateVoxels({ generator, size });
+        return realm
+          .save();
+      })
+      .then(() => (
+        res.status(200).end()
+      ))
+      .catch(next);
+  },
+];
+
 module.exports.remove = [
   param('id')
     .isMongoId(),

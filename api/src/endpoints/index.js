@@ -53,7 +53,7 @@ module.exports = (api) => {
    *     tags: [Realm]
    *     security: []
    *     parameters:
-   *       - name: id
+   *       - name: slug
    *         in: path
    *         description: Realm slug
    *         required: true
@@ -71,6 +71,43 @@ module.exports = (api) => {
     '/realm/:slug',
     preventCache,
     realm.get
+  );
+
+  /**
+   * @swagger
+   * /realm/{id}:
+   *   post:
+   *     description: Re-generate a realm
+   *     tags: [Realm]
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Realm id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              generator:
+   *                description: Realm generator
+   *                type: string
+   *                enum: [default, cave, csd, hourglass, sphere]
+   *     responses:
+   *       200:
+   *         description: Successfully re-generated
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.post(
+    '/realm/:id',
+    preventCache,
+    requireAuth,
+    realm.regenerate
   );
 
   /**
