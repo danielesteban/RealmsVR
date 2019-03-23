@@ -5,7 +5,7 @@ class Screenshots {
   constructor() {
     this.queue = [];
     puppeteer
-      .launch()
+      .launch({ args: ['--no-sandbox'] })
       .then((browser) => {
         this.browser = browser;
         this.processQueue();
