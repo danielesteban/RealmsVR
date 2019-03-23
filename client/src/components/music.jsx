@@ -64,6 +64,13 @@ class Music extends PureComponent {
   }
 
   next() {
+    const { player } = this;
+    // Stop current player
+    if (!player.paused) {
+      player.pause();
+    }
+    player.src = '';
+    // Loop through the track list
     this.track = (this.track + 1) % this.tracks.length;
     this.play();
   }
@@ -80,7 +87,6 @@ class Music extends PureComponent {
     if (!__PRODUCTION__) {
       console.log(`playing: ${id}`);
     }
-    player.src = null;
     fetch(`https://api.soundcloud.com/tracks/${id}?format=json&${clientId}`)
       .then(res => res.json())
       .then((track) => {
