@@ -148,7 +148,7 @@ class Realm extends PureComponent {
 
     // Animation for non-vr browsers
     const { animation, vr } = renderer;
-    if (!vr.enabled && size) {
+    if (!vr.enabled && size && animation.time > 1) {
       const { delta, time } = animation;
       const rotation = Math.sin(time * 0.1) * 0.001;
       camera.rotateY(rotation);

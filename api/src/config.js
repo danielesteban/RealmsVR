@@ -21,9 +21,9 @@ if (
 }
 
 module.exports = {
+  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:8080',
   googleAuth: {
     clientID: process.env.GOOGLE_CLIENT_ID,
-    clientOrigin: process.env.GOOGLE_CLIENT_ORIGIN || 'http://localhost:8080',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_AUTH_CALLBACK || 'http://localhost:8081/user/google/authenticate',
   },

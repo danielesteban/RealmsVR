@@ -4,12 +4,25 @@ import {
 import Panel from '@/components/panel';
 
 class Realm extends Panel {
-  constructor({ anisotropy, name, onPointer }) {
+  constructor({
+    anisotropy,
+    name,
+    onPointer,
+    screenshot,
+  }) {
     super({ anisotropy });
     this.scale.set(0.25, 0.25, 1);
     this.name = name;
     this.onPointer = onPointer;
     this.draw();
+    if (screenshot) {
+      const image = new Image();
+      image.src = `data:image/png;base64,${screenshot}`;
+      image.onload = () => {
+        this.screenshot = image;
+        this.draw();
+      };
+    }
   }
 
   draw() {
@@ -18,18 +31,24 @@ class Realm extends Panel {
       isHover,
       name,
       renderer,
+      screenshot,
     } = this;
     super.draw();
     ctx.fillStyle = isHover ? '#333' : '#111';
     ctx.fillRect(0, 0, renderer.width, renderer.height);
-    ctx.font = '80px Roboto';
+    if (screenshot) {
+      ctx.drawImage(screenshot, 0, 0);
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, .5)';
+    ctx.fillRect(0, renderer.height * 0.75, renderer.width, renderer.height * 0.25);
+    ctx.font = '700 60px Roboto';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
     ctx.fillText(
       name,
       renderer.width * 0.5,
-      renderer.height * 0.5
+      renderer.height * 0.875
     );
   }
 }

@@ -95,7 +95,7 @@ module.exports.list = [
     const pageSize = 5;
     Realm
       .find()
-      .select('creator name slug createdAt')
+      .select('creator name screenshot slug createdAt')
       .sort('-createdAt')
       .skip(page * pageSize)
       .limit(pageSize)
@@ -104,6 +104,7 @@ module.exports.list = [
         res.json(realms.map(realm => ({
           ...realm._doc,
           creator: realm.creator ? realm.creator.name : undefined,
+          screenshot: realm.screenshot ? realm.screenshot.toString('base64') : undefined,
         })))
       ))
       .catch(next);

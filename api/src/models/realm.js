@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const URLSlugs = require('mongoose-url-slugs');
+const config = require('../config');
 const Generators = require('../generators');
+const Screenshots = require('../services/screenshots');
 
 const RealmSchema = new mongoose.Schema({
   creator: {
@@ -10,10 +12,29 @@ const RealmSchema = new mongoose.Schema({
   },
   name: { type: String, required: true },
   size: { type: Number, required: true },
+  screenshot: Buffer,
   voxels: { type: Buffer, required: true },
   createdAt: { type: Date, index: -1 },
   updatedAt: Date,
 }, { timestamps: true });
+
+RealmSchema.pre('save', function onSave(next) {
+  this.needsScreeenshot = (
+    this.isModified('size')
+    || this.isModified('voxels')
+  );
+  next();
+});
+
+RealmSchema.post('save', function onSaved() {
+  const realm = this;
+  if (realm.needsScreeenshot) {
+    Screenshots.update({
+      model: realm,
+      url: `${config.clientOrigin}/${realm.slug}`,
+    });
+  }
+});
 
 RealmSchema.plugin(URLSlugs('name'));
 

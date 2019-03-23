@@ -10,7 +10,7 @@ module.exports.authenticateWithGoogle = (req, res) => {
     res.send(
       '<script>'
       + 'window.addEventListener("message",({origin,source})=>{'
-      + `if(origin===${JSON.stringify(config.googleAuth.clientOrigin)}){`
+      + `if(origin===${JSON.stringify(config.clientOrigin)}){`
       + ''
       + `source.postMessage({${(
         (err || !user) ? (

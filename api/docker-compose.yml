@@ -4,7 +4,7 @@ services:
     image: danigatunes/realmsvr_api:latest
     restart: always
     environment:
-     - GOOGLE_CLIENT_ORIGIN=https://__WRITE_YOUR_CLIENT_HOSTNAME_HERE__
+     - CLIENT_ORIGIN=https://__WRITE_YOUR_CLIENT_HOSTNAME_HERE__
      - GOOGLE_AUTH_CALLBACK=https://__WRITE_YOUR_API_HOSTNAME_HERE__/user/google/authenticate
      - GOOGLE_CLIENT_ID=__WRITE_YOUR_GOOGLE_CLIENT_ID_HERE__
      - GOOGLE_CLIENT_SECRET=__WRITE_YOUR_GOOGLE_CLIENT_SECRET_HERE__
