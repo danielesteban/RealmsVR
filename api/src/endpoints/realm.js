@@ -10,7 +10,7 @@ module.exports.create = [
     .trim(),
   body('generator')
     .optional()
-    .isIn(['default', 'cave', 'csd', 'sphere']),
+    .isIn(['default', 'cave', 'csd', 'hourglass', 'sphere']),
   checkValidationResult,
   (req, res, next) => {
     const generator = req.body.generator || 'default';
@@ -92,7 +92,7 @@ module.exports.list = [
   checkValidationResult,
   (req, res, next) => {
     const { page } = req.params;
-    const pageSize = 4;
+    const pageSize = 5;
     Realm
       .find()
       .select('creator name slug createdAt')

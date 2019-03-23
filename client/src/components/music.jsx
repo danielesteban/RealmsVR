@@ -90,6 +90,9 @@ class Music extends PureComponent {
     fetch(`https://api.soundcloud.com/tracks/${id}?format=json&${clientId}`)
       .then(res => res.json())
       .then((track) => {
+        if (!track) {
+          throw new Error(`Couldn't fetch track: ${id}`);
+        }
         // Play the track
         player.src = `${track.stream_url}?${clientId}`;
         player.play();

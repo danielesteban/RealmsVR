@@ -12,7 +12,7 @@ module.exports = ({ size }) => {
   const c = vec3.fromValues(radius, radius, radius);
   const v = vec3.create();
   return ({ x, y, z }) => {
-    /* Draw a sphere at the middle of the dimension */
+    // SlicedSphere
     v[0] = x * (1 + (Math.random() * entropyX));
     v[1] = y * (1 + (Math.random() * entropyY));
     v[2] = z * (1 + (Math.random() * entropyZ));
@@ -31,7 +31,7 @@ module.exports = ({ size }) => {
         || (y <= radius + 1 && y >= radius - 2)
       )
     ) {
-      /* Paint it with a random hue using perlin noise */
+      // Paint it with a random hue using perlin noise
       const [r, g, b] = HSV2RGB(
         Math.min(Math.floor(Math.abs(noise.perlin3(z / 16, x / 16, y / 16)) * 359), 359),
         75,

@@ -1,8 +1,9 @@
 module.exports = ({ size }) => {
   const radius = size * 0.5;
   return ({ x, y, z }) => {
+    // Platform
     if (
-      y === radius - 1
+      y === 0
       && x >= radius - 2
       && x <= radius + 1
       && z >= radius - 2

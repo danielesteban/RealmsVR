@@ -3,7 +3,7 @@ const HSV2RGB = require('hsv-rgb');
 const { Noise } = require('noisejs');
 
 module.exports = ({ size }) => {
-  /* M.C. Escher's Cubic Space Division */
+  // M.C. Escher's Cubic Space Division
   const radius = size * 0.5;
   const cube = size * 0.2;
   const corners = [
@@ -37,7 +37,7 @@ module.exports = ({ size }) => {
         )
       )
     ) {
-      /* Paint it with a random hue using perlin noise */
+      // Paint it with a random hue using perlin noise
       const [r, g, b] = HSV2RGB(
         Math.min(Math.floor(Math.abs(noise.perlin3(z / 16, x / 16, y / 16)) * 359), 359),
         75,
