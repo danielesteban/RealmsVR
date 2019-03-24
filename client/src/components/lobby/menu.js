@@ -131,6 +131,9 @@ class Menu extends Object3D {
 
   setHover({ hand, realm }) {
     const { hover } = this;
+    if (hover[hand] === realm) {
+      return;
+    }
     if (hover[hand]) {
       hover[hand].isHover = false;
       hover[hand].draw();
