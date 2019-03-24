@@ -62,25 +62,30 @@ class Voxels extends Object3D {
 
     const radius = 8;
     this.instances = [];
+    const aux = new Vector3();
+    const origin = new Vector3();
     for (let z = -radius; z <= radius; z += 1) {
       for (let y = -radius; y <= radius; y += 1) {
         for (let x = -radius; x <= radius; x += 1) {
-          const instance = new Mesh(
-            geometry,
-            material
-          );
-          instance.chunk = { x, y, z };
-          instance.matrixAutoUpdate = false;
-          instance.position.set(x * size, y * size, z * size);
-          instance.updateMatrix();
-          instance.updateMatrixWorld();
-          this.instances.push(instance);
+          const distance = aux.set(x, y, z).distanceTo(origin);
+          if (Math.round(distance) <= radius) {
+            const instance = new Mesh(
+              geometry,
+              material
+            );
+            instance.chunk = { x, y, z };
+            instance.distance = distance;
+            instance.matrixAutoUpdate = false;
+            instance.position.set(x * size, y * size, z * size);
+            instance.updateMatrix();
+            instance.updateMatrixWorld();
+            this.instances.push(instance);
+          }
         }
       }
     }
-    const origin = new Vector3();
-    this.instances.sort(({ position: a }, { position: b }) => (
-      a.distanceTo(origin) - b.distanceTo(origin)
+    this.instances.sort(({ distance: a }, { distance: b }) => (
+      a - b
     ));
     this.intersects = this.instances.filter((instance) => {
       const { chunk: { x, y, z } } = instance;
