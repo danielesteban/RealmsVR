@@ -19,7 +19,7 @@ module.exports = () => (
         ].map((generator) => {
           const size = 16;
           const realm = new Realm({
-            name: generator,
+            name: `${generator.substr(0, 1).toUpperCase()}${generator.substr(1)}`,
             size,
             voxels: Realm.generateVoxels({ generator, size }),
           });

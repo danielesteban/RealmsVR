@@ -72,7 +72,7 @@ class Lobby extends PureComponent {
     hands.children.forEach((hand, i) => {
       const { buttons, pointer } = hand;
       hand.setupRaycaster(raycaster);
-      const hit = raycaster.intersectObjects(menu.children)[0] || false;
+      const hit = raycaster.intersectObjects(menu.intersects)[0] || false;
       if (!hit) {
         pointer.visible = false;
         menu.setHover({ hand: i });
@@ -108,7 +108,7 @@ class Lobby extends PureComponent {
       x: Math.min(Math.max(0.5 - (x / width), -0.5), 0.5) * -2,
       y: Math.min(Math.max(0.5 - (y / height), -0.5), 0.5) * 2,
     }, camera);
-    const hit = raycaster.intersectObjects(menu.children)[0] || false;
+    const hit = raycaster.intersectObjects(menu.intersects)[0] || false;
     if (!hit) {
       return;
     }

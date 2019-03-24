@@ -4,6 +4,7 @@ import {
   MeshBasicMaterial,
   PlaneBufferGeometry,
 } from 'three';
+import Fonts from '@/services/fonts';
 
 class Title extends Mesh {
   constructor({ anisotropy }) {
@@ -19,11 +20,15 @@ class Title extends Mesh {
         transparent: true,
       })
     );
-    this.lookAt(0, -0.25, 1);
+    this.lookAt(0, -0.2, 1);
     this.position.set(0, 2, -3);
     this.renderer = renderer;
     this.texture = texture;
-    setTimeout(() => this.draw(), 250);
+    Fonts
+      .waitUntilLoaded('Roboto')
+      .then(() => (
+        this.draw()
+      ));
   }
 
   dispose() {
@@ -45,24 +50,27 @@ class Title extends Mesh {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#eee';
+    ctx.shadowColor = 'rgba(255, 255, 0, .5)';
+    ctx.shadowBlur = 50;
     ctx.fillText(
       'RealmsVR',
       renderer.width * 0.5,
       renderer.height * 0.2
     );
-    ctx.font = '60px Roboto';
+    ctx.font = '70px Roboto';
     ctx.fillStyle = '#999';
+    ctx.shadowBlur = 0;
     ctx.fillText(
       'A recursive VR experience',
       renderer.width * 0.5,
       renderer.height * 0.5
     );
-    ctx.font = '60px Roboto';
-    ctx.fillStyle = '#bbb';
+    ctx.font = '50px Roboto';
+    ctx.fillStyle = '#111';
     ctx.fillText(
-      'dani@gatunes © 2019',
+      `v${__VERSION__} - dani@gatunes © 2019`,
       renderer.width * 0.5,
-      renderer.height * 0.8
+      renderer.height * 0.85
     );
     texture.needsUpdate = true;
   }

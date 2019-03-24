@@ -31,7 +31,7 @@ class Floor extends Mesh {
         if (i % 2 === 1) {
           face.color.copy(color);
         } else {
-          face.color.setHex(0x555555);
+          face.color.setHex(0x666655);
           face.color.offsetHSL(0, 0, Math.random() * -0.1);
           color.copy(face.color);
         }
