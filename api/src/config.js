@@ -2,14 +2,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-if (
-  !process.env.GOOGLE_CLIENT_ID
-  || !process.env.GOOGLE_CLIENT_SECRET
-) {
-  console.error('\nMissing config:\nYou must provide both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.\n');
-  process.exit(1);
-}
-
 const production = process.env.NODE_ENV === 'production';
 
 const sessionSecret = process.env.SESSION_SECRET || 'superunsecuresecret';

@@ -1,4 +1,5 @@
 const { unauthorized } = require('boom');
+const colors = require('colors/safe');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const config = require('../config');
@@ -47,6 +48,16 @@ module.exports.requireAuth = (req, res, next) => (
 
 module.exports.setup = () => {
   // Setup GoogleStrategy
+  if (
+    !config.googleAuth.clientID
+    || !config.googleAuth.clientSecret
+  ) {
+    console.log(
+      colors.red('\nMissing config:\n'),
+      'You must provide both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to have user sessions.\n'
+    );
+    return;
+  }
   passport.use(new GoogleStrategy(config.googleAuth, (accessToken, refreshToken, profile, done) => {
     const {
       displayName: name,

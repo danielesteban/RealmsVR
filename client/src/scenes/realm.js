@@ -162,23 +162,23 @@ class Realm extends PureComponent {
     });
 
     // Animation for non-vr browsers
-    // const { animation, vr } = renderer;
-    // if (!vr.enabled && size && animation.time > 1) {
-    //   const { delta, time } = animation;
-    //   const rotation = Math.sin(time * 0.1) * 0.001;
-    //   camera.rotateY(rotation);
-    //   camera.rotateX(rotation);
-    //   camera.translateZ(delta * 0.5);
-    //   camera.updateMatrixWorld();
-    //   ['x', 'y', 'z'].forEach((axis) => {
-    //     if (camera.position[axis] < 0) {
-    //       camera.position[axis] += size;
-    //     }
-    //     if (camera.position[axis] >= size) {
-    //       camera.position[axis] -= size;
-    //     }
-    //   });
-    // }
+    const { animation, vr } = renderer;
+    if (!vr.enabled && size && animation.time > 1) {
+      const { delta, time } = animation;
+      const rotation = Math.sin(time * 0.1) * 0.001;
+      camera.rotateY(rotation);
+      camera.rotateX(rotation);
+      camera.translateZ(delta * 0.5);
+      camera.updateMatrixWorld();
+      ['x', 'y', 'z'].forEach((axis) => {
+        if (camera.position[axis] < 0) {
+          camera.position[axis] += size;
+        }
+        if (camera.position[axis] >= size) {
+          camera.position[axis] -= size;
+        }
+      });
+    }
   }
 
   render() {
