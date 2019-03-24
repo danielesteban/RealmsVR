@@ -11,6 +11,7 @@ class Realm extends PureComponent {
   componentDidMount() {
     const {
       match: { params: { slug } },
+      history,
       renderer: { current: renderer },
       fetch,
     } = this.props;
@@ -18,6 +19,7 @@ class Realm extends PureComponent {
     const scene = renderer.resetScene();
     this.picker = new Picker({
       anisotropy: renderer.getMaxAnisotropy(),
+      history,
     });
     renderer.hands.children[1].add(this.picker);
     this.voxels = new Voxels({
@@ -160,23 +162,23 @@ class Realm extends PureComponent {
     });
 
     // Animation for non-vr browsers
-    const { animation, vr } = renderer;
-    if (!vr.enabled && size && animation.time > 1) {
-      const { delta, time } = animation;
-      const rotation = Math.sin(time * 0.1) * 0.001;
-      camera.rotateY(rotation);
-      camera.rotateX(rotation);
-      camera.translateZ(delta * 0.5);
-      camera.updateMatrixWorld();
-      ['x', 'y', 'z'].forEach((axis) => {
-        if (camera.position[axis] < 0) {
-          camera.position[axis] += size;
-        }
-        if (camera.position[axis] >= size) {
-          camera.position[axis] -= size;
-        }
-      });
-    }
+    // const { animation, vr } = renderer;
+    // if (!vr.enabled && size && animation.time > 1) {
+    //   const { delta, time } = animation;
+    //   const rotation = Math.sin(time * 0.1) * 0.001;
+    //   camera.rotateY(rotation);
+    //   camera.rotateX(rotation);
+    //   camera.translateZ(delta * 0.5);
+    //   camera.updateMatrixWorld();
+    //   ['x', 'y', 'z'].forEach((axis) => {
+    //     if (camera.position[axis] < 0) {
+    //       camera.position[axis] += size;
+    //     }
+    //     if (camera.position[axis] >= size) {
+    //       camera.position[axis] -= size;
+    //     }
+    //   });
+    // }
   }
 
   render() {
@@ -196,6 +198,8 @@ Realm.propTypes = {
     color: PropTypes.instanceOf(Float32Array),
     normal: PropTypes.instanceOf(Float32Array),
   }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
   size: PropTypes.number.isRequired,
   renderer: PropTypes.shape({
     current: PropTypes.instanceOf(Renderer),
