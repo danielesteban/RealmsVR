@@ -20,6 +20,11 @@ class Title extends Mesh {
         transparent: true,
       })
     );
+    const { array: vertices } = this.geometry.getAttribute('position');
+    vertices[0] -= 0.1;
+    vertices[3] += 0.1;
+    vertices[6] += 0.15;
+    vertices[9] -= 0.15;
     this.lookAt(0, -0.2, 1);
     this.position.set(0, 2, -3);
     this.renderer = renderer;
@@ -53,7 +58,7 @@ class Title extends Mesh {
     ctx.shadowColor = 'rgba(255, 255, 0, .5)';
     ctx.shadowBlur = 50;
     ctx.fillText(
-      'RealmsVR',
+      'REALMS',
       renderer.width * 0.5,
       renderer.height * 0.2
     );
@@ -70,7 +75,7 @@ class Title extends Mesh {
     ctx.fillText(
       `v${__VERSION__} - dani@gatunes © 2019`,
       renderer.width * 0.5,
-      renderer.height * 0.85
+      renderer.height * 0.8
     );
     texture.needsUpdate = true;
   }
