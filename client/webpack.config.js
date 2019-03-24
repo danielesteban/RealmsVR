@@ -57,6 +57,9 @@ module.exports = {
   resolve: {
     alias: {
       '@': srcPath,
+      ...(mode === 'development' ? {
+        'react-dom': '@hot-loader/react-dom',
+      } : {}),
     },
     extensions: ['.js', '.jsx', '.json'],
   },
