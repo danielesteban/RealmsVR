@@ -66,7 +66,7 @@ class Title extends Mesh {
       renderer.height * 0.5
     );
     ctx.font = '50px Roboto';
-    ctx.fillStyle = '#111';
+    ctx.fillStyle = '#222';
     ctx.fillText(
       `v${__VERSION__} - dani@gatunes © 2019`,
       renderer.width * 0.5,
