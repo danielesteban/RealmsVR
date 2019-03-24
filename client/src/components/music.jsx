@@ -7,10 +7,12 @@ const Wrapper = styled.div`
   left: 0;
   display: flex;
   align-items: flex-end;
-  > img {
+  > a > img {
     width: 100px;
     height: 100px;
     background: #000;
+    border: 0;
+    outline: none;
   }
   > div {
     background: rgba(0, 0, 0, .5);
@@ -18,10 +20,18 @@ const Wrapper = styled.div`
     line-height: 1.5em;
     padding: 0.5rem 1rem;
     border-radius: 0 4px 0 0;
-    > div:nth-child(1) {
+    > a {
+      display: block;
+      text-decoration: none;
+      outline: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    > a:nth-child(1) {
       color: #eee;
     }
-    > div:nth-child(2) {
+    > a:nth-child(2) {
       color: #aaa;
     }
   }
@@ -111,15 +121,34 @@ class Music extends PureComponent {
     const {
       title,
       artwork_url: artwork,
-      user: { username },
+      permalink_url: link,
+      user: { username, permalink_url: userlink },
       waveform_url: waveform,
     } = track;
     return (
       <Wrapper>
-        <img alt={title} src={artwork || waveform} />
+        <a
+          href={link}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <img alt={title} src={artwork || waveform} />
+        </a>
         <div>
-          <div>{title}</div>
-          <div>{username}</div>
+          <a
+            href={link}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {title}
+          </a>
+          <a
+            href={userlink}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {username}
+          </a>
         </div>
       </Wrapper>
     );
