@@ -11,11 +11,12 @@ module.exports = () => (
         }
         console.log(colors.blue('Populating default Realms...'));
         return Promise.all([
-          'default',
           'cave',
-          'csd',
           'hourglass',
+          'default',
+          'csd',
           'sphere',
+          // 'debug',
         ].map((generator) => {
           const size = 16;
           const realm = new Realm({

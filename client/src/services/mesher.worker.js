@@ -29,18 +29,14 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
   const test = (x, y, z) => (
     !!getVoxel(x, y, z).type
   );
-  const ao = (n, [r, g, b]) => {
+  const ao = (neighbors) => {
     let light = 1;
-    n.forEach((n) => {
+    neighbors.forEach((n) => {
       if (n) {
         light = Math.max(light - 0.3, 0.4);
       }
     });
-    return ([
-      r * light,
-      g * light,
-      b * light,
-    ]);
+    return light;
   };
   const index = [];
   const position = [];
@@ -48,15 +44,25 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
   const normal = [];
   let offset = 0;
   const pushFace = (
-    p1, ao1,
-    p2, ao2,
-    p3, ao3,
-    p4, ao4,
+    p1, n1,
+    p2, n2,
+    p3, n3,
+    p4, n4,
     c,
     n
   ) => {
-    position.push(...p1, ...p2, ...p3, ...p4);
-    color.push(...ao(ao1, c), ...ao(ao2, c), ...ao(ao3, c), ...ao(ao4, c));
+    const vertices = [p1, p2, p3, p4];
+    const light = [ao(n1), ao(n2), ao(n3), ao(n4)];
+    if (light[0] + light[2] < light[1] + light[3]) {
+      vertices.unshift(vertices.pop());
+      light.unshift(light.pop());
+    }
+    vertices.forEach(vertex => position.push(...vertex));
+    light.forEach(light => color.push(
+      c[0] * light,
+      c[1] * light,
+      c[2] * light
+    ));
     normal.push(...n, ...n, ...n, ...n);
     index.push(
       offset, offset + 1, offset + 2,

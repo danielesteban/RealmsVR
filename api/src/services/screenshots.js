@@ -39,7 +39,6 @@ class Screenshots {
             return model
               .save();
           })
-          .catch(() => {})
           .finally(() => (
             page
               .close()
