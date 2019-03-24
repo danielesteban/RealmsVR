@@ -1,10 +1,12 @@
 const { vec3 } = require('gl-matrix');
-const HSV2RGB = require('hsv-rgb');
-const { Noise } = require('noisejs');
+const {
+  getNoise,
+  sampleColorFromNoise,
+} = require('./utils');
 
 module.exports = ({ size }) => {
+  const noise = getNoise();
   const radius = size * 0.5;
-  const noise = new Noise();
   noise.seed(Math.random());
   const entropyX = Math.random() * 0.15;
   const entropyY = Math.random() * 0.3;
@@ -31,15 +33,13 @@ module.exports = ({ size }) => {
         || (y <= radius + 1 && y >= radius - 2)
       )
     ) {
-      // Paint it with a random hue using perlin noise
-      const [r, g, b] = HSV2RGB(
-        Math.min(Math.floor(Math.abs(noise.perlin3(z / 16, x / 16, y / 16)) * 359), 359),
-        75,
-        Math.min(Math.floor(
-          Math.abs(noise.perlin3(z / radius, x / radius, y / size) + 0.5) * 100
-        ), 100)
-      );
-      return (0x01 << 24) | (r << 16) | (g << 8) | b;
+      return sampleColorFromNoise({
+        noise,
+        s: 50,
+        x,
+        y,
+        z,
+      });
     }
     return 0;
   };

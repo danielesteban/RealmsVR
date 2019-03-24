@@ -160,8 +160,8 @@ class Renderer extends Component {
     this.room.position.set(0, 0, 0);
     this.scene = new Scene();
     this.scene.add(this.room);
-    this.scene.fog = new FogExp2(0, 0.015);
-    this.scene.fog.color.setRGB(0, 0, 0.1);
+    this.scene.fog = new FogExp2(0, 0.01);
+    this.scene.fog.color.setRGB(0.01, 0.01, 0.08);
     return this.scene;
   }
 

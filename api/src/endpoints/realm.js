@@ -14,7 +14,7 @@ module.exports.create = [
   checkValidationResult,
   (req, res, next) => {
     const generator = req.body.generator || 'default';
-    const size = 16;
+    const size = 24;
     const realm = new Realm({
       creator: req.user._id,
       name: req.body.name,
@@ -129,7 +129,7 @@ module.exports.regenerate = [
           throw notFound();
         }
         const generator = req.body.generator || 'default';
-        const size = 16;
+        const size = 24;
         realm.voxels = Realm.generateVoxels({ generator, size });
         return realm
           .save();
