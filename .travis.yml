@@ -1,7 +1,7 @@
 matrix:
   include:
-  # API
-  - language: generic
+  - name: API
+    language: generic
     services:
     - docker
     env:
@@ -14,8 +14,8 @@ matrix:
       provider: script
       script: echo ${DOCKER_PASSWORD} | docker login -u danigatunes --password-stdin && docker push danigatunes/realmsvr_api  
       skip_cleanup: true
-  # Client
-  - language: node_js
+  - name: Client
+    language: node_js
     node_js: lts/*
     cache:
       yarn: true
