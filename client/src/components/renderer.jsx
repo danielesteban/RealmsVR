@@ -22,7 +22,7 @@ class Renderer extends Component {
 
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
-    this.camera = new PerspectiveCamera(80, 1, 0.1, 512);
+    this.camera = new PerspectiveCamera(80, 1, 0.125, 512);
     this.clock = new Clock();
     this.raycaster = new Raycaster();
     this.room = new Object3D();
