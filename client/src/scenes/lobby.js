@@ -12,6 +12,7 @@ class Lobby extends PureComponent {
   componentDidMount() {
     const {
       history,
+      realms,
       renderer: { current: renderer },
       fetchRealms,
     } = this.props;
@@ -23,6 +24,7 @@ class Lobby extends PureComponent {
     this.menu = new Menu({
       anisotropy,
       history,
+      realms,
     });
     scene.add(this.menu);
     this.renderer = renderer;

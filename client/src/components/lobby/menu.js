@@ -115,13 +115,14 @@ class Realm extends Panel {
 }
 
 class Menu extends Object3D {
-  constructor({ anisotropy, history }) {
+  constructor({ anisotropy, history, realms }) {
     super();
     this.anisotropy = anisotropy;
     this.history = history;
     this.hover = {};
     this.intersects = [];
     this.position.set(0, 1, -1);
+    this.update(realms);
   }
 
   dispose() {
