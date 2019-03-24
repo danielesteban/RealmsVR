@@ -22,7 +22,7 @@ class Renderer extends Component {
 
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
-    this.camera = new PerspectiveCamera(80, 1, 0.125, 512);
+    this.camera = new PerspectiveCamera(80, 1, 0.1, 512);
     this.clock = new Clock();
     this.raycaster = new Raycaster();
     this.room = new Object3D();
@@ -160,7 +160,7 @@ class Renderer extends Component {
     this.room.position.set(0, 0, 0);
     this.scene = new Scene();
     this.scene.add(this.room);
-    this.scene.fog = new FogExp2(0, 0.01);
+    this.scene.fog = new FogExp2(0, 0.0125);
     this.scene.fog.color.setRGB(0.01, 0.01, 0.08);
     return this.scene;
   }
