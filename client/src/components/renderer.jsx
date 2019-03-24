@@ -25,7 +25,6 @@ class Renderer extends Component {
     this.camera = new PerspectiveCamera(90, 1, 0.1, 1024);
     this.clock = new Clock();
     this.raycaster = new Raycaster();
-    this.raycaster.far = 32;
     this.room = new Object3D();
     this.room.add(this.camera);
     this.hands = new Hands();
