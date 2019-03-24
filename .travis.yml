@@ -12,9 +12,7 @@ matrix:
       on:
         branch: master
       provider: script
-      script:
-      - echo $DOCKER_PASSWORD | docker login -u danigatunes --password-stdin
-      - docker push danigatunes/realmsvr_api  
+      script: echo $DOCKER_PASSWORD | docker login -u danigatunes --password-stdin && docker push danigatunes/realmsvr_api  
       skip_cleanup: true
   # Client
   - language: node_js
