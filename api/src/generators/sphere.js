@@ -23,19 +23,12 @@ module.exports = ({ size }) => {
       Math.abs(noise.perlin3(x / 16, y / 16, z / 16) * 20)
     );
     if (
-      (d > size * 0.4 && d < size * 0.6)
-      && n < 10
-      && !(
-        (
-          (z === radius || z === radius - 1)
-          && (x === radius || x === radius - 1)
-        )
-        || (y <= radius + 1 && y >= radius - 2)
-      )
+      n < 10
+      && d > size * 0.4 && d < size * 0.6
+      && (y < radius - 1 || y > radius + 2)
     ) {
       return sampleColorFromNoise({
         noise,
-        s: 50,
         x,
         y,
         z,

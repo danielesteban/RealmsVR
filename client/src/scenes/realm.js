@@ -35,7 +35,11 @@ class Realm extends PureComponent {
 
   componentDidUpdate({ geometry: previousGeometry, size: previousSize }) {
     const { geometry, size } = this.props;
-    const { renderer: { room }, picker, voxels } = this;
+    const {
+      renderer: { raycaster, room, vr },
+      picker,
+      voxels,
+    } = this;
     if (size !== previousSize) {
       // Resize voxels
       room.position.set(
@@ -52,6 +56,15 @@ class Realm extends PureComponent {
     if (geometry !== previousGeometry) {
       // Update voxels
       voxels.update(geometry);
+      if (!previousGeometry.index && vr.enabled) {
+        // Pull the player down to the nearest voxel
+        raycaster.ray.origin.copy(room.position);
+        raycaster.ray.direction.set(0, -1, 0);
+        const hit = raycaster.intersectObjects(voxels.intersects)[0];
+        if (hit) {
+          room.position.y = hit.point.y;
+        }
+      }
     }
   }
 

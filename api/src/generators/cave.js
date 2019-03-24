@@ -18,7 +18,7 @@ module.exports = ({ size }) => {
     ) {
       return sampleColorFromNoise({
         noise,
-        s: 50,
+        s: 40,
         x,
         y,
         z,
