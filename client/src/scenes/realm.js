@@ -36,7 +36,7 @@ class Realm extends PureComponent {
   componentDidUpdate({ geometry: previousGeometry, size: previousSize }) {
     const { geometry, size } = this.props;
     const {
-      renderer: { raycaster, room, vr },
+      renderer: { raycaster, room, renderer: { vr } },
       picker,
       voxels,
     } = this;
