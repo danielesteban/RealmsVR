@@ -23,8 +23,8 @@ class Pillar extends Mesh {
 
   static setup() {
     if (!Pillar.geometry) {
-      const geometry = new CylinderGeometry(0.025, 0.025, 0.5, 8, 16);
-      geometry.translate(0, -0.32, 0);
+      const geometry = new CylinderGeometry(0.025, 0.025, 1, 8, 16);
+      geometry.translate(0, -0.575, 0);
       const color = new Color();
       geometry.faces.forEach((face, i) => {
         if (i % 2 === 1) {
@@ -121,7 +121,7 @@ class Menu extends Object3D {
     this.history = history;
     this.hover = {};
     this.intersects = [];
-    this.position.set(0, 1.25, -1);
+    this.position.set(0, 1, -1);
   }
 
   dispose() {
