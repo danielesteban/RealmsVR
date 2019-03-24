@@ -126,7 +126,7 @@ class Menu extends Object3D {
 
   dispose() {
     const { children } = this;
-    children.forEach(child => child.dispose());
+    children.forEach(child => child.dispose && child.dispose());
   }
 
   setHover({ hand, realm }) {
