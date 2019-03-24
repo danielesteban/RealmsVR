@@ -13,6 +13,7 @@ const Wrapper = styled.div`
     background: #000;
     border: 0;
     outline: none;
+    vertical-align: middle;
   }
   > div {
     background: rgba(0, 0, 0, .5);
