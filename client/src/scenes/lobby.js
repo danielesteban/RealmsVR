@@ -3,10 +3,11 @@ import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Touches from 'touches';
 import { fetchRealms } from '@/actions/lobby';
-import Renderer from '@/components/renderer';
-import Floor from '@/components/lobby/floor';
+import Ground from '@/components/lobby/ground';
 import Menu from '@/components/lobby/menu';
+import Starfield from '@/components/lobby/starfield';
 import Title from '@/components/lobby/title';
+import Renderer from '@/components/renderer';
 
 class Lobby extends PureComponent {
   componentDidMount() {
@@ -19,7 +20,8 @@ class Lobby extends PureComponent {
     // Setup scene
     const anisotropy = renderer.getMaxAnisotropy();
     const scene = renderer.resetScene();
-    scene.add(new Floor());
+    scene.add(new Ground());
+    scene.add(new Starfield());
     scene.add(new Title({ anisotropy }));
     this.menu = new Menu({
       anisotropy,

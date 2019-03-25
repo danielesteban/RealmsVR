@@ -47,8 +47,8 @@ class Title extends Mesh {
     const { renderer, texture } = this;
     const ctx = renderer.getContext('2d');
     const grd = ctx.createLinearGradient(0, 0, 0, renderer.height);
-    grd.addColorStop(0, 'rgba(0,0,0,0.25)');
-    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    grd.addColorStop(0, 'rgba(0, 0, 0, 0.3)');
+    grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, renderer.width, renderer.height);
     ctx.font = '700 200px Roboto';

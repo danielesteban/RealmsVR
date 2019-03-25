@@ -7,22 +7,22 @@ import {
   VertexColors,
 } from 'three';
 
-class Floor extends Mesh {
+class Ground extends Mesh {
   constructor() {
     if (
-      !Floor.geometry
-      || !Floor.material
+      !Ground.geometry
+      || !Ground.material
     ) {
-      Floor.setup();
+      Ground.setup();
     }
     super(
-      Floor.geometry,
-      Floor.material
+      Ground.geometry,
+      Ground.material
     );
   }
 
   static setup() {
-    if (!Floor.geometry) {
+    if (!Ground.geometry) {
       const size = 256;
       const geometry = new PlaneGeometry(size, size, size, size);
       geometry.rotateX(Math.PI * -0.5);
@@ -36,14 +36,14 @@ class Floor extends Mesh {
           color.copy(face.color);
         }
       });
-      Floor.geometry = (new BufferGeometry()).fromGeometry(geometry);
+      Ground.geometry = (new BufferGeometry()).fromGeometry(geometry);
     }
-    if (!Floor.material) {
-      Floor.material = new MeshBasicMaterial({
+    if (!Ground.material) {
+      Ground.material = new MeshBasicMaterial({
         vertexColors: VertexColors,
       });
     }
   }
 }
 
-export default Floor;
+export default Ground;
