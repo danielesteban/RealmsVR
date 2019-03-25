@@ -30,13 +30,12 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
     !!getVoxel(x, y, z).type
   );
   const ao = (neighbors) => {
-    let light = 1;
-    neighbors.forEach((n) => {
-      if (n) {
-        light = Math.max(light - 0.3, 0.4);
-      }
-    });
-    return light;
+    if (neighbors[0] && neighbors[1]) {
+      neighbors[3] = true;
+    }
+    return neighbors.reduce((light, n) => (
+      n ? light - 0.2 : light
+    ), 0);
   };
   const index = [];
   const position = [];
