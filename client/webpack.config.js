@@ -41,6 +41,10 @@ if (fs.existsSync(path.resolve(__dirname, '..', '.git'))) {
   }
 }
 
+if (mode === 'production') {
+  console.log(`RealmsVR - v${version}`);
+}
+
 module.exports = {
   mode,
   entry: [
