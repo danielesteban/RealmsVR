@@ -35,7 +35,7 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
     }
     return neighbors.reduce((light, n) => (
       n ? light - 0.2 : light
-    ), 0);
+    ), 1);
   };
   const index = [];
   const position = [];
