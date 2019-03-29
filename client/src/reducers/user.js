@@ -55,7 +55,7 @@ const profile = (
       const { name } = profile;
       return {
         ...profile,
-        firstName: name.substr(0, name.indexOf(' ')),
+        firstName: name.split(' ')[0],
       };
     }
     case types.USER_REFRESH_SESSION_REJECTED:

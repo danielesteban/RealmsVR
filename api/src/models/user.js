@@ -1,9 +1,17 @@
 const bcrypt = require('bcrypt-nodejs');
+const { createCanvas, registerFont } = require('canvas');
+const HSV2RGB = require('hsv-rgb');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const request = require('request-promise-native');
 const sharp = require('sharp');
 const config = require('../config');
+
+registerFont(
+  path.join(__dirname, '..', '..', 'fonts', 'roboto.ttf'),
+  { family: 'Roboto' }
+);
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -46,6 +54,33 @@ UserSchema.pre('save', function onSave(next) {
           user.photo = photo;
         })
     );
+  } else if (user.isNew) {
+    promises.push(new Promise((resolve, reject) => {
+      const canvas = createCanvas(100, 100);
+      const ctx = canvas.getContext('2d');
+      const [r, g, b] = HSV2RGB(Math.floor(Math.random() * 360), 20, 80);
+      ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      ctx.beginPath();
+      ctx.arc(50, 50, 50, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '60px Roboto';
+      ctx.fillText((
+        user.name
+          .substr(0, 1)
+          .toUpperCase()
+      ), 50, 50);
+      canvas.toBuffer((err, buffer) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        user.photo = buffer;
+        resolve();
+      });
+    }));
   }
   if (!promises.length) {
     return next();
