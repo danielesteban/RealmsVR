@@ -13,9 +13,9 @@ module.exports = () => (
         return Promise.all([
           'cave',
           'hourglass',
-          'default',
           'csd',
           'sphere',
+          // 'default',
           // 'debug',
         ].map((generator) => {
           const size = 24;

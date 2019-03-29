@@ -60,9 +60,7 @@ UserSchema.pre('save', function onSave(next) {
       const ctx = canvas.getContext('2d');
       const [r, g, b] = HSV2RGB(Math.floor(Math.random() * 360), 20, 80);
       ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-      ctx.beginPath();
-      ctx.arc(50, 50, 50, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillRect(0, 0, 100, 100);
       ctx.fillStyle = '#fff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
