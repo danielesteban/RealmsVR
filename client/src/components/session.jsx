@@ -7,7 +7,6 @@ import {
 } from 'react-icons/ti';
 import { connect } from 'react-redux';
 import { Translate } from 'react-redux-i18n';
-
 import styled from 'styled-components';
 import {
   hideSessionPopup as hide,
