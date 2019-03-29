@@ -50,6 +50,7 @@ class Realm extends Panel {
   constructor({
     anisotropy,
     name,
+    creator,
     onPointer,
     screenshot,
   }) {
@@ -76,6 +77,17 @@ class Realm extends Panel {
         hasLoadedFont = true;
         this.draw();
       });
+    if (creator) {
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      image.src = `${API.baseURL}user/${creator._id}/photo`;
+      image.onload = () => {
+        this.creator = image;
+        if (hasLoadedFont) {
+          this.draw();
+        }
+      };
+    }
     if (screenshot) {
       const image = new Image();
       image.src = `data:image/jpeg;base64,${screenshot}`;
@@ -91,6 +103,7 @@ class Realm extends Panel {
   draw() {
     const {
       context: ctx,
+      creator,
       isHover,
       name,
       renderer,
@@ -105,13 +118,20 @@ class Realm extends Panel {
     ctx.fillRect(0, 0, renderer.width, renderer.height);
     ctx.fillStyle = `rgba(${isHover ? '255, 255, 255' : '0, 0, 0'}, .5)`;
     ctx.fillRect(0, renderer.height * 0.75, renderer.width, renderer.height * 0.25);
-    ctx.font = '700 60px Roboto';
-    ctx.textAlign = 'center';
+    ctx.font = '40px Roboto';
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = isHover ? '#333' : '#fff';
+    if (creator) {
+      ctx.drawImage(
+        creator,
+        0, renderer.height * 0.75,
+        renderer.width * 0.25, renderer.height * 0.25
+      );
+    }
     ctx.fillText(
       name,
-      renderer.width * 0.5,
+      renderer.width * 0.05 + (renderer.width * (creator ? 0.25 : 0.05)),
       renderer.height * 0.875
     );
   }

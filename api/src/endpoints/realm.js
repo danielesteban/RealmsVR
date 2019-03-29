@@ -121,7 +121,6 @@ module.exports.list = filter => ([
               pages: Math.ceil(count / pageSize),
               realms: realms.map(realm => ({
                 ...realm._doc,
-                creator: realm.creator ? realm.creator.name : undefined,
                 screenshot: realm.screenshot ? realm.screenshot.toString('base64') : undefined,
               })),
             })
