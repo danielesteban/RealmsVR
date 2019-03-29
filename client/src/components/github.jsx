@@ -39,7 +39,13 @@ const GitHub = () => (
     rel="noopener noreferrer"
     target="_blank"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 250 250" fill="#fff">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="80"
+      height="80"
+      viewBox="0 0 250 250"
+      fill="#fff"
+    >
       <path
         d="M0 0l115 115h15l12 27 108 108V0z"
         fill="#000"
