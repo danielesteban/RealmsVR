@@ -112,10 +112,13 @@ const Content = styled.div`
 `;
 
 const Form = styled.form`
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   width: 80%;
+  &.active {
+    display: flex;
+  }
   > label {
     width: 100%;
     padding: 0;
@@ -176,45 +179,6 @@ class Session extends PureComponent {
     if (!isSigningIn) {
       return null;
     }
-    let FormComponent;
-    switch (tab) {
-      case 'register':
-        FormComponent = (
-          <Form onSubmit={this.onRegisterSubmit}>
-            <label><Translate value="User.name" /></label>
-            <input type="text" name="name" required />
-            <label><Translate value="User.email" /></label>
-            <input type="email" name="email" required />
-            <label><Translate value="User.password" /></label>
-            <input type="password" name="password" required />
-            <label><Translate value="User.confirmPassword" /></label>
-            <input type="password" name="confirmPassword" required />
-            <button
-              type="submit"
-            >
-              <TiKey />
-              <Translate value="User.register" />
-            </button>
-          </Form>
-        );
-        break;
-      default:
-        FormComponent = (
-          <Form onSubmit={this.onLoginSubmit}>
-            <label><Translate value="User.email" /></label>
-            <input type="email" name="email" required />
-            <label><Translate value="User.password" /></label>
-            <input type="password" name="password" required />
-            <button
-              type="submit"
-            >
-              <TiKey />
-              <Translate value="User.signIn" />
-            </button>
-          </Form>
-        );
-        break;
-    }
     return (
       <Wrapper>
         <Popup>
@@ -240,7 +204,40 @@ class Session extends PureComponent {
             </a>
           </Heading>
           <Content>
-            {FormComponent}
+            <Form
+              className={tab === 'login' ? 'active' : null}
+              onSubmit={this.onLoginSubmit}
+            >
+              <label><Translate value="User.email" /></label>
+              <input type="email" name="email" required />
+              <label><Translate value="User.password" /></label>
+              <input type="password" name="password" required />
+              <button
+                type="submit"
+              >
+                <TiKey />
+                <Translate value="User.signIn" />
+              </button>
+            </Form>
+            <Form
+              className={tab === 'register' ? 'active' : null}
+              onSubmit={this.onRegisterSubmit}
+            >
+              <label><Translate value="User.name" /></label>
+              <input type="text" name="name" required />
+              <label><Translate value="User.email" /></label>
+              <input type="email" name="email" required />
+              <label><Translate value="User.password" /></label>
+              <input type="password" name="password" required />
+              <label><Translate value="User.confirmPassword" /></label>
+              <input type="password" name="confirmPassword" required />
+              <button
+                type="submit"
+              >
+                <TiKey />
+                <Translate value="User.register" />
+              </button>
+            </Form>
             <div className="or">
               <Translate value="User.or" />
             </div>

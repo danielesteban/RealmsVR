@@ -1,4 +1,4 @@
-const { badData, badImplementation } = require('boom');
+const { badData, boomify } = require('boom');
 const callsiteRecord = require('callsite-record');
 const { validationResult } = require('express-validator/check');
 const colors = require('colors/safe');
@@ -18,7 +18,7 @@ module.exports.setup = (api) => {
   api.use((err, req, res, next) => {
     if (!err.isBoom) {
       // Default error
-      err = badImplementation(err);
+      err = boomify(err);
     }
     res.status(err.output.statusCode).end();
     if (!config.production && err.isServer) {
