@@ -8,6 +8,21 @@ export function hideSessionPopup() {
   };
 }
 
+export function register({ email, name, password }) {
+  return dispatch => dispatch({
+    type: types.USER_REGISTER,
+    payload: API.fetch({
+      body: {
+        email,
+        name,
+        password,
+      },
+      endpoint: 'user',
+      method: 'PUT',
+    }),
+  }).catch(() => {});
+}
+
 export function refreshSession() {
   return dispatch => dispatch({
     type: types.USER_REFRESH_SESSION,
@@ -30,12 +45,12 @@ export function showSessionPopup() {
   };
 }
 
-export function login({ user, password }) {
+export function login({ email, password }) {
   return dispatch => dispatch({
     type: types.USER_LOGIN,
     payload: API.fetch({
       body: {
-        user,
+        email,
         password,
       },
       endpoint: 'user',
