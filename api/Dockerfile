@@ -20,6 +20,9 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn install
 
+# Bundle fonts
+COPY fonts/ fonts/
+
 # Bundle app source
 COPY src/ src/
 
