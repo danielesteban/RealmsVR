@@ -43,44 +43,42 @@ UserSchema.pre('save', function onSave(next) {
       ))
     );
   }
-  if (user.isNew) {
-    if (user.isModified('photo')) {
-      promises.push(
-        sharp(user.photo)
-          .rotate()
-          .resize(100, 100)
-          .jpeg({ quality: 85 })
-          .toBuffer()
-          .then((photo) => {
-            user.photo = photo;
-          })
-      );
-    } else {
-      promises.push(new Promise((resolve, reject) => {
-        const canvas = createCanvas(100, 100);
-        const ctx = canvas.getContext('2d');
-        const [r, g, b] = HSV2RGB(Math.floor(Math.random() * 360), 20, 80);
-        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-        ctx.fillRect(0, 0, 100, 100);
-        ctx.fillStyle = '#fff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = '60px Roboto';
-        ctx.fillText((
-          user.name
-            .substr(0, 1)
-            .toUpperCase()
-        ), 50, 50);
-        canvas.toBuffer((err, buffer) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          user.photo = buffer;
-          resolve();
-        });
-      }));
-    }
+  if (user.isModified('photo')) {
+    promises.push(
+      sharp(user.photo)
+        .rotate()
+        .resize(100, 100)
+        .jpeg({ quality: 85 })
+        .toBuffer()
+        .then((photo) => {
+          user.photo = photo;
+        })
+    );
+  } else if (user.isNew) {
+    promises.push(new Promise((resolve, reject) => {
+      const canvas = createCanvas(100, 100);
+      const ctx = canvas.getContext('2d');
+      const [r, g, b] = HSV2RGB(Math.floor(Math.random() * 360), 20, 80);
+      ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      ctx.fillRect(0, 0, 100, 100);
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '60px Roboto';
+      ctx.fillText((
+        user.name
+          .substr(0, 1)
+          .toUpperCase()
+      ), 50, 50);
+      canvas.toBuffer((err, buffer) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        user.photo = buffer;
+        resolve();
+      });
+    }));
   }
   if (!promises.length) {
     return next();
