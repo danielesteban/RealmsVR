@@ -4,7 +4,7 @@ import LoadingBar from 'react-redux-loading-bar';
 import styled from 'styled-components';
 import Music from '@/components/music';
 import Renderer from '@/components/renderer';
-// import Session from '@/components/session';
+import Session from '@/components/session';
 import Scenes from '@/scenes';
 
 const Wrapper = styled.div`
@@ -32,8 +32,8 @@ class Layout extends PureComponent {
           <Renderer ref={renderer} />
         </Wrapper>
         <Scenes renderer={renderer} />
-        {/* <Session /> */}
         <Music />
+        <Session />
       </div>
     );
   }

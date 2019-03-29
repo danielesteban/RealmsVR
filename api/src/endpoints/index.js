@@ -1,15 +1,16 @@
-// const multer = require('multer');
+const multer = require('multer');
 const nocache = require('nocache');
 const realm = require('./realm');
 const user = require('./user');
 const {
+  authenticate,
   requireAuth,
 } = require('../services/passport');
 
 const preventCache = nocache();
-// const upload = multer({
-//   storage: multer.memoryStorage(),
-// });
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
 
 module.exports = (api) => {
   /**
@@ -70,6 +71,7 @@ module.exports = (api) => {
   api.get(
     '/realm/:slug',
     preventCache,
+    authenticate,
     realm.get
   );
 
@@ -128,6 +130,8 @@ module.exports = (api) => {
    *         description: Successfully removed
    *       401:
    *         description: Invalid/expired session token
+   *       404:
+   *         description: Realm not found
    */
   api.delete(
     '/realm/:id',
@@ -165,6 +169,46 @@ module.exports = (api) => {
 
   /**
    * @swagger
+   * /realm/{id}/voxels:
+   *   put:
+   *     description: Update realm voxels
+   *     tags: [Voxels]
+   *     security: []
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Realm id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               voxels:
+   *                 type: string
+   *                 format: binary
+   *     responses:
+   *       200:
+   *         description: Realm voxels
+   *       401:
+   *         description: Invalid/expired session token
+   *       404:
+   *         description: Realm not found
+   */
+  api.put(
+    '/realm/:id/voxels',
+    preventCache,
+    requireAuth,
+    upload.single('voxels'),
+    realm.update
+  );
+
+  /**
+   * @swagger
    * /realms/{page}:
    *   get:
    *     description: List realms
@@ -186,7 +230,122 @@ module.exports = (api) => {
   api.get(
     '/realms/:page',
     preventCache,
-    realm.list
+    realm.list('all')
+  );
+
+  /**
+   * @swagger
+   * /realms/user/{page}:
+   *   get:
+   *     description: List user realms
+   *     tags: [Lobby]
+   *     parameters:
+   *       - name: page
+   *         in: path
+   *         description: Page
+   *         required: true
+   *         schema:
+   *           type: number
+   *     responses:
+   *       200:
+   *         description: User realms list
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.get(
+    '/realms/user/:page',
+    preventCache,
+    requireAuth,
+    realm.list('user')
+  );
+
+  /**
+   * @swagger
+   * /user:
+   *   put:
+   *     description: Register user account
+   *     tags: [User]
+   *     security: []
+   *     requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              name:
+   *                description: User name
+   *                type: string
+   *              email:
+   *                description: User email
+   *                type: string
+   *              password:
+   *                description: User password
+   *                type: string
+   *     responses:
+   *       200:
+   *         description: User session
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 profile:
+   *                   type: object
+   *                   description: User's profile
+   *                 token:
+   *                   type: string
+   *                   description: Refreshed user token
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.put(
+    '/user',
+    preventCache,
+    user.register
+  );
+
+  /**
+   * @swagger
+   * /user:
+   *   post:
+   *     description: Login with email & password
+   *     tags: [User]
+   *     security: []
+   *     requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              email:
+   *                description: User email
+   *                type: string
+   *              password:
+   *                description: User password
+   *                type: string
+   *     responses:
+   *       200:
+   *         description: User session
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 profile:
+   *                   type: object
+   *                   description: User's profile
+   *                 token:
+   *                   type: string
+   *                   description: Refreshed user token
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.post(
+    '/user',
+    preventCache,
+    user.login
   );
 
   /**

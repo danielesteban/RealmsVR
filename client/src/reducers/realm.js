@@ -29,6 +29,20 @@ const id = (
   }
 };
 
+const isCreator = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case types.REALM_FETCH_FULFILLED:
+      return !!action.payload.isCreator;
+    case types.REALM_RESET:
+      return false;
+    default:
+      return state;
+  }
+};
+
 const name = (
   state = '',
   action
@@ -75,6 +89,7 @@ const voxels = (
 const realmReducer = combineReducers({
   geometry,
   id,
+  isCreator,
   name,
   size,
   voxels,

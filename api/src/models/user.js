@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const request = require('request-promise-native');
@@ -13,12 +14,27 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   name: { type: String, required: true },
+  password: String,
   photo: Buffer,
 }, { timestamps: true });
 
 UserSchema.pre('save', function onSave(next) {
   const user = this;
   const promises = [];
+  if (user.isModified('password')) {
+    promises.push(
+      new Promise((resolve, reject) => (
+        bcrypt.genSalt(5, (err, salt) => {
+          if (err) return reject(err);
+          return bcrypt.hash(user.password, salt, null, (err, hash) => {
+            if (err) return reject(err);
+            user.password = hash;
+            return resolve();
+          });
+        })
+      ))
+    );
+  }
   if (user.isModified('photo')) {
     promises.push(
       sharp(user.photo)
@@ -41,6 +57,18 @@ UserSchema.pre('save', function onSave(next) {
 });
 
 UserSchema.methods = {
+  comparePassword(candidatePassword) {
+    const user = this;
+    return new Promise((resolve, reject) => (
+      bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(isMatch);
+      })
+    ));
+  },
   getNewSession() {
     return {
       profile: {
@@ -56,7 +84,7 @@ UserSchema.methods = {
         _id: this._id,
       },
       config.sessionSecret,
-      { expiresIn: '24h' }
+      { expiresIn: '7d' }
     );
   },
 };

@@ -2,6 +2,7 @@ const { unauthorized } = require('boom');
 const colors = require('colors/safe');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const LocalStrategy = require('passport-local');
 const config = require('../config');
 const { User } = require('../models');
 
@@ -80,4 +81,29 @@ module.exports.setup = () => {
       .then(user => done(null, user))
       .catch(done);
   }));
+
+  // Setup LocalStrategy
+  passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    session: false,
+  }, (email, password, done) => (
+    User
+      .findOne({ email })
+      .then((user) => {
+        if (!user) {
+          return done(null, false);
+        }
+        return user
+          .comparePassword(password)
+          .then((isMatch) => {
+            if (!isMatch) {
+              done(null, false);
+              return;
+            }
+            done(null, user);
+          });
+      })
+      .catch(done)
+  )));
 };

@@ -16,9 +16,27 @@ const isAuth = (
 ) => {
   switch (action.type) {
     case types.USER_REFRESH_SESSION_FULFILLED:
+    case types.USER_LOGIN_FULFILLED:
+    case types.USER_REGISTER_FULFILLED:
       return true;
     case types.USER_REFRESH_SESSION_REJECTED:
     case types.USER_SIGNOUT:
+      return false;
+    default:
+      return state;
+  }
+};
+
+const isSigningIn = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case types.USER_SHOW_SESSION_POPUP:
+      return true;
+    case types.USER_LOGIN_FULFILLED:
+    case types.USER_HIDE_SESSION_POPUP:
+    case types.USER_REGISTER_FULFILLED:
       return false;
     default:
       return state;
@@ -31,7 +49,15 @@ const profile = (
 ) => {
   switch (action.type) {
     case types.USER_REFRESH_SESSION_FULFILLED:
-      return action.payload.profile;
+    case types.USER_LOGIN_FULFILLED:
+    case types.USER_REGISTER_FULFILLED: {
+      const { profile } = action.payload;
+      const { name } = profile;
+      return {
+        ...profile,
+        firstName: name.substr(0, name.indexOf(' ')),
+      };
+    }
     case types.USER_REFRESH_SESSION_REJECTED:
     case types.USER_SIGNOUT:
       return {};
@@ -46,6 +72,8 @@ const token = (
 ) => {
   switch (action.type) {
     case types.USER_REFRESH_SESSION_FULFILLED:
+    case types.USER_LOGIN_FULFILLED:
+    case types.USER_REGISTER_FULFILLED:
       API.setAuthorization(action.payload.token);
       localStorage.setItem(sessionKey, JSON.stringify(action.payload));
       return action.payload.token;
@@ -61,6 +89,7 @@ const token = (
 
 const userReducer = combineReducers({
   isAuth,
+  isSigningIn,
   profile,
   token,
 });

@@ -1,5 +1,5 @@
-const { notFound } = require('boom');
-const { param } = require('express-validator/check');
+const { notFound, unauthorized } = require('boom');
+const { body, param } = require('express-validator/check');
 const passport = require('passport');
 const config = require('../config');
 const { User } = require('../models');
@@ -61,6 +61,25 @@ module.exports.getPhoto = [
   },
 ];
 
+module.exports.login = [
+  body('email')
+    .isEmail()
+    .normalizeEmail(),
+  body('password')
+    .not().isEmpty()
+    .trim(),
+  checkValidationResult,
+  (req, res, next) => {
+    passport.authenticate('local', (err, user) => {
+      if (err || !user) {
+        next(err || unauthorized());
+        return;
+      }
+      res.json(user.getNewSession());
+    })(req, res);
+  },
+];
+
 module.exports.loginWithGoogle = (
   passport.authenticate('google', {
     prompt: 'select_account',
@@ -71,3 +90,27 @@ module.exports.loginWithGoogle = (
 module.exports.refreshSession = (req, res) => {
   res.json(req.user.getNewSession());
 };
+
+module.exports.register = [
+  body('email')
+    .isEmail()
+    .normalizeEmail(),
+  body('name')
+    .not().isEmpty()
+    .isLength({ min: 1, max: 25 })
+    .trim(),
+  body('password')
+    .not().isEmpty()
+    .trim(),
+  checkValidationResult,
+  (req, res) => {
+    const user = new User({
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password,
+    });
+    user.save()
+      .then(() => res.json(user.getNewSession()))
+      .catch(() => res.status(500).end());
+  },
+];

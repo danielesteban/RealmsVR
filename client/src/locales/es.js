@@ -1,10 +1,7 @@
 export default {
-  NotFound: {
-    description: 'Esta no es la página que estás buscando.',
-    goBack: 'Volver al inicio',
-  },
   User: {
     signIn: 'Iniciar sesión',
+    signInWithGoogle: 'Iniciar sesión con Google',
     signOut: 'Cerrar sesión',
   },
 };

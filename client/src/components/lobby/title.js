@@ -20,11 +20,6 @@ class Title extends Mesh {
         transparent: true,
       })
     );
-    const { array: vertices } = this.geometry.getAttribute('position');
-    vertices[0] -= 0.1;
-    vertices[3] += 0.1;
-    vertices[6] += 0.15;
-    vertices[9] -= 0.15;
     this.lookAt(0, -0.2, 1);
     this.position.set(0, 2, -3);
     this.renderer = renderer;

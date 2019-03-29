@@ -1,13 +1,21 @@
 import {
+  BoxGeometry,
+  BufferGeometry,
   CanvasTexture,
+  DoubleSide,
   Mesh,
   MeshBasicMaterial,
   PlaneBufferGeometry,
+  VertexColors,
   Vector3,
 } from 'three';
 
 class Panel extends Mesh {
-  constructor({ anisotropy }) {
+  constructor({
+    anisotropy,
+    width = 512,
+    height = 512,
+  }) {
     if (
       !Panel.backplate
       || !Panel.geometry
@@ -15,8 +23,8 @@ class Panel extends Mesh {
       Panel.setup();
     }
     const renderer = document.createElement('canvas');
-    renderer.width = 512;
-    renderer.height = 512;
+    renderer.width = width;
+    renderer.height = height;
     const texture = new CanvasTexture(renderer);
     texture.anisotropy = anisotropy;
     super(
@@ -61,13 +69,21 @@ class Panel extends Mesh {
 
   static setup() {
     if (!Panel.backplate) {
+      const geometry = new BoxGeometry(1, 1, 0.06);
+      geometry.faces.splice(8, 2);
+      geometry.faces.forEach((face, i) => (
+        face.color.setHex(
+          Math.floor(i / 2) === 4 ? 0x111111 : 0x222222
+        )
+      ));
+      geometry.translate(0, 0, -0.01);
       const backplate = new Mesh(
-        new PlaneBufferGeometry(1, 1),
+        (new BufferGeometry()).fromGeometry(geometry),
         new MeshBasicMaterial({
-          color: 0x111111,
+          side: DoubleSide,
+          vertexColors: VertexColors,
         })
       );
-      backplate.geometry.rotateY(Math.PI);
       Panel.backplate = backplate;
     }
 

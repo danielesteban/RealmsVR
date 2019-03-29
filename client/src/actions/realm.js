@@ -2,15 +2,10 @@ import * as types from './types';
 import API from '@/services/api';
 import Mesher from '@/services/mesher';
 
-export function create({
-  name,
-}) {
+export function create() {
   return {
     type: types.REALM_CREATE,
     payload: API.fetch({
-      body: {
-        name,
-      },
       endpoint: 'realm',
       method: 'PUT',
     }),
@@ -59,13 +54,22 @@ export function updateVoxels({
   remove,
 }) {
   return (dispatch, getState) => {
-    const { realm: { size, voxels: current } } = getState();
+    const {
+      realm: {
+        id,
+        isCreator,
+        size,
+        voxels: current,
+      },
+    } = getState();
+    // Normalize & 3D wrap voxel position
     const [x, y, z] = ['x', 'y', 'z'].map((axis) => {
       let position = Math.floor(point[axis] + (normal[axis] * 0.5 * (remove ? -1 : 1)));
       while (position < 0) position += size;
       while (position >= size) position -= size;
       return position;
     });
+    // Randomize the color just a bit
     const randomized = {
       r: Math.min(Math.max(Math.round((color.r * 0xFF) + (Math.random() * 8) - 4), 0), 255),
       g: Math.min(Math.max(Math.round((color.g * 0xFF) + (Math.random() * 8) - 4), 0), 255),
@@ -76,9 +80,21 @@ export function updateVoxels({
     ) : (
       (0x01 << 24) | (randomized.r << 16) | (randomized.g << 8) | randomized.b
     );
+    // Update the voxels data
     const voxels = new Uint32Array(current);
     voxels[z * size * size + y * size + x] = value;
+    // Request a geometry generation
     dispatch(generateGeometry({ size, voxels }));
+    if (isCreator) {
+      // Send update to server
+      const body = new FormData();
+      body.append('voxels', new Blob([voxels.buffer], { type: 'text/plain' }));
+      API.fetch({
+        body,
+        endpoint: `realm/${id}/voxels`,
+        method: 'PUT',
+      });
+    }
     return dispatch({
       type: types.REALM_UPDATE_VOXELS,
       payload: { voxels },
