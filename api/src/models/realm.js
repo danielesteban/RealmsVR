@@ -13,6 +13,11 @@ const RealmSchema = new mongoose.Schema({
   name: { type: String, required: true },
   size: { type: Number, required: true },
   screenshot: Buffer,
+  views: {
+    type: Number,
+    default: 0,
+    index: -1,
+  },
   voxels: { type: Buffer, required: true },
   createdAt: { type: Date, index: -1 },
   updatedAt: Date,

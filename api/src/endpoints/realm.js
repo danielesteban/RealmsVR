@@ -40,9 +40,14 @@ module.exports.get = [
   checkValidationResult,
   (req, res, next) => {
     Realm
-      .findOne({
-        slug: req.params.slug,
-      })
+      .findOneAndUpdate(
+        {
+          slug: req.params.slug,
+        },
+        {
+          $inc: { views: 1 },
+        }
+      )
       .select('creator name size')
       .then((realm) => {
         if (!realm) {
@@ -107,7 +112,7 @@ module.exports.list = filter => ([
         Realm
           .find(selector)
           .select('creator name screenshot slug createdAt')
-          .sort('-createdAt')
+          .sort('-views -createdAt')
           .skip(page * pageSize)
           .limit(pageSize)
           .populate('creator', 'name')
