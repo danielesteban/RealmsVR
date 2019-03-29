@@ -70,14 +70,18 @@ UserSchema.pre('save', function onSave(next) {
           .substr(0, 1)
           .toUpperCase()
       ), 50, 50);
-      canvas.toBuffer((err, buffer) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        user.photo = buffer;
-        resolve();
-      });
+      canvas.toBuffer(
+        (err, buffer) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          user.photo = buffer;
+          resolve();
+        },
+        'image/jpeg',
+        { quality: 0.85 }
+      );
     }));
   }
   if (!promises.length) {
