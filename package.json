@@ -19,8 +19,7 @@
     "test:api": "npm --prefix api test"
   },
   "pre-commit": {
-    "run": "lint",
-    "silent": true
+    "run": "lint test"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",

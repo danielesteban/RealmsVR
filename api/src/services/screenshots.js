@@ -1,18 +1,21 @@
 
 const puppeteer = require('puppeteer');
+const config = require('../config');
 
 class Screenshots {
   constructor() {
     this.queue = [];
-    puppeteer
-      .launch({
-        args: ['--no-sandbox'],
-        // headless: false,
-      })
-      .then((browser) => {
-        this.browser = browser;
-        this.processQueue();
-      });
+    if (!config.test) {
+      puppeteer
+        .launch({
+          args: ['--no-sandbox'],
+          // headless: false,
+        })
+        .then((browser) => {
+          this.browser = browser;
+          this.processQueue();
+        });
+    }
   }
 
   capture({ model, url }) {
