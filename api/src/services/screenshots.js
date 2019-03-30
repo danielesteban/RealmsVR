@@ -25,7 +25,7 @@ class Screenshots {
           ))
           .then(() => (
             page
-              .waitFor(300)
+              .waitFor(500)
           ))
           .then(() => (
             page
