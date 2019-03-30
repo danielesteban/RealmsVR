@@ -64,14 +64,17 @@ class Screenshots {
     this.isBusy = true;
     this.capture(job)
       .catch(() => {})
-      .finally(() => {
+      .finally(() => setTimeout(() => {
         this.isBusy = false;
         this.processQueue();
-      });
+      }, 1000));
   }
 
   update({ model, url }) {
     const { browser, isBusy, queue } = this;
+    if (~queue.findIndex(({ url: queued }) => (queued === url))) {
+      return;
+    }
     queue.push({ model, url });
     if (browser && !isBusy) {
       this.processQueue();
