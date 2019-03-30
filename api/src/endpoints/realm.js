@@ -40,27 +40,37 @@ module.exports.get = [
   checkValidationResult,
   (req, res, next) => {
     Realm
-      .findOneAndUpdate(
-        {
-          slug: req.params.slug,
-        },
-        {
-          $inc: { views: 1 },
-        }
-      )
+      .findOne({
+        slug: req.params.slug,
+      })
       .select('creator name size')
       .then((realm) => {
         if (!realm) {
           throw notFound();
         }
+        const isCreator = !!(
+          req.user
+          && realm.creator
+          && realm.creator.equals(req.user._id)
+        );
+        const isHeadless = !!(
+          ~(req.headers['user-agent'] || '').indexOf('Headless')
+        );
+        if (
+          !isCreator
+          && !isHeadless
+        ) {
+          Realm
+            .updateOne(
+              { _id: realm._id },
+              { $inc: { views: 1 } }
+            )
+            .catch(() => {});
+        }
         res.json({
           ...realm._doc,
           creator: undefined,
-          isCreator: !!(
-            req.user
-            && realm.creator
-            && realm.creator.equals(req.user._id)
-          ),
+          isCreator,
         });
       })
       .catch(next);
