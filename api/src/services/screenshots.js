@@ -7,7 +7,7 @@ class Screenshots {
     puppeteer
       .launch({
         args: ['--no-sandbox'],
-        headless: false,
+        // headless: false,
       })
       .then((browser) => {
         this.browser = browser;
