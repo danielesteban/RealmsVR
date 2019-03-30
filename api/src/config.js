@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const production = process.env.NODE_ENV === 'production';
+const test = process.env.NODE_ENV === 'test';
 
 const sessionSecret = process.env.SESSION_SECRET || 'superunsecuresecret';
 if (
@@ -21,9 +22,10 @@ module.exports = {
   },
   mongoURI: (
     process.env.MONGO_URI
-    || 'mongodb://localhost/realmsvr'
+    || `mongodb://localhost/realmsvr${test ? '-test' : ''}`
   ),
-  port: process.env.PORT || 8081,
+  port: process.env.PORT || (test ? 8181 : 8081),
   production,
   sessionSecret,
+  test,
 };

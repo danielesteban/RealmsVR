@@ -1,12 +1,22 @@
 matrix:
   include:
   - name: API
-    language: generic
-    services:
-    - docker
+    language: node_js
+    node_js: lts/*
+    cache:
+      yarn: true
+      directories:
+      - node_modules
     env:
     - secure: oV0tp0KO0XmKAcaD0eM66agaZxG97SglJmh71H1CZAAa57YAdI9LcJp/E60MJXdzvrqxAd5QhUj76fXdQorlQWTC3WFTcFCi9Ssd/GaalJBmpyrgjgPNp9htLUcwnella9pJCP7ZsRjG9JdmRvwdRT8iblfM2AuxMYk0djC7TqBZQRBO5CBX2n2t7VGp83RVRtwRqO21uKnXG4otqm5GxREJTUqnJSXcylmvviFGAozYdliRf6zcMCsQA/s1KlX9o/bTggoy6tsXlsZHCBPi5WUFpLETI2RDCN6b5jMnnpnrLx7u7fn1DPRJF2bgfYzlkVcbCn2OHhSIMjDtDTi+qhsP9Py+fYyGXJSXqCfehsDtNMqGwDWGU4mOCSCE4CNBuoPrO2Q2oI52/KkxX0ZpmQllAOlqq9+7AXj3B3ZVmVlg/XxnK7c/CPJf0wTfQz1R5GaAUiMTXbszs8GX3o7o4URtVG/gCESpoE1+C84dTt9gO3EP6kDgjvjUxdMBST9BDkELA6V7lsDfsgoDojO8YtCHFeH45YzW19mIFcIOENqNlOmKI/qrDMPXwdNrZoorvzI1jjKa9NCxZxFCgEGmh5PTH1S64TFo9Og1CZHtRd1jB8HmdanNZSNLcz3GCzwxE05/Gv/u6scy0se8AhzMxoTwGrdIA+FQ9KUYj6tVA9Q=
+    - secure: fuJRkX3V7XWGbCDPh7qrR0AbepMaRtwIipU7ofXpZ11rt+hOqv96NWEVVcjSbg0O+I1cHEt/+SrzgackJBbnqCjwGiIjaknFS5b0R/WGR3+wSGshDsYiLU8yM0gAQIroQIb4AVqCfp7jLxkbD0pnJ9pgmUXj7pTYun4aAD0o3wlbOmYm/GAoY8F3ke3F83+/A7+SnJDcDXY1AzewuLuI8QP3oaGvhO3aXFEzM80IIhPNY6x0DOvubmRa2CCZthmXx0S9odPGpVpsduvw7HU7oyBhIw8bHhgoYYQ8G7XHW+hBie8z3apLk1vzHSOjCseQy4iUe8qsEMuXAN8Y7d7+fEoqVL2vqqBfrI5AZejgKDNbGqPBzKn1hmz+805Pkuro+HHbcyPsUMjFb3osl2whQvmuUr1gGG02LIc8DlaKz6Tw74E8pmds2+2LxotlsPzeiLKNzUVRtZQwJH+5dwI6U2h2MPQpAlfjpMtRxExrsAdhDUEM5GinfmqOXBlFzff7uRiODPWofdnPpB4dAGwKE4vrW7XM7JLJGxIzGO75+jsHdtCq7fzX7vMgv4fE7A508Dc9/bDTte1ka52PPip3j3gCC6s/Dgl5fi+1DF8vdCakT5LxRZVnQl+BgbbqJZwnF/bTPFwOBsLUdDZVBviM/B1Nw2UAI50akG9mZx+qkdY=
+    git:
+      depth: false
+    services:
+    - docker
     script:
+    - npm --prefix api run test
+    - npm run clean
     - docker build -t danigatunes/realmsvr_api api
     deploy:
       on:

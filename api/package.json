@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --inspect=127.0.0.1:9230 src"
+    "start": "nodemon --inspect=127.0.0.1:9230 src",
+    "test": "mocha --colors --exit --slow 500"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
@@ -40,6 +41,8 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.2"
   }
 }

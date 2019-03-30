@@ -14,7 +14,9 @@
     "lint:client": "eslint --cache --ext .js,.jsx client/src",
     "start": "concurrently -k -n \"  API  ,WEBPACK\" -c \"bgGreen.white,bgBlue.white\" \"npm:start:api\" \"npm:start:client\"",
     "start:api": "npm --prefix api start",
-    "start:client": "npm --prefix client start"
+    "start:client": "npm --prefix client start",
+    "test": "npm-run-all --parallel test:*",
+    "test:api": "npm --prefix api test"
   },
   "pre-commit": {
     "run": "lint",

@@ -21,7 +21,7 @@ module.exports.setup = (api) => {
       err = boomify(err);
     }
     res.status(err.output.statusCode).end();
-    if (!config.production && err.isServer) {
+    if (!config.production && !config.test && err.isServer) {
       const record = callsiteRecord({
         forError: err,
       });

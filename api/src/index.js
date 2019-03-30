@@ -21,7 +21,7 @@ mongoose.connection.on('disconnected', () => mongoose.connect(config.mongoURI));
 mongoose.connect(config.mongoURI);
 
 // Populate db
-if (!config.production) {
+if (!config.production && !config.test) {
   mongoose.connection.once('connected', () => (
     populate()
   ));
