@@ -77,6 +77,40 @@ module.exports.get = [
   },
 ];
 
+module.exports.getScreenshot = [
+  param('id')
+    .isMongoId(),
+  checkValidationResult,
+  (req, res, next) => {
+    Realm
+      .findOne({
+        _id: req.params.id,
+        screenshot: { $exists: true },
+      })
+      .select('updatedAt')
+      .then((realm) => {
+        if (!realm) {
+          throw notFound();
+        }
+        const lastModified = realm.updatedAt.toUTCString();
+        if (req.get('if-modified-since') === lastModified) {
+          return res.status(304).end();
+        }
+        return Realm
+          .findById(realm._id)
+          .select('-_id screenshot')
+          .then(({ screenshot }) => (
+            res
+              .set('Cache-Control', 'must-revalidate')
+              .set('Content-Type', 'image/jpeg')
+              .set('Last-Modified', lastModified)
+              .send(screenshot)
+          ));
+      })
+      .catch(next);
+  },
+];
+
 module.exports.getVoxels = [
   param('id')
     .isMongoId(),
@@ -121,7 +155,7 @@ module.exports.list = filter => ([
       .then(count => (
         Realm
           .find(selector)
-          .select('creator name screenshot slug createdAt')
+          .select('creator name slug createdAt')
           .sort('-views -createdAt')
           .skip(page * pageSize)
           .limit(pageSize)
@@ -129,10 +163,7 @@ module.exports.list = filter => ([
           .then(realms => (
             res.json({
               pages: Math.ceil(count / pageSize),
-              realms: realms.map(realm => ({
-                ...realm._doc,
-                screenshot: realm.screenshot ? realm.screenshot.toString('base64') : undefined,
-              })),
+              realms,
             })
           ))
       ))

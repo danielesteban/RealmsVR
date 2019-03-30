@@ -142,6 +142,33 @@ module.exports = (api) => {
 
   /**
    * @swagger
+   * /realm/{id}/screenshot:
+   *   get:
+   *     description: Get realm screenshot
+   *     tags: [Screenshot]
+   *     security: []
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Realm id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Realm screenshot
+   *       401:
+   *         description: Invalid/expired session token
+   *       404:
+   *         description: Realm/Screenshot not found
+   */
+  api.get(
+    '/realm/:id/screenshot',
+    realm.getScreenshot
+  );
+
+  /**
+   * @swagger
    * /realm/{id}/voxels:
    *   get:
    *     description: Get realm voxels

@@ -49,10 +49,10 @@ class Pillar extends Mesh {
 class Realm extends Panel {
   constructor({
     anisotropy,
+    _id: id,
     name,
     creator,
     onPointer,
-    screenshot,
   }) {
     super({
       anisotropy,
@@ -88,9 +88,10 @@ class Realm extends Panel {
         }
       };
     }
-    if (screenshot) {
+    {
       const image = new Image();
-      image.src = `data:image/jpeg;base64,${screenshot}`;
+      image.crossOrigin = 'anonymous';
+      image.src = `${API.baseURL}realm/${id}/screenshot`;
       image.onload = () => {
         this.screenshot = image;
         if (hasLoadedFont) {
