@@ -21,7 +21,7 @@ class Screenshots {
           .setViewport({ width: 512, height: 512 })
           .then(() => (
             page
-              .goto(url)
+              .goto(url, { waitUntil: 'networkidle2' })
           ))
           .then(() => (
             page
