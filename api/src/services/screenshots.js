@@ -5,7 +5,10 @@ class Screenshots {
   constructor() {
     this.queue = [];
     puppeteer
-      .launch({ args: ['--no-sandbox'] })
+      .launch({
+        args: ['--no-sandbox'],
+        headless: false,
+      })
       .then((browser) => {
         this.browser = browser;
         this.processQueue();
@@ -18,14 +21,19 @@ class Screenshots {
       .newPage()
       .then(page => (
         page
-          .setViewport({ width: 512, height: 512 })
+          // .on('console', msg => console.log('PAGE LOG:', msg.text()))
+          .evaluateOnNewDocument('window.__SCREENSHOT__ = true')
           .then(() => (
             page
-              .goto(url, { waitUntil: 'networkidle2' })
+              .setViewport({ width: 512, height: 512 })
           ))
           .then(() => (
             page
-              .waitFor(500)
+              .goto(url)
+          ))
+          .then(() => (
+            page
+              .waitForFunction('!!window.__SCREENSHOT_READY__', { timeout: 10000 })
           ))
           .then(() => (
             page

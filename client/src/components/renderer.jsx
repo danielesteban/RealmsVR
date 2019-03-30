@@ -22,6 +22,7 @@ class Renderer extends Component {
 
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
+    this.isScreenshot = window.__SCREENSHOT__;
     this.camera = new PerspectiveCamera(80, 1, 0.1, 1024);
     this.clock = new Clock();
     this.raycaster = new Raycaster();
@@ -44,7 +45,7 @@ class Renderer extends Component {
     this.renderer = renderer;
     this.onResize();
     this.setupVR();
-    if (!__PRODUCTION__) {
+    if (!__PRODUCTION__ && !this.isScreenshot) {
       this.stats = new Stats();
       this.stats.dom.style.top = 'auto';
       this.stats.dom.style.left = 'auto';

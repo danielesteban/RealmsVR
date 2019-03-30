@@ -38,7 +38,12 @@ class Realm extends PureComponent {
   componentDidUpdate({ geometry: previousGeometry, size: previousSize }) {
     const { geometry, size } = this.props;
     const {
-      renderer: { raycaster, room, renderer: { vr } },
+      renderer: {
+        isScreenshot,
+        raycaster,
+        room,
+        renderer: { vr },
+      },
       picker,
       voxels,
     } = this;
@@ -67,6 +72,11 @@ class Realm extends PureComponent {
           room.position.y = hit.point.y;
         }
       }
+      if (isScreenshot) {
+        setImmediate(() => {
+          window.__SCREENSHOT_READY__ = true;
+        });
+      }
     }
   }
 
@@ -93,6 +103,7 @@ class Realm extends PureComponent {
       },
       renderer: {
         hands,
+        isScreenshot,
         raycaster,
         room,
       },
@@ -163,7 +174,7 @@ class Realm extends PureComponent {
 
     // Animation for non-vr browsers
     const { animation, vr } = renderer;
-    if (!vr.enabled && size && animation.time > 1) {
+    if (!isScreenshot && !vr.enabled && size) {
       const { delta, time } = animation;
       const rotation = Math.sin(time * 0.1) * 0.001;
       camera.rotateY(rotation);

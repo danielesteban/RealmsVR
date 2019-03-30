@@ -143,6 +143,7 @@ module.exports.regenerate = [
         _id: req.params.id,
         creator: req.user._id,
       })
+      .select('slug')
       .then((realm) => {
         if (!realm) {
           throw notFound();
@@ -194,7 +195,7 @@ module.exports.update = [
         _id: req.params.id,
         creator: req.user._id,
       })
-      .select('size')
+      .select('size slug')
       .then((realm) => {
         if (!realm) {
           throw notFound();

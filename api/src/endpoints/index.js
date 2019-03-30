@@ -173,7 +173,6 @@ module.exports = (api) => {
    *   put:
    *     description: Update realm voxels
    *     tags: [Voxels]
-   *     security: []
    *     parameters:
    *       - name: id
    *         in: path

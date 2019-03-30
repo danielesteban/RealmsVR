@@ -26,6 +26,7 @@ class Layout extends PureComponent {
 
   render() {
     const { renderer } = this;
+    const isScreenshot = window.__SCREENSHOT__;
     return (
       <div>
         <LoadingBar style={loadingBarStyle} />
@@ -34,7 +35,7 @@ class Layout extends PureComponent {
         </Wrapper>
         <Scenes renderer={renderer} />
         <Music />
-        <Github />
+        {!isScreenshot ? <Github /> : null}
         <Session />
       </div>
     );

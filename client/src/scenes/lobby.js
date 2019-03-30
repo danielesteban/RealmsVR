@@ -92,7 +92,10 @@ class Lobby extends PureComponent {
       fetchRealms,
       setFilter,
     } = this.props;
-    const { menu } = this;
+    const {
+      menu,
+      renderer: { isScreenshot },
+    } = this;
     const filterHasUpdated = filter !== previousFilter;
     if (
       filterHasUpdated
@@ -116,6 +119,11 @@ class Lobby extends PureComponent {
     if (realms !== previousRealms) {
       // Update realms
       menu.updateRealms(realms);
+      if (isScreenshot) {
+        setImmediate(() => {
+          window.__SCREENSHOT_READY__ = true;
+        });
+      }
     }
     if (user !== previousUser) {
       // Update Session
