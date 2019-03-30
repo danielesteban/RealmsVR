@@ -6,6 +6,11 @@
 
 > A recursive VR experience
 
+#### Live environment
+
+ * [Client](https://realmsvr.gatunes.com/)
+ * [API documentation](https://projects.gatunes.com/realmsvr/doc/) 
+
 #### Dev dependencies
 
  * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.6
@@ -16,7 +21,9 @@
 
 ```bash
 git clone https://github.com/danielesteban/RealmsVR.git
-# write your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env`
-yarn install
+cd RealmsVR
+yarn install # (or run the "Install dependencies" task in vscode)
 yarn start # (or press F5 in vscode)
 ```
+
+You'll need to write your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env` if you want to use the GoogleStrategy.
