@@ -41,6 +41,7 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
   const position = [];
   const color = [];
   const normal = [];
+  const uv = [];
   let offset = 0;
   const pushFace = (
     p1, n1,
@@ -52,9 +53,11 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
   ) => {
     const vertices = [p1, p2, p3, p4];
     const light = [ao(n1), ao(n2), ao(n3), ao(n4)];
+    const uvs = [[0, 0], [1, 0], [1, 1], [0, 1]];
     if (light[0] + light[2] < light[1] + light[3]) {
       vertices.unshift(vertices.pop());
       light.unshift(light.pop());
+      uvs.unshift(uvs.pop());
     }
     vertices.forEach(vertex => position.push(...vertex));
     light.forEach(light => color.push(
@@ -63,6 +66,7 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
       c[2] * light
     ));
     normal.push(...n, ...n, ...n, ...n);
+    uvs.forEach(coords => uv.push(...coords));
     index.push(
       offset, offset + 1, offset + 2,
       offset + 2, offset + 3, offset
@@ -178,6 +182,7 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
     position: new Float32Array(position),
     color: new Float32Array(color),
     normal: new Float32Array(normal),
+    uv: new Float32Array(uv),
   };
   context.postMessage({
     geometry,
@@ -187,6 +192,7 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
     geometry.position.buffer,
     geometry.color.buffer,
     geometry.normal.buffer,
+    geometry.uv.buffer,
   ]);
 };
 

@@ -11,11 +11,11 @@ import {
 } from 'three';
 
 class Hands extends Object3D {
-  constructor() {
+  constructor({ texture }) {
     if (
       !Hands.mesh
       || !Hands.pointerMesh
-    ) Hands.setup();
+    ) Hands.setup({ texture });
 
     super();
     const { mesh, pointerMesh } = Hands;
@@ -121,7 +121,7 @@ class Hands extends Object3D {
     raycaster.ray.origin.addScaledVector(raycaster.ray.direction, -0.175);
   }
 
-  static setup() {
+  static setup({ texture }) {
     if (!Hands.geometry) {
       const geometry = new BoxGeometry(1, 1, 1);
       geometry.scale(0.05, 0.03, 0.2);
@@ -137,6 +137,7 @@ class Hands extends Object3D {
     if (!Hands.material) {
       Hands.material = new MeshBasicMaterial({
         color: 0xffe0bd,
+        map: texture,
       });
     }
     if (!Hands.mesh) {

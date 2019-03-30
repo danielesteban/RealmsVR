@@ -16,21 +16,29 @@ import {
 } from 'three';
 
 class Voxels extends Object3D {
-  constructor({ instanced = false }) {
+  constructor({
+    instanced = false,
+    texture,
+  }) {
     super();
     if (instanced) {
       const { shader } = Voxels;
       this.geometry = new InstancedBufferGeometry();
       this.material = new ShaderMaterial({
+        defines: shader.defines,
         vertexShader: shader.vertex,
         fragmentShader: shader.fragment,
-        uniforms: shader.uniforms,
-        vertexColors: VertexColors,
+        uniforms: UniformsUtils.merge([
+          shader.uniforms,
+          { map: { value: texture } },
+        ]),
         fog: true,
+        vertexColors: VertexColors,
       });
     } else {
       this.geometry = new BufferGeometry();
       this.material = new MeshBasicMaterial({
+        map: texture,
         vertexColors: VertexColors,
       });
     }
@@ -146,6 +154,7 @@ class Voxels extends Object3D {
     position,
     color,
     normal,
+    uv,
   }) {
     const { geometry, instances } = this;
     if (geometry.attributes.position) {
@@ -165,6 +174,12 @@ class Voxels extends Object3D {
       geometry.attributes.normal.needsUpdate = true;
     } else {
       geometry.addAttribute('normal', new BufferAttribute(normal, 3));
+    }
+    if (geometry.attributes.uv) {
+      geometry.attributes.uv.setArray(uv);
+      geometry.attributes.uv.needsUpdate = true;
+    } else {
+      geometry.addAttribute('uv', new BufferAttribute(uv, 2));
     }
     if (geometry.index) {
       geometry.index.setArray(index);
@@ -201,6 +216,7 @@ Voxels.shader = {
   ),
   fragment: ShaderLib.basic.fragmentShader,
   uniforms: UniformsUtils.clone(ShaderLib.basic.uniforms),
+  defines: { USE_MAP: true },
 };
 
 export default Voxels;

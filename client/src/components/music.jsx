@@ -43,11 +43,13 @@ class Music extends PureComponent {
     super(props);
     // Shuffle tracks
     const tracks = [...Music.tracks];
-    for (let index = tracks.length - 1; index >= 0; index -= 1) {
-      const random = Math.floor(Math.random() * tracks.length);
-      const temp = tracks[index];
-      tracks[index] = tracks[random];
-      tracks[random] = temp;
+    for (let iteration = 0; iteration < ((Date.now() % 10) + 1); iteration += 1) {
+      for (let index = tracks.length - 1; index >= 0; index -= 1) {
+        const random = Math.floor(Math.random() * tracks.length);
+        const temp = tracks[index];
+        tracks[index] = tracks[random];
+        tracks[random] = temp;
+      }
     }
     // Initialize state
     this.player = document.createElement('audio');

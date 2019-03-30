@@ -11,6 +11,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import Hands from './hands';
+import Noise from './textures/noise';
 
 class Renderer extends Component {
   constructor(props) {
@@ -28,8 +29,6 @@ class Renderer extends Component {
     this.raycaster = new Raycaster();
     this.room = new Object3D();
     this.room.add(this.camera);
-    this.hands = new Hands();
-    this.room.add(this.hands);
     this.resetCamera();
     this.resetScene();
     const renderer = new WebGLRenderer({
@@ -43,6 +42,11 @@ class Renderer extends Component {
     renderer.setAnimationLoop(this.onAnimationTick);
     window.addEventListener('resize', this.onResize, false);
     this.renderer = renderer;
+    this.textures = {
+      noise: new Noise({ anisotropy: this.getMaxAnisotropy() }),
+    };
+    this.hands = new Hands({ texture: this.textures.noise });
+    this.room.add(this.hands);
     this.onResize();
     this.setupVR();
     if (!__PRODUCTION__ && !this.isScreenshot) {
