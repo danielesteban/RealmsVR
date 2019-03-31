@@ -115,6 +115,47 @@ describe('List Realms', () => {
   ));
 });
 
+describe('Update Realm fog', () => {
+  it('PUT /realm/:id/fog without a token should return a 401', () => (
+    request(api)
+      .put(`/realm/${testRealm._id}/fog`)
+      .expect(401)
+  ));
+  it('PUT /realm/:id/fog without params should return a 422', () => (
+    request(api)
+      .put(`/realm/${testRealm._id}/fog`)
+      .set('Authorization', `Bearer ${testUser.token}`)
+      .expect(422)
+  ));
+  it('PUT /realm/:id/fog with a bad id should return a 422', () => (
+    request(api)
+      .put('/realm/0/fog')
+      .set('Authorization', `Bearer ${testUser.token}`)
+      .send({
+        color: 0x00ff00,
+      })
+      .expect(422)
+  ));
+  it('PUT /realm/:id/fog with an unknown id should return a 404', () => (
+    request(api)
+      .put('/realm/000000000000000000000000/fog')
+      .set('Authorization', `Bearer ${testUser.token}`)
+      .send({
+        color: 0x00ff00,
+      })
+      .expect(404)
+  ));
+  it('PUT /realm/:id/fog should return a 200', () => (
+    request(api)
+      .put(`/realm/${testRealm._id}/fog`)
+      .set('Authorization', `Bearer ${testUser.token}`)
+      .send({
+        color: 0x00ff00,
+      })
+      .expect(200)
+  ));
+});
+
 describe('Remove Realm', () => {
   it('DELETE /realm/:id without a token should return a 401', () => (
     request(api)
