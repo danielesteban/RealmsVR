@@ -92,4 +92,10 @@ describe('Update realm voxels', () => {
       .attach('voxels', testRealm.voxels, 'voxels.txt')
       .expect(200)
   ));
+  after(() => (
+    request(api)
+      .delete(`/realm/${testRealm._id}`)
+      .set('Authorization', `Bearer ${testUser.token}`)
+      .expect(200)
+  ));
 });
