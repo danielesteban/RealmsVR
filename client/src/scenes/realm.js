@@ -50,9 +50,9 @@ class Realm extends PureComponent {
     if (size !== previousSize) {
       // Resize voxels
       room.position.set(
+        size * 0.5 + 0.5,
         size * 0.5,
-        size * 0.5,
-        size * 0.5
+        size * 0.5 + 0.5
       );
       voxels.resize(size);
       this.intersects = [
