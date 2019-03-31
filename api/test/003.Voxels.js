@@ -8,6 +8,7 @@ const testUser = api.get('testUser');
 
 describe('Get realm voxels', () => {
   before(() => (
+    // Create test realm
     request(api)
       .put('/realm')
       .set('Authorization', `Bearer ${testUser.token}`)
@@ -93,6 +94,7 @@ describe('Update realm voxels', () => {
       .expect(200)
   ));
   after(() => (
+    // Remove test realm
     request(api)
       .delete(`/realm/${testRealm._id}`)
       .set('Authorization', `Bearer ${testUser.token}`)
