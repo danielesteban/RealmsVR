@@ -3,7 +3,7 @@ import Panel from '@/components/panel';
 import Fonts from '@/services/fonts';
 
 class Picker extends Panel {
-  constructor({ anisotropy, history }) {
+  constructor({ anisotropy, history, updateFog }) {
     super({ anisotropy });
     const { renderer } = this;
     this.position.set(-0.15, 0.15, 0.075);
@@ -32,6 +32,7 @@ class Picker extends Panel {
     this.blockColor.setRGB(1, 0, 0);
     this.color.copy(this.blockColor);
     this.history = history;
+    this.updateFog = updateFog;
     Fonts
       .waitUntilLoaded('Roboto')
       .then(() => (

@@ -43,7 +43,7 @@ module.exports.get = [
       .findOne({
         slug: req.params.slug,
       })
-      .select('creator name size')
+      .select('creator fog name size')
       .then((realm) => {
         if (!realm) {
           throw notFound();
@@ -220,7 +220,36 @@ module.exports.remove = [
   },
 ];
 
-module.exports.update = [
+module.exports.updateFog = [
+  param('id')
+    .isMongoId(),
+  body('color')
+    .isInt()
+    .toInt(),
+  checkValidationResult,
+  (req, res, next) => {
+    Realm
+      .findOne({
+        _id: req.params.id,
+        creator: req.user._id,
+      })
+      .select('slug')
+      .then((realm) => {
+        if (!realm) {
+          throw notFound();
+        }
+        realm.fog = req.body.color;
+        return realm
+          .save();
+      })
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(next);
+  },
+];
+
+module.exports.updateVoxels = [
   param('id')
     .isMongoId(),
   checkValidationResult,

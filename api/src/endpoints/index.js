@@ -138,6 +138,44 @@ module.exports = (api) => {
 
   /**
    * @swagger
+   * /realm/{id}/fog:
+   *   put:
+   *     description: Update realm fog
+   *     tags: [Fog]
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Realm id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               color:
+   *                 description: Realm fog color
+   *                 type: number
+   *     responses:
+   *       200:
+   *         description: Successfully updated
+   *       401:
+   *         description: Invalid/expired session token
+   *       404:
+   *         description: Realm not found
+   */
+  api.put(
+    '/realm/:id/fog',
+    preventCache,
+    requireAuth,
+    realm.updateFog
+  );
+
+  /**
+   * @swagger
    * /realm/{id}/screenshot:
    *   get:
    *     description: Get realm screenshot
@@ -215,7 +253,7 @@ module.exports = (api) => {
    *                 format: binary
    *     responses:
    *       200:
-   *         description: Realm voxels
+   *         description: Successfully updated
    *       401:
    *         description: Invalid/expired session token
    *       404:
@@ -226,7 +264,7 @@ module.exports = (api) => {
     preventCache,
     requireAuth,
     api.get('multer').single('voxels'),
-    realm.update
+    realm.updateVoxels
   );
 
   /**

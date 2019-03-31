@@ -15,6 +15,21 @@ const geometry = (
   }
 };
 
+const fog = (
+  state = 0x020214,
+  action
+) => {
+  switch (action.type) {
+    case types.REALM_FETCH_FULFILLED:
+    case types.REALM_UPDATE_FOG:
+      return action.payload.fog;
+    case types.REALM_RESET:
+      return 0x020214;
+    default:
+      return state;
+  }
+};
+
 const id = (
   state = '',
   action
@@ -88,6 +103,7 @@ const voxels = (
 
 const realmReducer = combineReducers({
   geometry,
+  fog,
   id,
   isCreator,
   name,

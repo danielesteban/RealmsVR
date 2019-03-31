@@ -2,7 +2,12 @@ import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Vector3 } from 'three';
-import { fetch, reset, updateVoxels } from '@/actions/realm';
+import {
+  fetch,
+  reset,
+  updateFog,
+  updateVoxels,
+} from '@/actions/realm';
 import Renderer from '@/components/renderer';
 import Picker from '@/components/realm/picker';
 import Voxels from '@/components/realm/voxels';
@@ -14,12 +19,14 @@ class Realm extends PureComponent {
       history,
       renderer: { current: renderer },
       fetch,
+      updateFog,
     } = this.props;
     // Setup scene
     const scene = renderer.resetScene();
     this.picker = new Picker({
       anisotropy: renderer.getMaxAnisotropy(),
       history,
+      updateFog,
     });
     renderer.hands.children[1].add(this.picker);
     this.voxels = new Voxels({
@@ -35,18 +42,23 @@ class Realm extends PureComponent {
     fetch(slug);
   }
 
-  componentDidUpdate({ geometry: previousGeometry, size: previousSize }) {
-    const { geometry, size } = this.props;
+  componentDidUpdate({
+    geometry: previousGeometry,
+    fog: previousFog,
+    size: previousSize,
+  }) {
+    const { geometry, fog, size } = this.props;
+    const { picker, renderer, voxels } = this;
     const {
-      renderer: {
-        isScreenshot,
-        raycaster,
-        room,
-        renderer: { vr },
-      },
-      picker,
-      voxels,
-    } = this;
+      isScreenshot,
+      raycaster,
+      room,
+      renderer: { vr },
+    } = renderer;
+    if (fog !== previousFog) {
+      // Update fog
+      renderer.setFog(fog);
+    }
     if (size !== previousSize) {
       // Resize voxels
       room.position.set(
@@ -210,6 +222,7 @@ Realm.propTypes = {
     normal: PropTypes.instanceOf(Float32Array),
     uv: PropTypes.instanceOf(Float32Array),
   }).isRequired,
+  fog: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
   size: PropTypes.number.isRequired,
@@ -218,6 +231,7 @@ Realm.propTypes = {
   }).isRequired,
   fetch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  updateFog: PropTypes.func.isRequired,
   updateVoxels: PropTypes.func.isRequired,
 };
 
@@ -225,15 +239,18 @@ export default connect(
   ({
     realm: {
       geometry,
+      fog,
       size,
     },
   }) => ({
     geometry,
+    fog,
     size,
   }),
   {
     fetch,
     reset,
+    updateFog,
     updateVoxels,
   }
 )(Realm);

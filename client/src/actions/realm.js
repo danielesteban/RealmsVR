@@ -47,6 +47,29 @@ export function reset() {
   };
 }
 
+export function updateFog(color) {
+  return (dispatch, getState) => {
+    const {
+      realm: {
+        id,
+        isCreator,
+      },
+    } = getState();
+    if (isCreator) {
+      // Send update to server
+      API.fetch({
+        body: { color },
+        endpoint: `realm/${id}/fog`,
+        method: 'PUT',
+      });
+    }
+    return dispatch({
+      type: types.REALM_UPDATE_FOG,
+      payload: { fog: color },
+    });
+  };
+}
+
 export function updateVoxels({
   color,
   normal,

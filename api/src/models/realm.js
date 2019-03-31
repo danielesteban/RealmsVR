@@ -10,6 +10,7 @@ const RealmSchema = new mongoose.Schema({
     ref: 'User',
     index: true,
   },
+  fog: { type: Number, default: 0x020214 },
   name: { type: String, required: true },
   size: { type: Number, required: true },
   screenshot: Buffer,
@@ -25,7 +26,8 @@ const RealmSchema = new mongoose.Schema({
 
 RealmSchema.pre('save', function onSave(next) {
   this.needsScreeenshot = (
-    this.isModified('size')
+    this.isModified('fog')
+    || this.isModified('size')
     || this.isModified('voxels')
   );
   next();
