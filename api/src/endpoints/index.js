@@ -1,4 +1,3 @@
-const multer = require('multer');
 const nocache = require('nocache');
 const realm = require('./realm');
 const user = require('./user');
@@ -8,9 +7,6 @@ const {
 } = require('../services/passport');
 
 const preventCache = nocache();
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
 
 module.exports = (api) => {
   /**
@@ -229,7 +225,7 @@ module.exports = (api) => {
     '/realm/:id/voxels',
     preventCache,
     requireAuth,
-    upload.single('voxels'),
+    api.get('multer').single('voxels'),
     realm.update
   );
 

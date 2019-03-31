@@ -3531,6 +3531,11 @@ strip-json-comments@2.0.1, strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+superagent-binary-parser@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/superagent-binary-parser/-/superagent-binary-parser-1.0.1.tgz#e5fd0aa95960fab05d7f797757331d26afa7f79d"
+  integrity sha1-5f0KqVlg+rBdf3l3VzMdJq+n950=
+
 superagent@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.8.3.tgz#460ea0dbdb7d5b11bc4f78deba565f86a178e128"

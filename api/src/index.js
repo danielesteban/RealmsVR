@@ -5,6 +5,7 @@ const express = require('express');
 const expressWS = require('express-ws');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const multer = require('multer');
 const config = require('./config');
 const populate = require('./services/population');
 const setupEndpoints = require('./endpoints');
@@ -31,6 +32,12 @@ if (!config.production && !config.test) {
 const api = express();
 expressWS(api);
 api.set('trust proxy', 'loopback');
+api.set('multer', multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 1048576, // 1mb
+  },
+}));
 api.use(bodyParser.json({
   limit: '1mb',
 }));
