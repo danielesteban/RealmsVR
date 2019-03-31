@@ -6,6 +6,7 @@ const api = require('../src');
 
 api.set('testRealm', {
   name: 'Test Realm',
+  slug: 'test-realm',
 });
 api.set('testUser', {
   name: 'Test User',
