@@ -49,9 +49,10 @@ setupPassport();
 setupEndpoints(api);
 setupSwagger(api);
 setupErrorHandler(api);
-const server = api.listen(config.port, () => {
+const server = api.listen(config.port, config.production ? '0.0.0.0' : '127.0.0.1', () => {
   if (!config.production) {
-    console.log(colors.yellow(`Listening on: http://localhost:${config.port}/`));
+    const { address, port } = server.address();
+    console.log(colors.yellow(`Listening on: http://${address}:${port}/`));
   }
 });
 

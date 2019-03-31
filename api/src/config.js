@@ -24,7 +24,7 @@ module.exports = {
     process.env.MONGO_URI
     || `mongodb://localhost/realmsvr${test ? '-test' : ''}`
   ),
-  port: process.env.PORT || (test ? 8181 : 8081),
+  port: test ? 0 : (process.env.PORT || 8081),
   production,
   sessionSecret,
   test,
