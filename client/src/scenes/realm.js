@@ -15,8 +15,9 @@ import Voxels from '@/components/realm/voxels';
 class Realm extends PureComponent {
   componentDidMount() {
     const {
-      match: { params: { slug } },
+      fog,
       history,
+      match: { params: { slug } },
       renderer: { current: renderer },
       fetch,
       updateFog,
@@ -25,6 +26,7 @@ class Realm extends PureComponent {
     const scene = renderer.resetScene();
     this.picker = new Picker({
       anisotropy: renderer.getMaxAnisotropy(),
+      fog,
       history,
       updateFog,
     });
@@ -176,7 +178,7 @@ class Realm extends PureComponent {
         || buttons.gripDown
       ) {
         updateVoxels({
-          color: picker.color,
+          color: picker.colors.fg,
           point,
           normal,
           remove: buttons.gripDown,
@@ -210,11 +212,6 @@ class Realm extends PureComponent {
 }
 
 Realm.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   geometry: PropTypes.shape({
     index: PropTypes.instanceOf(Uint32Array),
     position: PropTypes.instanceOf(Float32Array),
@@ -225,6 +222,11 @@ Realm.propTypes = {
   fog: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      slug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   size: PropTypes.number.isRequired,
   renderer: PropTypes.shape({
     current: PropTypes.instanceOf(Renderer),

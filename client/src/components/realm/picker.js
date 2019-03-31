@@ -3,7 +3,12 @@ import Panel from '@/components/panel';
 import Fonts from '@/services/fonts';
 
 class Picker extends Panel {
-  constructor({ anisotropy, history, updateFog }) {
+  constructor({
+    anisotropy,
+    fog,
+    history,
+    updateFog,
+  }) {
     super({ anisotropy });
     const { renderer } = this;
     this.position.set(-0.15, 0.15, 0.075);
@@ -21,17 +26,36 @@ class Picker extends Panel {
       width: renderer.width * 0.1,
       height: renderer.height * 0.75,
     };
-    this.menu = {
-      x: renderer.width * 0.05,
+    this.modeButton = {
+      label: 'MODE',
+      x: renderer.width * 0.7,
       y: renderer.height * 0.85,
       width: renderer.width * 0.25,
       height: renderer.height * 0.1,
+      onPointer: () => {
+        this.setMode(
+          this.mode === 'fg' ? 'bg' : 'fg'
+        );
+        this.draw();
+      },
     };
-    this.blockColor = new Color();
-    this.color = new Color();
-    this.blockColor.setRGB(1, 0, 0);
-    this.color.copy(this.blockColor);
-    this.history = history;
+    this.buttons = [
+      {
+        label: '« REALMS',
+        x: renderer.width * 0.05,
+        y: renderer.height * 0.85,
+        width: renderer.width * 0.25,
+        height: renderer.height * 0.1,
+        onPointer: () => history.push('/'),
+      },
+      this.modeButton,
+    ];
+    this.colors = {
+      bg: (new Color()).setHex(fog),
+      fg: (new Color()).setHSL(Math.random(), 0.6, 0.8),
+      block: new Color(),
+    };
+    this.setMode('fg');
     this.updateFog = updateFog;
     Fonts
       .waitUntilLoaded('Roboto')
@@ -43,10 +67,10 @@ class Picker extends Panel {
   draw() {
     const {
       block,
-      blockColor,
-      color,
+      buttons,
+      colors,
       context: ctx,
-      menu,
+      mode,
       renderer,
       strip,
     } = this;
@@ -62,7 +86,7 @@ class Picker extends Panel {
       } = block;
       ctx.save();
       ctx.translate(x, y);
-      ctx.fillStyle = `#${blockColor.getHexString()}`;
+      ctx.fillStyle = `#${colors.block.getHexString()}`;
       ctx.fillRect(0, 0, width, height);
 
       const grdWhite = ctx.createLinearGradient(0, 0, width, 0);
@@ -101,27 +125,12 @@ class Picker extends Panel {
       ctx.restore();
     }
 
-    ctx.save();
-    ctx.translate(menu.x, menu.y);
-    ctx.fillStyle = '#222';
-    ctx.strokeStyle = '#333';
-    ctx.beginPath();
-    ctx.rect(0, 0, menu.width, menu.height);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = '#fff';
-    ctx.font = '700 24px Roboto';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('« REALMS', menu.width * 0.5, menu.height * 0.5);
-    ctx.restore();
-
     {
       ctx.save();
       const width = renderer.width * 0.25;
       const height = renderer.width * 0.1;
       ctx.translate(renderer.width * 0.375, renderer.height * 0.85);
-      ctx.fillStyle = `#${color.getHexString()}`;
+      ctx.fillStyle = `#${colors[mode].getHexString()}`;
       ctx.strokeStyle = '#333';
       ctx.beginPath();
       ctx.rect(0, 0, width, height);
@@ -129,26 +138,57 @@ class Picker extends Panel {
       ctx.stroke();
       ctx.restore();
     }
+
+    buttons.forEach(({
+      label,
+      x,
+      y,
+      width,
+      height,
+    }) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = '#222';
+      ctx.strokeStyle = '#333';
+      ctx.beginPath();
+      ctx.rect(0, 0, width, height);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.font = '700 24px Roboto';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, width * 0.5, height * 0.5);
+      ctx.restore();
+    });
+  }
+
+  setMode(mode) {
+    const { colors, modeButton } = this;
+    colors.block.copy(colors[mode]);
+    modeButton.label = mode === 'fg' ? 'FG color' : 'BG color';
+    this.mode = mode;
   }
 
   onPointer(point) {
     const {
       block,
-      blockColor,
-      color,
+      buttons,
+      colors,
       context: ctx,
-      history,
-      menu,
+      mode,
       pointer,
       strip,
+      updateFog,
     } = this;
     super.onPointer(point);
-    [block, strip, menu].forEach((object) => {
+    [block, strip, ...buttons].forEach((object) => {
       const {
         x,
         y,
         width,
         height,
+        onPointer,
       } = object;
       if (
         pointer.x < x
@@ -158,23 +198,26 @@ class Picker extends Panel {
       ) {
         return;
       }
-      if (object === menu) {
-        history.goBack();
+      if (onPointer) {
+        onPointer();
         return;
       }
       const imageData = ctx.getImageData(pointer.x, pointer.y, 1, 1).data;
       if (object === strip) {
-        blockColor.setRGB(
+        colors.block.setRGB(
           imageData[0] / 0xFF,
           imageData[1] / 0xFF,
           imageData[2] / 0xFF
         );
       }
-      color.setRGB(
+      colors[mode].setRGB(
         imageData[0] / 0xFF,
         imageData[1] / 0xFF,
         imageData[2] / 0xFF
       );
+      if (mode === 'bg') {
+        updateFog(colors[mode].getHex());
+      }
       this.draw();
     });
   }
