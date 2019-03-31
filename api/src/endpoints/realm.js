@@ -150,15 +150,16 @@ module.exports.list = filter => ([
     const { page } = req.params;
     const pageSize = 4;
     const selector = filter === 'user' ? { creator: req.user._id } : {};
+    const sorting = `${filter === 'all' ? '-views ' : ''}-createdAt`;
     Realm
       .countDocuments(selector)
       .then(count => (
         Realm
           .find(selector)
-          .select('creator name slug createdAt')
-          .sort('-views -createdAt')
+          .sort(sorting)
           .skip(page * pageSize)
           .limit(pageSize)
+          .select('creator name slug createdAt')
           .populate('creator', 'name')
           .then(realms => (
             res.json({
