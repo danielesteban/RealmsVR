@@ -11,7 +11,6 @@ import {
   WebGLRenderer,
 } from 'three';
 import Hands from './hands';
-import Noise from './textures/noise';
 
 class Renderer extends Component {
   constructor(props) {
@@ -26,11 +25,8 @@ class Renderer extends Component {
     this.isScreenshot = window.__SCREENSHOT__;
     this.camera = new PerspectiveCamera(80, 1, 0.1, 1024);
     this.clock = new Clock();
+    this.fog = new FogExp2(0, 0.0125);
     this.raycaster = new Raycaster();
-    this.room = new Object3D();
-    this.room.add(this.camera);
-    this.resetCamera();
-    this.resetScene();
     const renderer = new WebGLRenderer({
       antialias: true,
       canvas,
@@ -38,15 +34,15 @@ class Renderer extends Component {
       stencil: false,
     });
     renderer.setPixelRatio(window.devicePixelRatio || 1);
-    renderer.setClearColor(this.scene.fog.color);
     renderer.setAnimationLoop(this.onAnimationTick);
     window.addEventListener('resize', this.onResize, false);
     this.renderer = renderer;
-    this.textures = {
-      noise: new Noise({ anisotropy: this.getMaxAnisotropy() }),
-    };
-    this.hands = new Hands({ texture: this.textures.noise });
+    this.room = new Object3D();
+    this.room.add(this.camera);
+    this.hands = new Hands();
     this.room.add(this.hands);
+    this.resetCamera();
+    this.resetScene();
     this.onResize();
     this.setupVR();
     if (!__PRODUCTION__ && !this.isScreenshot) {
@@ -101,6 +97,12 @@ class Renderer extends Component {
   getMaxAnisotropy() {
     const { renderer } = this;
     return renderer.capabilities.getMaxAnisotropy();
+  }
+
+  setFog(color) {
+    const { fog, renderer } = this;
+    fog.color.setHex(color);
+    renderer.setClearColor(fog.color);
   }
 
   setupVR() {
@@ -163,10 +165,10 @@ class Renderer extends Component {
       });
     }
     this.room.position.set(0, 0, 0);
+    this.setFog(0x020214);
     this.scene = new Scene();
     this.scene.add(this.room);
-    this.scene.fog = new FogExp2(0, 0.0125);
-    this.scene.fog.color.setRGB(0.01, 0.01, 0.08);
+    this.scene.fog = this.fog;
     return this.scene;
   }
 

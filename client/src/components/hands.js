@@ -9,13 +9,14 @@ import {
   Object3D,
   Vector3,
 } from 'three';
+import Noise from '@/textures/noise';
 
 class Hands extends Object3D {
-  constructor({ texture }) {
+  constructor() {
     if (
       !Hands.mesh
       || !Hands.pointerMesh
-    ) Hands.setup({ texture });
+    ) Hands.setup();
 
     super();
     const { mesh, pointerMesh } = Hands;
@@ -121,7 +122,7 @@ class Hands extends Object3D {
     raycaster.ray.origin.addScaledVector(raycaster.ray.direction, -0.175);
   }
 
-  static setup({ texture }) {
+  static setup() {
     if (!Hands.geometry) {
       const geometry = new BoxGeometry(1, 1, 1);
       geometry.scale(0.05, 0.03, 0.2);
@@ -137,7 +138,7 @@ class Hands extends Object3D {
     if (!Hands.material) {
       Hands.material = new MeshBasicMaterial({
         color: 0xffe0bd,
-        map: texture,
+        map: Noise,
       });
     }
     if (!Hands.mesh) {

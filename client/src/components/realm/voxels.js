@@ -14,12 +14,10 @@ import {
   VertexColors,
   Vector3,
 } from 'three';
+import Noise from '@/textures/noise';
 
 class Voxels extends Object3D {
-  constructor({
-    instanced = false,
-    texture,
-  }) {
+  constructor({ instanced = false }) {
     super();
     if (instanced) {
       const { shader } = Voxels;
@@ -30,7 +28,7 @@ class Voxels extends Object3D {
         fragmentShader: shader.fragment,
         uniforms: UniformsUtils.merge([
           shader.uniforms,
-          { map: { value: texture } },
+          { map: { value: Noise } },
         ]),
         fog: true,
         vertexColors: VertexColors,
@@ -38,7 +36,7 @@ class Voxels extends Object3D {
     } else {
       this.geometry = new BufferGeometry();
       this.material = new MeshBasicMaterial({
-        map: texture,
+        map: Noise,
         vertexColors: VertexColors,
       });
     }

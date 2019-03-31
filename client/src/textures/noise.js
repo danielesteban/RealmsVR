@@ -28,4 +28,4 @@ class Noise extends CanvasTexture {
   }
 }
 
-export default Noise;
+export default new Noise();
