@@ -33,4 +33,4 @@ yarn install # (or run the "Install dependencies" task in vscode)
 yarn start # (or press F5 in vscode)
 ```
 
-> You'll need to write your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env` if you want to sign-in using the GoogleStrategy.
+> You'll need to write your own `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env` if you want to sign-in using the GoogleStrategy.
