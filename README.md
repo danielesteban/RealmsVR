@@ -2,15 +2,9 @@
 [![Build Status](https://travis-ci.org/danielesteban/RealmsVR.svg?branch=master)](https://travis-ci.org/danielesteban/RealmsVR)
 ===
 
-[![screenshot](client/src/screenshot.jpg)](https://realmsvr.gatunes.com/)
-
 > A recursive VR experience
 
-#### Live environment
-
- * [Client](https://realmsvr.gatunes.com/)
- * [API docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
- * [API documentation](https://projects.gatunes.com/realmsvr/doc/)
+[![screenshot](client/src/screenshot.jpg)](https://realmsvr.gatunes.com/)
 
 #### API dependencies
  * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api)
@@ -19,6 +13,12 @@
 #### Client dependencies
  * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client)
  * [![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client&type=dev)
+
+#### Live environment
+
+ * [Client](https://realmsvr.gatunes.com/)
+ * [API docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
+ * [API documentation](https://projects.gatunes.com/realmsvr/doc/)
 
 #### Dev environment
 
@@ -33,4 +33,4 @@ yarn install # (or run the "Install dependencies" task in vscode)
 yarn start # (or press F5 in vscode)
 ```
 
-You'll need to write your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env` if you want to sign-in using the GoogleStrategy.
+> You'll need to write your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` into `api/.env` if you want to sign-in using the GoogleStrategy.
