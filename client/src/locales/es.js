@@ -1,6 +1,6 @@
 export default {
   Realm: {
-    edit: 'Editar',
+    editMetadata: 'Editar metadatos',
     name: 'Nombre',
     save: 'Guardar',
   },
