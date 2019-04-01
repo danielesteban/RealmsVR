@@ -9,15 +9,21 @@
 #### Live environment
 
  * [Client](https://realmsvr.gatunes.com/)
- * [API documentation](https://projects.gatunes.com/realmsvr/doc/) 
+ * [API documentation](https://projects.gatunes.com/realmsvr/doc/)
 
-#### Dev dependencies
+#### API dependencies
+ * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api)
+ * [![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api&type=dev)
 
- * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.6
- * [Node.js](https://nodejs.org/en/download/) >= 10.15.3 LTS
- * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.15.2 Stable
+#### Client dependencies
+ * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client)
+ * [![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client&type=dev)
 
 #### Dev environment
+
+ * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.8
+ * [Node.js](https://nodejs.org/en/download/) >= 10.15.3 LTS
+ * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.15.2 Stable
 
 ```bash
 git clone https://github.com/danielesteban/RealmsVR.git
