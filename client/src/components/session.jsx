@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import {
   TiKey,
   TiSocialGooglePlusCircular,
-  TiTimes,
 } from 'react-icons/ti';
 import { connect } from 'react-redux';
 import { Translate } from 'react-redux-i18n';
 import styled from 'styled-components';
+import Popup from '@/components/popup';
 import {
   hideSessionPopup as hide,
   login,
@@ -15,65 +15,43 @@ import {
   register,
 } from '@/actions/user';
 
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, .5);
-`;
-
-const Popup = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 512px;
-  background: #444;
-  box-shadow: 0 0 32px rgba(0, 0, 0, .5);
-`;
-
-const Heading = styled.div`
-  background: #111;
+const Tabs = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 56px;
-  .tabs {
-    display: flex;
-    height: 100%;
-    > a {
-      display: flex;
-      align-items: center;
-      background: #222;
-      padding: 0 1rem;
-      border-left: 1px solid #333;
-      cursor: pointer;
-      &:first-child {
-        border-left: none;
-      }
-      &.active {
-        background: #444;
-        cursor: default;
-      }
-    }
-  }
+  height: 100%;
   > a {
-    padding: 1rem;
-    > svg {
-      font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    background: #222;
+    padding: 0 1rem;
+    border-left: 1px solid #333;
+    cursor: pointer;
+    &:first-child {
+      border-left: none;
+    }
+    &.active {
+      background: #444;
+      cursor: default;
     }
   }
 `;
 
 const Content = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 0;
+  .google {
+    display: flex;
+    justify-content: center;
+  }
+  .or {
+    position: relative;
+    width: 100%;
+    border-top: 1px solid #222;
+    margin: 2rem 0;
+    > span {
+      position: absolute;
+      display: block;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
   button {
     display: flex;
     align-items: center;
@@ -91,22 +69,6 @@ const Content = styled.div`
       font-size: 1.5em;
       margin-right: 0.5rem;
     }
-  }
-  .or {
-    position: relative;
-    width: 100%;
-    border-top: 1px solid #222;
-    margin: 2rem 0;
-    > span {
-      position: absolute;
-      display: block;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-  .google {
-    display: flex;
-    justify-content: center;
   }
 `;
 
@@ -144,6 +106,13 @@ class Session extends PureComponent {
     this.state = { tab: 'login' };
   }
 
+  componentWillReceiveProps({ isSigningIn }) {
+    const { isSigningIn: wasSigningIn } = this.props;
+    if (isSigningIn && !wasSigningIn) {
+      this.setState({ tab: 'login' });
+    }
+  }
+
   onLoginSubmit(e) {
     e.preventDefault();
     const { target: form } = e;
@@ -178,80 +147,77 @@ class Session extends PureComponent {
     if (!isSigningIn) {
       return null;
     }
+    const tabs = (
+      <Tabs>
+        <a
+          className={tab === 'login' ? 'active' : null}
+          onClick={() => this.setState({ tab: 'login' })}
+        >
+          <Translate value="User.signIn" />
+        </a>
+        <a
+          className={tab === 'register' ? 'active' : null}
+          onClick={() => this.setState({ tab: 'register' })}
+        >
+          <Translate value="User.register" />
+        </a>
+      </Tabs>
+    );
     return (
-      <Wrapper>
-        <Popup>
-          <Heading>
-            <div className="tabs">
-              <a
-                className={tab === 'login' ? 'active' : null}
-                onClick={() => this.setState({ tab: 'login' })}
-              >
-                <Translate value="User.signIn" />
-              </a>
-              <a
-                className={tab === 'register' ? 'active' : null}
-                onClick={() => this.setState({ tab: 'register' })}
-              >
-                <Translate value="User.register" />
-              </a>
-            </div>
-            <a
-              onClick={hide}
+      <Popup
+        heading={tabs}
+        isShowing={isSigningIn}
+        hide={hide}
+      >
+        <Content>
+          <Form
+            className={tab === 'login' ? 'active' : null}
+            onSubmit={this.onLoginSubmit}
+          >
+            <label><Translate value="User.email" /></label>
+            <input type="email" name="email" required />
+            <label><Translate value="User.password" /></label>
+            <input type="password" name="password" required />
+            <button
+              type="submit"
             >
-              <TiTimes />
-            </a>
-          </Heading>
-          <Content>
-            <Form
-              className={tab === 'login' ? 'active' : null}
-              onSubmit={this.onLoginSubmit}
+              <TiKey />
+              <Translate value="User.signIn" />
+            </button>
+          </Form>
+          <Form
+            className={tab === 'register' ? 'active' : null}
+            onSubmit={this.onRegisterSubmit}
+          >
+            <label><Translate value="User.name" /></label>
+            <input type="text" name="name" required />
+            <label><Translate value="User.email" /></label>
+            <input type="email" name="email" required />
+            <label><Translate value="User.password" /></label>
+            <input type="password" name="password" required />
+            <label><Translate value="User.confirmPassword" /></label>
+            <input type="password" name="confirmPassword" required />
+            <button
+              type="submit"
             >
-              <label><Translate value="User.email" /></label>
-              <input type="email" name="email" required />
-              <label><Translate value="User.password" /></label>
-              <input type="password" name="password" required />
-              <button
-                type="submit"
-              >
-                <TiKey />
-                <Translate value="User.signIn" />
-              </button>
-            </Form>
-            <Form
-              className={tab === 'register' ? 'active' : null}
-              onSubmit={this.onRegisterSubmit}
+              <TiKey />
+              <Translate value="User.register" />
+            </button>
+          </Form>
+          <div className="or">
+            <Translate value="User.or" />
+          </div>
+          <div className="google">
+            <button
+              onClick={loginWithGoogle}
+              type="button"
             >
-              <label><Translate value="User.name" /></label>
-              <input type="text" name="name" required />
-              <label><Translate value="User.email" /></label>
-              <input type="email" name="email" required />
-              <label><Translate value="User.password" /></label>
-              <input type="password" name="password" required />
-              <label><Translate value="User.confirmPassword" /></label>
-              <input type="password" name="confirmPassword" required />
-              <button
-                type="submit"
-              >
-                <TiKey />
-                <Translate value="User.register" />
-              </button>
-            </Form>
-            <div className="or">
-              <Translate value="User.or" />
-            </div>
-            <div className="google">
-              <button
-                onClick={loginWithGoogle}
-                type="button"
-              >
-                <TiSocialGooglePlusCircular />
-                <Translate value="User.signInWithGoogle" />
-              </button>
-            </div>
-          </Content>
-        </Popup>
-      </Wrapper>
+              <TiSocialGooglePlusCircular />
+              <Translate value="User.signInWithGoogle" />
+            </button>
+          </div>
+        </Content>
+      </Popup>
     );
   }
 }
