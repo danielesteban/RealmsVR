@@ -1,9 +1,9 @@
 FROM node:dubnium
 
 # Install puppeteer dependencies
-RUN apt-get -qq -o=Dpkg::Use-Pty=0 update && \
-    apt-get -qq -o=Dpkg::Use-Pty=0 install -y --no-install-recommends \
-    libgtk-3-0 libxtst6 libxss1 libnss3 libasound2 && \
+RUN apt-get -qq update && \
+    apt-get -qq install --no-install-recommends \
+    libgtk-3-0 libxtst6 libxss1 libnss3 libasound2 > /dev/null && \
     rm -rf /var/lib/apt/lists/*
 
 # Install forever
