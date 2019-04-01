@@ -144,9 +144,6 @@ class Session extends PureComponent {
       loginWithGoogle,
     } = this.props;
     const { tab } = this.state;
-    if (!isSigningIn) {
-      return null;
-    }
     const tabs = (
       <Tabs>
         <a
