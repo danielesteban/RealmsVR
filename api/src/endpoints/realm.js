@@ -220,25 +220,43 @@ module.exports.remove = [
   },
 ];
 
-module.exports.updateFog = [
+module.exports.updateMetadata = [
   param('id')
     .isMongoId(),
-  body('color')
+  body('fog')
+    .optional()
     .isInt()
     .toInt(),
+  body('name')
+    .optional()
+    .not().isEmpty()
+    .isLength({ min: 1, max: 25 })
+    .trim(),
   checkValidationResult,
   (req, res, next) => {
+    if (
+      req.body.fog === undefined
+      && req.body.name === undefined
+    ) {
+      throw badData();
+    }
     Realm
       .findOne({
         _id: req.params.id,
         creator: req.user._id,
       })
-      .select('slug')
+      .select('-voxels -screenshot')
       .then((realm) => {
         if (!realm) {
           throw notFound();
         }
-        realm.fog = req.body.color;
+        if (req.body.fog !== undefined) {
+          realm.fog = req.body.fog;
+        }
+        if (req.body.name !== undefined) {
+          realm.name = req.body.name;
+          delete realm.slug;
+        }
         return realm
           .save();
       })

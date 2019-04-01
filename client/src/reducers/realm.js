@@ -58,6 +58,22 @@ const isCreator = (
   }
 };
 
+const isEditingMetadata = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case types.REALM_SHOW_METADATA_POPUP:
+      return true;
+    case types.REALM_HIDE_METADATA_POPUP:
+    case types.REALM_RESET:
+    case types.REALM_UPDATE_METADATA_FULFILLED:
+      return false;
+    default:
+      return state;
+  }
+};
+
 const name = (
   state = '',
   action
@@ -106,6 +122,7 @@ const realmReducer = combineReducers({
   fog,
   id,
   isCreator,
+  isEditingMetadata,
   name,
   size,
   voxels,

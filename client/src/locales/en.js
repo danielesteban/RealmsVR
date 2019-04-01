@@ -1,4 +1,9 @@
 export default {
+  Realm: {
+    editMetadata: 'Edit metadata',
+    name: 'Name',
+    save: 'Save',
+  },
   User: {
     confirmPassword: 'Confirm password',
     email: 'Email',

@@ -43,8 +43,6 @@ RealmSchema.post('save', function onSaved() {
   }
 });
 
-RealmSchema.plugin(URLSlugs('name'));
-
 RealmSchema.statics = {
   generateVoxels({ generator, size }) {
     const voxels = new Uint32Array(size * size * size);
@@ -59,5 +57,7 @@ RealmSchema.statics = {
     return Buffer.from(voxels.buffer);
   },
 };
+
+RealmSchema.plugin(URLSlugs('name', { update: true }));
 
 module.exports = mongoose.model('Realm', RealmSchema);

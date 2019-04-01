@@ -28,6 +28,9 @@ const Heading = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 56px;
+  > span {
+    padding: 0 1.5em;
+  }
   > a {
     padding: 1rem;
     cursor: pointer;

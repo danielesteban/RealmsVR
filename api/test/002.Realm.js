@@ -115,42 +115,45 @@ describe('List Realms', () => {
   ));
 });
 
-describe('Update Realm fog', () => {
-  it('PUT /realm/:id/fog without a token should return a 401', () => (
+describe('Update Realm metadata', () => {
+  it('PUT /realm/:id/metadata without a token should return a 401', () => (
     request(api)
-      .put(`/realm/${testRealm._id}/fog`)
+      .put(`/realm/${testRealm._id}/metadata`)
       .expect(401)
   ));
-  it('PUT /realm/:id/fog without params should return a 422', () => (
+  it('PUT /realm/:id/metadata without params should return a 422', () => (
     request(api)
-      .put(`/realm/${testRealm._id}/fog`)
+      .put(`/realm/${testRealm._id}/metadata`)
       .set('Authorization', `Bearer ${testUser.token}`)
       .expect(422)
   ));
-  it('PUT /realm/:id/fog with a bad id should return a 422', () => (
+  it('PUT /realm/:id/metadata with a bad id should return a 422', () => (
     request(api)
-      .put('/realm/0/fog')
+      .put('/realm/0/metadata')
       .set('Authorization', `Bearer ${testUser.token}`)
       .send({
-        color: 0x00ff00,
+        fog: 0x00ff00,
+        name: 'Test',
       })
       .expect(422)
   ));
-  it('PUT /realm/:id/fog with an unknown id should return a 404', () => (
+  it('PUT /realm/:id/metadata with an unknown id should return a 404', () => (
     request(api)
-      .put('/realm/000000000000000000000000/fog')
+      .put('/realm/000000000000000000000000/metadata')
       .set('Authorization', `Bearer ${testUser.token}`)
       .send({
-        color: 0x00ff00,
+        fog: 0x00ff00,
+        name: 'Test',
       })
       .expect(404)
   ));
-  it('PUT /realm/:id/fog should return a 200', () => (
+  it('PUT /realm/:id/metadata should return a 200', () => (
     request(api)
-      .put(`/realm/${testRealm._id}/fog`)
+      .put(`/realm/${testRealm._id}/metadata`)
       .set('Authorization', `Bearer ${testUser.token}`)
       .send({
-        color: 0x00ff00,
+        fog: 0x00ff00,
+        name: 'Test',
       })
       .expect(200)
   ));

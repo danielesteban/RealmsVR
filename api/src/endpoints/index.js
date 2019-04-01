@@ -138,10 +138,10 @@ module.exports = (api) => {
 
   /**
    * @swagger
-   * /realm/{id}/fog:
+   * /realm/{id}/metadata:
    *   put:
-   *     description: Update realm fog
-   *     tags: [Fog]
+   *     description: Update realm metadata
+   *     tags: [Metadata]
    *     parameters:
    *       - name: id
    *         in: path
@@ -156,8 +156,11 @@ module.exports = (api) => {
    *           schema:
    *             type: object
    *             properties:
-   *               color:
+   *               fog:
    *                 description: Realm fog color
+   *                 type: number
+   *               name:
+   *                 description: Realm name
    *                 type: number
    *     responses:
    *       200:
@@ -168,10 +171,10 @@ module.exports = (api) => {
    *         description: Realm not found
    */
   api.put(
-    '/realm/:id/fog',
+    '/realm/:id/metadata',
     preventCache,
     requireAuth,
-    realm.updateFog
+    realm.updateMetadata
   );
 
   /**

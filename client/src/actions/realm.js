@@ -41,13 +41,25 @@ export function fetch(slug) {
   });
 }
 
+export function hideMetadataPopup() {
+  return {
+    type: types.REALM_HIDE_METADATA_POPUP,
+  };
+}
+
 export function reset() {
   return {
     type: types.REALM_RESET,
   };
 }
 
-export function updateFog(color) {
+export function showMetadataPopup() {
+  return {
+    type: types.REALM_SHOW_METADATA_POPUP,
+  };
+}
+
+export function updateFog(fog) {
   return (dispatch, getState) => {
     const {
       realm: {
@@ -58,14 +70,28 @@ export function updateFog(color) {
     if (isCreator) {
       // Send update to server
       API.fetch({
-        body: { color },
-        endpoint: `realm/${id}/fog`,
+        body: { fog },
+        endpoint: `realm/${id}/metadata`,
         method: 'PUT',
       });
     }
     return dispatch({
       type: types.REALM_UPDATE_FOG,
-      payload: { fog: color },
+      payload: { fog },
+    });
+  };
+}
+
+export function updateMetadata({ name }) {
+  return (dispatch, getState) => {
+    const { realm: { id } } = getState();
+    return dispatch({
+      type: types.REALM_UPDATE_METADATA,
+      payload: API.fetch({
+        body: { name },
+        endpoint: `realm/${id}/metadata`,
+        method: 'PUT',
+      }),
     });
   };
 }

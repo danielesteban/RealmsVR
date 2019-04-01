@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Vector3 } from 'three';
 import {
@@ -8,9 +8,10 @@ import {
   updateFog,
   updateVoxels,
 } from '@/actions/realm';
-import Renderer from '@/components/renderer';
+import Metadata from '@/components/realm/metadata';
 import Picker from '@/components/realm/picker';
 import Voxels from '@/components/realm/voxels';
+import Renderer from '@/components/renderer';
 
 class Realm extends PureComponent {
   componentDidMount() {
@@ -207,7 +208,10 @@ class Realm extends PureComponent {
   }
 
   render() {
-    return null;
+    const { isCreator } = this.props;
+    return isCreator ? (
+      <Metadata />
+    ) : null;
   }
 }
 
@@ -222,6 +226,7 @@ Realm.propTypes = {
   fog: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
+  isCreator: PropTypes.bool.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       slug: PropTypes.string.isRequired,
@@ -242,11 +247,13 @@ export default connect(
     realm: {
       geometry,
       fog,
+      isCreator,
       size,
     },
   }) => ({
     geometry,
     fog,
+    isCreator,
     size,
   }),
   {
