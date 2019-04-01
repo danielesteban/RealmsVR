@@ -180,28 +180,10 @@ class Renderer extends Component {
   }
 }
 
-// Fix threeJS Fog
-ShaderChunk.fog_pars_vertex = ShaderChunk.fog_pars_vertex.replace(
-  'varying float fogDepth;',
-  'varying vec4 fogDepth;'
-);
+// Tweak ThreeJS Fog
 ShaderChunk.fog_vertex = ShaderChunk.fog_vertex.replace(
   'fogDepth = -mvPosition.z;',
-  'fogDepth = mvPosition;'
-);
-ShaderChunk.fog_pars_fragment = ShaderChunk.fog_pars_fragment.replace(
-  'varying float fogDepth;',
-  'varying vec4 fogDepth;'
-);
-ShaderChunk.fog_fragment = ShaderChunk.fog_fragment.replace(
-  'float fogFactor = whiteCompliment( exp2( - fogDensity * fogDensity * fogDepth * fogDepth * LOG2 ) );',
-  [
-    'float fogDist = length(fogDepth);',
-    'float fogFactor = whiteCompliment( exp2( - fogDensity * fogDensity * fogDist * fogDist * LOG2 ) );',
-  ].join('\n')
-).replace(
-  'float fogFactor = smoothstep( fogNear, fogFar, fogDepth );',
-  'float fogFactor = smoothstep( fogNear, fogFar, length(fogDepth) );'
+  'fogDepth = length(mvPosition);'
 );
 
 export default Renderer;
