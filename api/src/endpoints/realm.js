@@ -148,7 +148,7 @@ module.exports.list = filter => ([
   checkValidationResult,
   (req, res, next) => {
     const { page } = req.params;
-    const pageSize = 4;
+    const pageSize = 5;
     const selector = filter === 'user' ? { creator: req.user._id } : {};
     const sorting = `${filter === 'all' ? '-views ' : ''}-createdAt`;
     Realm
