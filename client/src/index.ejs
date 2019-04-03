@@ -15,6 +15,7 @@
     <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>">
     <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.description %>">
     <meta name="twitter:image" content="https://<%= htmlWebpackPlugin.options.domain %><%= require.context('./', true, /^\.\/.*\.jpg$/)('./screenshot.jpg') %>">
+    <link rel="icon" type="image/png" href="<%= require.context('./', true, /^\.\/.*\.png$/)('./icon.png') %>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
