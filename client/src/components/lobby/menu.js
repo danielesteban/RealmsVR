@@ -569,7 +569,9 @@ class Menu extends Object3D {
       pagination,
     } = this;
     while (children.length > 6) {
-      this.remove(children[children.length - 1]);
+      const child = children[children.length - 1];
+      if (child.dispose) child.dispose();
+      this.remove(child);
     }
     this.intersects.length = 3;
     const showCreateRealm = filter === 'user' && pagination.page === 0;
