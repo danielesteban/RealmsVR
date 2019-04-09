@@ -103,7 +103,7 @@ class Realm extends PureComponent {
     delete scene.onBeforeRender;
     reset();
     if (!renderer.renderer.vr.enabled) {
-      renderer.resetCamera();
+      renderer.camera.reset();
     }
   }
 
@@ -189,7 +189,7 @@ class Realm extends PureComponent {
 
     // Animation for non-vr browsers
     const { animation, vr } = renderer;
-    if (!isScreenshot && !vr.enabled && size) {
+    if (!isScreenshot && !vr.enabled && !camera.isLocked && size) {
       const { delta, time } = animation;
       const rotation = Math.sin(time * 0.1) * 0.001;
       camera.rotateY(rotation);

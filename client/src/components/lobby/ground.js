@@ -23,7 +23,7 @@ class Ground extends Mesh {
 
   static setup() {
     if (!Ground.geometry) {
-      const size = 224;
+      const size = 256;
       const geometry = new PlaneGeometry(size, size, size, size);
       geometry.rotateX(Math.PI * -0.5);
       const origin = new Vector3();

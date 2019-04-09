@@ -61,13 +61,10 @@ class Lobby extends PureComponent {
     scene.onBeforeRender = this.onBeforeRender.bind(this);
     // Input for non-vr browsers
     if (!renderer.renderer.vr.enabled) {
-      this.touches = Touches(
-        window,
-        {
-          filtered: true,
-          target: renderer.canvas.current,
-        }
-      )
+      this.touches = Touches(window, {
+        filtered: true,
+        target: renderer.canvas.current,
+      })
         .on('start', this.onPointerDown.bind(this));
     }
     if (!hasLoaded) {

@@ -4,12 +4,12 @@ import {
   Clock,
   FogExp2,
   Object3D,
-  PerspectiveCamera,
   Raycaster,
   Scene,
   ShaderChunk,
   WebGLRenderer,
 } from 'three';
+import Camera from './camera';
 import Hands from './hands';
 
 class Renderer extends Component {
@@ -23,7 +23,7 @@ class Renderer extends Component {
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
     this.isScreenshot = window.__SCREENSHOT__;
-    this.camera = new PerspectiveCamera(80, 1, 0.1, 1024);
+    this.camera = new Camera(80, 1, 0.1, 1024);
     this.clock = new Clock();
     this.fog = new FogExp2(0, 0.0125);
     this.raycaster = new Raycaster();
@@ -41,7 +41,6 @@ class Renderer extends Component {
     this.room.add(this.camera);
     this.hands = new Hands();
     this.room.add(this.hands);
-    this.resetCamera();
     this.resetScene();
     this.onResize();
     this.setupVR();
@@ -150,12 +149,6 @@ class Renderer extends Component {
       enterVR();
     }
     hands.standingMatrix = renderer.vr.getStandingMatrix();
-  }
-
-  resetCamera() {
-    const { camera } = this;
-    camera.position.set(0, 1.25, 0);
-    camera.rotation.set(0, 0, 0);
   }
 
   resetScene() {

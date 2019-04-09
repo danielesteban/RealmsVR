@@ -22,7 +22,7 @@
     "helmet": "^3.16.0",
     "hsv-rgb": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.5.0",
     "mongoose-url-slugs": "^1.0.2",
     "multer": "^1.4.1",
     "namor": "^1.1.2",
@@ -41,8 +41,8 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "mocha": "^6.0.2",
-    "nodemon": "^1.18.10",
+    "mocha": "^6.1.2",
+    "nodemon": "^1.18.11",
     "superagent-binary-parser": "^1.0.1",
     "supertest": "^4.0.2"
   }
