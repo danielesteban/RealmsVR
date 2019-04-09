@@ -30,7 +30,7 @@ class Ground extends Mesh {
       geometry.vertices.forEach((vertex) => {
         const distance = Math.floor(vertex.distanceTo(origin)) / 4;
         const height = Math.floor(distance * distance / 3) / 6;
-        vertex.y = height * (Math.random() * 0.4 + 0.6);
+        vertex.y = height * (Math.random() * 0.4 + 0.6) + Math.max(distance * -0.75, -3);
       });
       geometry.faces.forEach((face, i) => {
         if (i % 2 === 1) {
