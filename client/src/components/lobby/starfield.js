@@ -21,6 +21,10 @@ class Starfield extends Points {
     );
   }
 
+  onBeforeRender({ animation: { time } }) {
+    this.rotation.x = Math.sin(time * 0.01) * 1 / 3;
+  }
+
   static setup() {
     if (!Starfield.geometry) {
       const count = 2048;
