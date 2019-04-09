@@ -102,9 +102,6 @@ class Realm extends PureComponent {
     picker.dispose();
     delete scene.onBeforeRender;
     reset();
-    if (!renderer.renderer.vr.enabled) {
-      renderer.camera.reset();
-    }
   }
 
   onBeforeRender(renderer, scene, camera) {

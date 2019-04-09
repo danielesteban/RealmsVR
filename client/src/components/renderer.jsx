@@ -158,6 +158,7 @@ class Renderer extends Component {
       });
     }
     this.room.position.set(0, 0, 0);
+    this.camera.reset();
     this.setFog(0x020214);
     this.scene = new Scene();
     this.scene.add(this.room);
