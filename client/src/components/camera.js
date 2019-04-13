@@ -7,7 +7,7 @@ import {
 
 class Camera extends PerspectiveCamera {
   constructor({ canvas }) {
-    super(80, 1, 0.1, 1024);
+    super(70, 1, 0.1, 1024);
     this.canvas = canvas;
     this.rotation.order = 'YXZ';
     this.aux = {
