@@ -25,6 +25,7 @@ class Realm extends PureComponent {
     } = this.props;
     // Setup scene
     const scene = renderer.resetScene();
+    renderer.camera.canLock = !renderer.renderer.vr.enabled;
     this.picker = new Picker({
       anisotropy: renderer.getMaxAnisotropy(),
       fog,
@@ -185,14 +186,15 @@ class Realm extends PureComponent {
     });
 
     // Animation for non-vr browsers
-    const { animation, vr } = renderer;
-    if (!isScreenshot && !vr.enabled && !camera.isLocked && size) {
-      const { delta, time } = animation;
-      const rotation = Math.sin(time * 0.1) * 0.001;
-      camera.rotateY(rotation);
-      camera.rotateX(rotation);
-      camera.translateZ(delta * 0.5);
-      camera.updateMatrixWorld();
+    if (!isScreenshot && size && camera.canLock) {
+      if (!camera.isLocked) {
+        const { animation: { delta, time } } = renderer;
+        const rotation = Math.sin(time * 0.1) * 0.001;
+        camera.rotateY(rotation);
+        camera.rotateX(-rotation);
+        camera.translateZ(delta * 0.5);
+        camera.updateMatrixWorld();
+      }
       ['x', 'y', 'z'].forEach((axis) => {
         if (camera.position[axis] < 0) {
           camera.position[axis] += size;

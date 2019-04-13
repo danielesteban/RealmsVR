@@ -72,6 +72,7 @@ class Renderer extends Component {
       delta: clock.getDelta(),
       time: clock.oldTime / 1000,
     };
+    camera.onAnimationTick(renderer.animation);
     hands.update();
     renderer.render(scene, camera);
     if (stats) stats.end();
