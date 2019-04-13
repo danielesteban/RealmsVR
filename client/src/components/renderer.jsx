@@ -23,7 +23,7 @@ class Renderer extends Component {
   componentDidMount() {
     const { canvas: { current: canvas } } = this;
     this.isScreenshot = window.__SCREENSHOT__;
-    this.camera = new Camera(80, 1, 0.1, 1024);
+    this.camera = new Camera({ canvas });
     this.clock = new Clock();
     this.fog = new FogExp2(0, 0.0125);
     this.raycaster = new Raycaster();

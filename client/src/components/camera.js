@@ -6,9 +6,10 @@ import {
 } from 'three';
 
 class Camera extends PerspectiveCamera {
-  constructor(fov, aspect, near, far) {
-    super(fov, aspect, near, far);
-    this.reset();
+  constructor({ canvas }) {
+    super(80, 1, 0.1, 1024);
+    this.canvas = canvas;
+    this.rotation.order = 'YXZ';
     this.aux = {
       direction: new Vector3(),
       forward: new Vector3(),
@@ -19,9 +20,9 @@ class Camera extends PerspectiveCamera {
       keyboard: new Vector2(0, 0),
       pointer: new Vector2(0, 0),
     };
-    this.rotation.order = 'YXZ';
     this.onKeyboardDown = this.onKeyboardDown.bind(this);
     this.onKeyboardUp = this.onKeyboardUp.bind(this);
+    this.reset();
   }
 
   get canLock() {
@@ -30,7 +31,7 @@ class Camera extends PerspectiveCamera {
 
   set canLock(value) {
     if (value && !this.pointerlock && pointerlock.available()) {
-      this.pointerlock = pointerlock(document.body);
+      this.pointerlock = pointerlock(this.canvas);
       this.pointerlock.on('attain', this.onPointerLockAttain.bind(this));
     }
     if (!value && this.pointerlock) {

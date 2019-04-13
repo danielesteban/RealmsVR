@@ -1,4 +1,9 @@
 import React, { PureComponent } from 'react';
+import {
+  TiMediaFastForward,
+  TiMediaPause,
+  TiMediaPlay,
+} from 'react-icons/ti';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -7,6 +12,7 @@ const Wrapper = styled.div`
   left: 0;
   display: flex;
   align-items: flex-end;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .4);
   > a > img {
     width: 100px;
     height: 100px;
@@ -16,15 +22,21 @@ const Wrapper = styled.div`
     vertical-align: middle;
   }
   > div {
+    box-sizing: border-box;
+    width: 250px;
+    height: 100px;
     background: rgba(0, 0, 0, .5);
-    font-size: 1.4em;
-    line-height: 1.5em;
     padding: 0.5rem 1rem;
     border-radius: 0 4px 0 0;
     > a {
       display: block;
       text-decoration: none;
       outline: none;
+      font-size: 1.25em;
+      line-height: 1.5em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       &:hover {
         text-decoration: underline;
       }
@@ -38,9 +50,44 @@ const Wrapper = styled.div`
   }
 `;
 
+const Progress = styled.div`
+  height: 3px;
+  margin: 0.5rem 0;
+  background-color: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  > div {
+    height: 100%;
+    background-color: #393;
+  }
+`;
+
+const Controls = styled.div`
+  display: flex;
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border: 1px solid #111;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0.25rem 0;
+    width: 2.5rem;
+    border-radius: 2px;
+    margin-right: 0.125rem;
+    cursor: pointer;
+    outline: none;
+  }
+`;
+
 class Music extends PureComponent {
   constructor(props) {
     super(props);
+    this.next = this.next.bind(this);
+    this.toggle = this.toggle.bind(this);
     // Shuffle tracks
     const tracks = [...Music.tracks];
     for (let iteration = 0; iteration < ((Date.now() % 10) + 1); iteration += 1) {
@@ -53,15 +100,27 @@ class Music extends PureComponent {
     }
     // Initialize state
     this.player = document.createElement('audio');
-    this.player.onended = this.next.bind(this);
+    this.player.ontimeupdate = this.onTimeUpdate.bind(this);
+    this.player.onended = this.next;
     this.player.volume = 0.5;
-    this.state = { track: undefined };
+    this.state = {
+      isPlaying: false,
+      playhead: 0,
+      track: undefined,
+    };
     this.tracks = tracks;
     this.track = 0;
   }
 
   componentDidMount() {
     this.waitForFirstInteraction();
+  }
+
+  onTimeUpdate() {
+    const { player } = this;
+    this.setState({
+      playhead: player.currentTime / player.duration,
+    });
   }
 
   waitForFirstInteraction() {
@@ -77,14 +136,14 @@ class Music extends PureComponent {
   }
 
   next() {
-    const { player } = this;
+    const { player, tracks } = this;
     // Stop current player
     if (!player.paused) {
       player.pause();
     }
     player.src = '';
     // Loop through the track list
-    this.track = (this.track + 1) % this.tracks.length;
+    this.track = (this.track + 1) % tracks.length;
     this.play();
   }
 
@@ -109,15 +168,33 @@ class Music extends PureComponent {
         // Play the track
         player.src = `${track.stream_url}?${clientId}`;
         player.play();
-        this.setState({ track });
+        this.setState({
+          isPlaying: true,
+          playhead: 0,
+          track,
+        });
       })
       .catch(() => (
         this.next()
       ));
   }
 
+  toggle() {
+    const { player } = this;
+    if (player.paused) {
+      player.play();
+    } else {
+      player.pause();
+    }
+    this.setState({ isPlaying: !player.paused });
+  }
+
   render() {
-    const { track } = this.state;
+    const {
+      isPlaying,
+      playhead,
+      track,
+    } = this.state;
     if (!track) {
       return null;
     }
@@ -152,6 +229,23 @@ class Music extends PureComponent {
           >
             {username}
           </a>
+          <Progress>
+            <div style={{ width: `${playhead * 100}%` }} />
+          </Progress>
+          <Controls>
+            <button
+              type="button"
+              onClick={this.toggle}
+            >
+              {isPlaying ? <TiMediaPause /> : <TiMediaPlay />}
+            </button>
+            <button
+              type="button"
+              onClick={this.next}
+            >
+              <TiMediaFastForward />
+            </button>
+          </Controls>
         </div>
       </Wrapper>
     );
