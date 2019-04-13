@@ -216,6 +216,11 @@ class Music extends PureComponent {
       user: { username, permalink_url: userlink },
       waveform_url: waveform,
     } = track;
+    let trackTitle = title;
+    const userOnTitle = `${username} - `;
+    if (trackTitle.indexOf(userOnTitle) === 0) {
+      trackTitle = trackTitle.substr(userOnTitle.length);
+    }
     return (
       <Wrapper>
         <a
@@ -231,7 +236,7 @@ class Music extends PureComponent {
             rel="noopener noreferrer"
             target="_blank"
           >
-            {title}
+            {trackTitle}
           </a>
           <a
             href={userlink}
