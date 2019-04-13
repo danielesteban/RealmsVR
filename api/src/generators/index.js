@@ -3,6 +3,7 @@ module.exports = {
   default: require('./default'),
   debug: require('./debug'),
   cave: require('./cave'),
+  columns: require('./columns'),
   csd: require('./csd'),
   hourglass: require('./hourglass'),
   sphere: require('./sphere'),

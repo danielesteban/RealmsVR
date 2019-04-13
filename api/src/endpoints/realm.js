@@ -12,7 +12,7 @@ module.exports.create = [
     .trim(),
   body('generator')
     .optional()
-    .isIn(['default', 'cave', 'csd', 'hourglass', 'sphere']),
+    .isIn(['default', 'cave', 'columns', 'csd', 'hourglass', 'sphere']),
   checkValidationResult,
   (req, res, next) => {
     const generator = req.body.generator || 'default';
@@ -177,7 +177,7 @@ module.exports.regenerate = [
     .isMongoId(),
   body('generator')
     .optional()
-    .isIn(['default', 'cave', 'csd', 'hourglass', 'sphere']),
+    .isIn(['default', 'cave', 'columns', 'csd', 'hourglass', 'sphere']),
   checkValidationResult,
   (req, res, next) => {
     Realm
