@@ -47,7 +47,7 @@
     "gh-pages": "^2.0.1",
     "ghpages-spa-webpack-plugin": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.5.0",
+    "mini-css-extract-plugin": "^0.6.0",
     "robotstxt-webpack-plugin": "^5.0.0",
     "terser-webpack-plugin": "^1.2.3",
     "webpack": "^4.30.0",
