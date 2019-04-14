@@ -189,9 +189,10 @@ class Realm extends PureComponent {
     if (!isScreenshot && size && camera.canLock) {
       if (!camera.isLocked) {
         const { animation: { delta, time } } = renderer;
-        const rotation = Math.sin(time * 0.1) * 0.001;
+        const rotation = Math.sin(time * 0.1) * 0.0005;
         camera.rotateY(rotation);
-        camera.rotateX(-rotation);
+        camera.rotateX(rotation);
+        camera.rotateZ(rotation);
         camera.translateZ(delta * 0.5);
         camera.updateMatrixWorld();
       }
