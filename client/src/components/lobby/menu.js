@@ -425,7 +425,7 @@ class Filter extends ButtonsPanel {
     this.buttons = [
       {
         id: 'popular',
-        label: 'Most popular',
+        label: 'Most Popular',
         x: width * 0.1,
         y: height * 0.1,
         width: width * 0.8,
@@ -434,7 +434,7 @@ class Filter extends ButtonsPanel {
       },
       {
         id: 'latest',
-        label: 'Latest realms',
+        label: 'Latest Realms',
         x: width * 0.1,
         y: height * 0.4,
         width: width * 0.8,
