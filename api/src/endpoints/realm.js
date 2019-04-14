@@ -151,7 +151,7 @@ module.exports.list = filter => ([
     const { page } = req.params;
     const pageSize = 5;
     const selector = filter === 'user' ? { creator: req.user._id } : {};
-    const sorting = `${filter === 'all' ? '-views ' : ''}-createdAt`;
+    const sorting = `${filter === 'popular' ? '-views ' : '-createdAt'}`;
     Realm
       .countDocuments(selector)
       .then(count => (

@@ -7,7 +7,7 @@ export function fetchRealms() {
     return dispatch({
       type: types.LOBBY_FETCH_REALMS,
       payload: API.fetch({
-        endpoint: `realms/${filter === 'user' ? 'user/' : ''}${page}`,
+        endpoint: `realms/${filter}/${page}`,
       }),
     });
   };

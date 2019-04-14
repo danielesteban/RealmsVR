@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import * as types from '@/actions/types';
 
 const filter = (
-  state = 'all',
+  state = 'popular',
   action
 ) => {
   switch (action.type) {

@@ -88,9 +88,19 @@ describe('Re-generate Realm', () => {
 });
 
 describe('List Realms', () => {
-  it('GET /realms/:page should return the realms list', () => (
+  it('GET /realms/latest/:page should return the realms list', () => (
     request(api)
-      .get('/realms/0')
+      .get('/realms/latest/0')
+      .expect(200)
+      .then(({ body: { realms } }) => {
+        assert(Array.isArray(realms));
+        assert(realms[0]._id === testRealm._id);
+        assert(realms[0].name === testRealm.name);
+      })
+  ));
+  it('GET /realms/popular/:page should return the realms list', () => (
+    request(api)
+      .get('/realms/popular/0')
       .expect(200)
       .then(({ body: { realms } }) => {
         assert(Array.isArray(realms));
@@ -105,7 +115,8 @@ describe('List Realms', () => {
   ));
   it('GET /realms/user/:page should return the user realms list', () => (
     request(api)
-      .get('/realms/0')
+      .get('/realms/user/0')
+      .set('Authorization', `Bearer ${testUser.token}`)
       .expect(200)
       .then(({ body: { realms } }) => {
         assert(Array.isArray(realms));

@@ -272,9 +272,9 @@ module.exports = (api) => {
 
   /**
    * @swagger
-   * /realms/{page}:
+   * /realms/latest/{page}:
    *   get:
-   *     description: List realms
+   *     description: List latest realms
    *     tags: [Lobby]
    *     security: []
    *     parameters:
@@ -291,9 +291,35 @@ module.exports = (api) => {
    *         description: Invalid/expired session token
    */
   api.get(
-    '/realms/:page',
+    '/realms/latest/:page',
     preventCache,
-    realm.list('all')
+    realm.list('latest')
+  );
+
+  /**
+   * @swagger
+   * /realms/popular/{page}:
+   *   get:
+   *     description: List popular realms
+   *     tags: [Lobby]
+   *     security: []
+   *     parameters:
+   *       - name: page
+   *         in: path
+   *         description: Page
+   *         required: true
+   *         schema:
+   *           type: number
+   *     responses:
+   *       200:
+   *         description: Realms list
+   *       401:
+   *         description: Invalid/expired session token
+   */
+  api.get(
+    '/realms/popular/:page',
+    preventCache,
+    realm.list('popular')
   );
 
   /**

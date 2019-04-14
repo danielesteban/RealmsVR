@@ -424,19 +424,28 @@ class Filter extends ButtonsPanel {
     const { width, height } = this.renderer;
     this.buttons = [
       {
-        id: 'all',
-        label: 'All Realms',
+        id: 'popular',
+        label: 'Most popular',
         x: width * 0.1,
-        y: height * 0.2,
+        y: height * 0.1,
         width: width * 0.8,
         height: height * 0.2,
-        onPointer: () => update('all'),
+        onPointer: () => update('popular'),
+      },
+      {
+        id: 'latest',
+        label: 'Latest realms',
+        x: width * 0.1,
+        y: height * 0.4,
+        width: width * 0.8,
+        height: height * 0.2,
+        onPointer: () => update('latest'),
       },
       {
         id: 'user',
         label: 'Your Realms',
         x: width * 0.1,
-        y: height * 0.6,
+        y: height * 0.7,
         width: width * 0.8,
         height: height * 0.2,
         isDisabled: !isAuth,
@@ -448,7 +457,10 @@ class Filter extends ButtonsPanel {
   }
 
   updateSession({ isAuth }) {
-    this.buttons[1].isDisabled = !isAuth;
+    const { buttons } = this;
+    buttons[
+      buttons.findIndex(({ id }) => (id === 'user'))
+    ].isDisabled = !isAuth;
   }
 
   draw() {

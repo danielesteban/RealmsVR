@@ -126,7 +126,7 @@ class Lobby extends PureComponent {
       // Update Session
       menu.updateSession({ user });
       if (!user && filter === 'user') {
-        setFilter('all');
+        setFilter('popular');
       }
     }
   }
