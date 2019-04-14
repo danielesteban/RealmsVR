@@ -1,6 +1,7 @@
 const { badData, notFound } = require('boom');
 const { body, param } = require('express-validator/check');
 const namor = require('namor');
+const generators = Object.keys(require('../generators'));
 const { Realm } = require('../models');
 const { checkValidationResult } = require('../services/errorHandler');
 
@@ -12,7 +13,7 @@ module.exports.create = [
     .trim(),
   body('generator')
     .optional()
-    .isIn(['default', 'cave', 'columns', 'csd', 'hourglass', 'sphere']),
+    .isIn(generators),
   checkValidationResult,
   (req, res, next) => {
     const generator = req.body.generator || 'default';
@@ -177,7 +178,7 @@ module.exports.regenerate = [
     .isMongoId(),
   body('generator')
     .optional()
-    .isIn(['default', 'cave', 'columns', 'csd', 'hourglass', 'sphere']),
+    .isIn(generators),
   checkValidationResult,
   (req, res, next) => {
     Realm

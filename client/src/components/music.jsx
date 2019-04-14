@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   }
   > div {
     box-sizing: border-box;
-    width: 250px;
+    width: 220px;
     height: 100px;
     background: rgba(0, 0, 0, .5);
     padding: 0.5rem 1rem;
@@ -64,6 +64,7 @@ const Progress = styled.div`
 
 const Controls = styled.div`
   display: flex;
+  align-items: center;
   > button {
     display: flex;
     align-items: center;
@@ -80,6 +81,9 @@ const Controls = styled.div`
     margin-right: 0.125rem;
     cursor: pointer;
     outline: none;
+  }
+  > span {
+    margin-left: auto;
   }
 `;
 
@@ -117,6 +121,7 @@ class Music extends PureComponent {
     this.state = {
       isPlaying: false,
       playhead: 0,
+      time: '0:00',
       track: undefined,
     };
     this.track = 0;
@@ -129,8 +134,11 @@ class Music extends PureComponent {
 
   onTimeUpdate() {
     const { player } = this;
+    const min = Math.floor(player.currentTime / 60);
+    const sec = Math.floor(player.currentTime % 60);
     this.setState({
       playhead: player.currentTime / player.duration,
+      time: `${min}:${sec < 10 ? '0' : ''}${sec}`,
     });
   }
 
@@ -178,12 +186,18 @@ class Music extends PureComponent {
         return res.json();
       })
       .then((track) => {
+        // Cleanup track title
+        const userOnTitle = `${track.user.username} - `;
+        if (track.title.indexOf(userOnTitle) === 0) {
+          track.title = track.title.substr(userOnTitle.length);
+        }
         // Play the track
         player.src = `${track.stream_url}?${clientId}`;
         player.play();
         this.setState({
           isPlaying: true,
           playhead: 0,
+          time: '0:00',
           track,
         });
       })
@@ -206,6 +220,7 @@ class Music extends PureComponent {
     const {
       isPlaying,
       playhead,
+      time,
       track,
     } = this.state;
     if (!track) {
@@ -218,11 +233,6 @@ class Music extends PureComponent {
       user: { username, permalink_url: userlink },
       waveform_url: waveform,
     } = track;
-    let trackTitle = title;
-    const userOnTitle = `${username} - `;
-    if (trackTitle.indexOf(userOnTitle) === 0) {
-      trackTitle = trackTitle.substr(userOnTitle.length);
-    }
     return (
       <Wrapper>
         <a
@@ -238,7 +248,7 @@ class Music extends PureComponent {
             rel="noopener noreferrer"
             target="_blank"
           >
-            {trackTitle}
+            {title}
           </a>
           <a
             href={userlink}
@@ -263,6 +273,9 @@ class Music extends PureComponent {
             >
               <TiMediaFastForward />
             </button>
+            <span>
+              { time }
+            </span>
           </Controls>
         </div>
       </Wrapper>

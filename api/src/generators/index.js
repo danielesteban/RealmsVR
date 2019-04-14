@@ -1,10 +1,12 @@
 /* eslint-disable global-require */
 module.exports = {
-  default: require('./default'),
-  debug: require('./debug'),
+  box: require('./box'),
   cave: require('./cave'),
   columns: require('./columns'),
   csd: require('./csd'),
+  debug: require('./debug'),
+  default: require('./default'),
+  holes: require('./holes'),
   hourglass: require('./hourglass'),
   sphere: require('./sphere'),
 };

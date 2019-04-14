@@ -1,4 +1,5 @@
 const colors = require('colors/safe');
+const generators = Object.keys(require('../generators'));
 const { Realm } = require('../models');
 
 module.exports = () => (
@@ -10,15 +11,7 @@ module.exports = () => (
           return false;
         }
         console.log(colors.blue('Populating default Realms...'));
-        return Promise.all([
-          'default',
-          // 'debug',
-          'cave',
-          'columns',
-          'csd',
-          'hourglass',
-          'sphere',
-        ].map((generator) => {
+        return Promise.all(generators.map((generator) => {
           const size = 24;
           const realm = new Realm({
             name: `${generator.substr(0, 1).toUpperCase()}${generator.substr(1)}`,
