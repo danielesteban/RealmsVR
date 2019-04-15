@@ -41,25 +41,30 @@ class Title extends Mesh {
   draw() {
     const { renderer, texture } = this;
     const ctx = renderer.getContext('2d');
-    const grd = ctx.createLinearGradient(0, 0, 0, renderer.height);
-    grd.addColorStop(0, 'rgba(0, 0, 0, 0.3)');
-    grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, renderer.width, renderer.height);
+    const subdivision = 8;
+    const radius = subdivision * 0.5;
+    const color = { r: 0x33, g: 0x99, b: 0x33 };
+    for (let y = 0; y < renderer.height; y += subdivision) {
+      for (let x = 0; x < renderer.width; x += subdivision) {
+        const a = (1 - (y / (renderer.height - subdivision)) + 0.1) / 3;
+        const l = Math.random() * 0.6 + 0.3;
+        ctx.fillStyle = `rgba(${Math.floor(color.r * l)}, ${Math.floor(color.g * l)}, ${Math.floor(color.b * l)}, ${a})`;
+        ctx.beginPath();
+        ctx.arc(x + radius, y + radius, radius * 0.75, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
     ctx.font = '700 200px Roboto';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#eee';
-    ctx.shadowColor = 'rgba(255, 255, 0, .5)';
-    ctx.shadowBlur = 50;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.fillText(
       'REALMS',
       renderer.width * 0.5,
-      renderer.height * 0.2
+      renderer.height * 0.21
     );
     ctx.font = '70px Roboto';
     ctx.fillStyle = '#999';
-    ctx.shadowBlur = 0;
     ctx.fillText(
       'A recursive VR experience',
       renderer.width * 0.5,
@@ -70,7 +75,7 @@ class Title extends Mesh {
     ctx.fillText(
       `v${__VERSION__} - dani@gatunes © 2019`,
       renderer.width * 0.5,
-      renderer.height * 0.8
+      renderer.height * 0.815
     );
     texture.needsUpdate = true;
   }
