@@ -118,7 +118,7 @@ class Camera extends PerspectiveCamera {
     window.removeEventListener('keydown', this.onKeyboardDown);
     window.removeEventListener('keyup', this.onKeyboardUp);
     this.isLocked = false;
-    keyboard.set(0, 0);
+    keyboard.set(0, 0, 0);
     pointer.set(0, 0);
   }
 
