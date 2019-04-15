@@ -38,8 +38,8 @@ Realm
     });
   })
   .then(() => (
-    mongoose.connection.close()
-  ))
-  .then(() => (
-    process.exit(0)
+    mongoose.connection.close(
+      false,
+      () => process.exit(0)
+    )
   ));
