@@ -36,12 +36,19 @@ RealmSchema.pre('save', function onSave(next) {
 RealmSchema.post('save', function onSaved() {
   const realm = this;
   if (realm.needsScreeenshot) {
-    Screenshots.update({
+    realm.updateScreenshot();
+  }
+});
+
+RealmSchema.methods = {
+  updateScreenshot() {
+    const realm = this;
+    return Screenshots.update({
       model: realm,
       url: `${config.clientOrigin}/${realm.slug}`,
     });
-  }
-});
+  },
+};
 
 RealmSchema.statics = {
   generateVoxels({ generator, size }) {
