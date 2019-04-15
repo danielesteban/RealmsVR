@@ -14,10 +14,11 @@ class Camera extends PerspectiveCamera {
       direction: new Vector3(),
       forward: new Vector3(),
       right: new Vector3(),
+      up: new Vector3(),
       worldUp: new Vector3(0, 1, 0),
     };
     this.input = {
-      keyboard: new Vector2(0, 0),
+      keyboard: new Vector3(0, 0, 0),
       pointer: new Vector2(0, 0),
     };
     this.onKeyboardDown = this.onKeyboardDown.bind(this);
@@ -45,17 +46,23 @@ class Camera extends PerspectiveCamera {
     const { input: { keyboard } } = this;
     if (repeat) return;
     switch (keyCode) {
-      case 87:
-        keyboard.y = 1;
-        break;
-      case 83:
-        keyboard.y = -1;
-        break;
       case 65:
         keyboard.x = -1;
         break;
       case 68:
         keyboard.x = 1;
+        break;
+      case 32:
+        keyboard.y = 1;
+        break;
+      case 16:
+        keyboard.y = -1;
+        break;
+      case 87:
+        keyboard.z = 1;
+        break;
+      case 83:
+        keyboard.z = -1;
         break;
       default:
         break;
@@ -66,13 +73,17 @@ class Camera extends PerspectiveCamera {
     const { input: { keyboard } } = this;
     if (repeat) return;
     switch (keyCode) {
-      case 87:
-      case 83:
-        keyboard.y = 0;
-        break;
       case 65:
       case 68:
         keyboard.x = 0;
+        break;
+      case 32:
+      case 16:
+        keyboard.y = 0;
+        break;
+      case 87:
+      case 83:
+        keyboard.z = 0;
         break;
       default:
         break;
@@ -120,19 +131,22 @@ class Camera extends PerspectiveCamera {
       rotation.x = Math.max(-PI_2, Math.min(PI_2, rotation.x));
       pointer.set(0, 0);
     }
-    if (keyboard.x !== 0 || keyboard.y !== 0) {
+    if (keyboard.x !== 0 || keyboard.y !== 0 || keyboard.z !== 0) {
       const {
         direction,
         forward,
         right,
+        up,
         worldUp,
       } = this.aux;
       this.getWorldDirection(forward);
       right.crossVectors(forward, worldUp);
+      up.crossVectors(right, forward);
       direction
         .set(0, 0, 0)
         .addScaledVector(right, keyboard.x)
-        .addScaledVector(forward, keyboard.y)
+        .addScaledVector(up, keyboard.y)
+        .addScaledVector(forward, keyboard.z)
         .normalize();
       position.addScaledVector(direction, 6 * delta);
       this.updateMatrixWorld();
