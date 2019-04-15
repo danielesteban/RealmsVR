@@ -21,6 +21,7 @@ class Camera extends PerspectiveCamera {
       keyboard: new Vector3(0, 0, 0),
       pointer: new Vector2(0, 0),
     };
+    this.onBlur = this.onBlur.bind(this);
     this.onKeyboardDown = this.onKeyboardDown.bind(this);
     this.onKeyboardUp = this.onKeyboardUp.bind(this);
     this.reset();
@@ -42,6 +43,11 @@ class Camera extends PerspectiveCamera {
     this._canLock = value;
   }
 
+  onBlur() {
+    const { input: { keyboard } } = this;
+    keyboard.set(0, 0, 0);
+  }
+
   onKeyboardDown({ keyCode, repeat }) {
     const { input: { keyboard } } = this;
     if (repeat) return;
@@ -52,17 +58,17 @@ class Camera extends PerspectiveCamera {
       case 68:
         keyboard.x = 1;
         break;
-      case 32:
-        keyboard.y = 1;
-        break;
       case 16:
         keyboard.y = -1;
         break;
-      case 87:
-        keyboard.z = 1;
+      case 32:
+        keyboard.y = 1;
         break;
       case 83:
         keyboard.z = -1;
+        break;
+      case 87:
+        keyboard.z = 1;
         break;
       default:
         break;
@@ -74,16 +80,22 @@ class Camera extends PerspectiveCamera {
     if (repeat) return;
     switch (keyCode) {
       case 65:
+        if (keyboard.x < 0) keyboard.x = 0;
+        break;
       case 68:
-        keyboard.x = 0;
+        if (keyboard.x > 0) keyboard.x = 0;
+        break;
+      case 16:
+        if (keyboard.y < 0) keyboard.y = 0;
         break;
       case 32:
-      case 16:
-        keyboard.y = 0;
+        if (keyboard.y > 0) keyboard.y = 0;
+        break;
+      case 83:
+        if (keyboard.z < 0) keyboard.z = 0;
         break;
       case 87:
-      case 83:
-        keyboard.z = 0;
+        if (keyboard.z > 0) keyboard.z = 0;
         break;
       default:
         break;
@@ -93,6 +105,7 @@ class Camera extends PerspectiveCamera {
   onPointerLockAttain(movements) {
     this.isLocked = true;
     this.rotation.z = 0;
+    window.addEventListener('blur', this.onBlur, false);
     window.addEventListener('keydown', this.onKeyboardDown, false);
     window.addEventListener('keyup', this.onKeyboardUp, false);
     movements.on('data', this.onPointerMovement.bind(this));
@@ -101,6 +114,7 @@ class Camera extends PerspectiveCamera {
 
   onPointerLockClose() {
     const { input: { keyboard, pointer } } = this;
+    window.removeEventListener('blur', this.onBlur);
     window.removeEventListener('keydown', this.onKeyboardDown);
     window.removeEventListener('keyup', this.onKeyboardUp);
     this.isLocked = false;
@@ -140,8 +154,8 @@ class Camera extends PerspectiveCamera {
         worldUp,
       } = this.aux;
       this.getWorldDirection(forward);
-      right.crossVectors(forward, worldUp);
-      up.crossVectors(right, forward);
+      right.crossVectors(forward, worldUp).normalize();
+      up.crossVectors(right, forward).normalize();
       direction
         .set(0, 0, 0)
         .addScaledVector(right, keyboard.x)

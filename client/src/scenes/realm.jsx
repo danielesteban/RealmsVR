@@ -197,10 +197,10 @@ class Realm extends PureComponent {
         camera.updateMatrixWorld();
       }
       ['x', 'y', 'z'].forEach((axis) => {
-        if (camera.position[axis] < 0) {
+        while (camera.position[axis] < 0) {
           camera.position[axis] += size;
         }
-        if (camera.position[axis] >= size) {
+        while (camera.position[axis] >= size) {
           camera.position[axis] -= size;
         }
       });
