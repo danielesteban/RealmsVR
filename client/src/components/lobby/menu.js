@@ -24,7 +24,7 @@ class Pillar extends Mesh {
 
   static setup() {
     if (!Pillar.geometry) {
-      const geometry = new CylinderGeometry(0.025, 0.025, 1.5, 8, 16);
+      const geometry = new CylinderGeometry(0.025, 0.025, 1.5, 8, 32);
       geometry.translate(0, -0.83, 0);
       const color = new Color();
       geometry.faces.forEach((face, i) => {
