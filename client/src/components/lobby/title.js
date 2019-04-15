@@ -57,7 +57,7 @@ class Title extends Mesh {
     ctx.font = '700 200px Roboto';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.fillText(
       'REALMS',
       renderer.width * 0.5,
@@ -71,7 +71,7 @@ class Title extends Mesh {
       renderer.height * 0.5
     );
     ctx.font = '50px Roboto';
-    ctx.fillStyle = '#999';
+    ctx.fillStyle = '#696';
     ctx.fillText(
       `v${__VERSION__} - dani@gatunes © 2019`,
       renderer.width * 0.5,
