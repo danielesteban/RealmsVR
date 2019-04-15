@@ -58,6 +58,9 @@ class Realm extends Panel {
       anisotropy,
     });
     this.name = name;
+    if (this.name.length > 16) {
+      this.name = `${this.name.substr(0, 16)}...`;
+    }
     this.onPointer = onPointer;
     this.scale.set(0.3, 0.3, 1);
     {
