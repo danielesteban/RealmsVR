@@ -28,7 +28,7 @@ module.exports = (api) => {
    *              generator:
    *                description: Realm generator
    *                type: string
-   *                enum: [default, box, cave, columns, csd, holes, hourglass, sphere]
+   *                enum: [default, balcony, box, cave, columns, csd, holes, hourglass, sphere]
    *     responses:
    *       200:
    *         description: New realm slug
@@ -94,7 +94,7 @@ module.exports = (api) => {
    *              generator:
    *                description: Realm generator
    *                type: string
-   *                enum: [default, box, cave, columns, csd, holes, hourglass, sphere]
+   *                enum: [default, balcony, box, cave, columns, csd, holes, hourglass, sphere]
    *     responses:
    *       200:
    *         description: Successfully re-generated

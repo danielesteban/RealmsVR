@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 module.exports = {
+  balcony: require('./balcony'),
   box: require('./box'),
   cave: require('./cave'),
   columns: require('./columns'),
