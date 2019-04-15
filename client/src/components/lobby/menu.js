@@ -24,14 +24,14 @@ class Pillar extends Mesh {
 
   static setup() {
     if (!Pillar.geometry) {
-      const geometry = new CylinderGeometry(0.025, 0.025, 1, 8, 16);
-      geometry.translate(0, -0.575, 0);
+      const geometry = new CylinderGeometry(0.025, 0.025, 1.5, 8, 16);
+      geometry.translate(0, -0.83, 0);
       const color = new Color();
       geometry.faces.forEach((face, i) => {
         if (i % 2 === 1) {
           face.color.copy(color);
         } else {
-          face.color.setHex(0x556655);
+          face.color.setHex(0x445544);
           face.color.offsetHSL(0, 0, Math.random() * -0.1);
           color.copy(face.color);
         }
@@ -492,7 +492,7 @@ class Menu extends Object3D {
     this.history = history;
     this.hover = {};
     this.intersects = [];
-    this.position.set(0, 1, -1);
+    this.position.set(0, 1.25, -1);
     this.pagination = this.addPanel(
       Pagination,
       {

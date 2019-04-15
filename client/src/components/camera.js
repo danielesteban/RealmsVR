@@ -169,9 +169,9 @@ class Camera extends PerspectiveCamera {
 
   reset() {
     const { position, rotation } = this;
-    position.set(0, 1.25, 0.25);
+    position.set(0, 1.5, 0.5);
     rotation.set(0, 0, 0);
-    this.lookAt(0, 1.25, -0.75);
+    this.lookAt(0, 1.5, 0.5);
     this.canLock = false;
   }
 }

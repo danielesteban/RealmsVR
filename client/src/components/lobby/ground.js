@@ -6,6 +6,7 @@ import {
   Vector3,
   VertexColors,
 } from 'three';
+import Noise from '@/textures/noise';
 
 class Ground extends Mesh {
   constructor() {
@@ -57,9 +58,31 @@ class Ground extends Mesh {
         }
       });
       Ground.geometry = (new BufferGeometry()).fromGeometry(geometry);
+      const uv = Ground.geometry.attributes.uv.array;
+      for (let i = 0; i < uv.length / 2; i += 6) {
+        uv.set([
+          0, 1,
+        ], i * 2);
+        uv.set([
+          0, 0,
+        ], (i + 1) * 2);
+        uv.set([
+          1, 1,
+        ], (i + 2) * 2);
+        uv.set([
+          0, 0,
+        ], (i + 3) * 2);
+        uv.set([
+          1, 0,
+        ], (i + 4) * 2);
+        uv.set([
+          1, 1,
+        ], (i + 5) * 2);
+      }
     }
     if (!Ground.material) {
       Ground.material = new MeshBasicMaterial({
+        map: Noise,
         vertexColors: VertexColors,
       });
     }

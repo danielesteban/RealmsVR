@@ -20,8 +20,8 @@ class Title extends Mesh {
         transparent: true,
       })
     );
-    this.lookAt(0, -0.2, 1);
-    this.position.set(0, 2, -3);
+    this.lookAt(0, -0.5, 1);
+    this.position.set(0, 2.5, -3);
     this.renderer = renderer;
     this.texture = texture;
     Fonts
