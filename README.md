@@ -16,9 +16,10 @@
 
 #### Live environment
 
- * [API docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
  * [API documentation](https://projects.gatunes.com/realmsvr/doc/)
+ * [API docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
  * [Client](https://realmsvr.gatunes.com/)
+ * [Discord server](https://discord.gg/9KyFbe8)
 
 #### Dev environment
 
