@@ -39,6 +39,24 @@ if (window.location.hash) {
   history.replace(`/${window.location.hash.substr(2)}`);
 }
 
+// Track pageviews
+if (__ANALYTICS__ && __PRODUCTION__) {
+  window.GoogleAnalyticsObject = 'ga';
+  window.ga = function ga() {
+    if (!window.ga.q) window.ga.q = [];
+    // eslint-disable-next-line prefer-rest-params
+    window.ga.q.push(arguments);
+  };
+  window.ga.l = (new Date()) * 1;
+  window.ga('create', __ANALYTICS__, 'auto');
+  window.ga('send', 'pageview');
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.google-analytics.com/analytics.js';
+  document.body.appendChild(script);
+  history.listen(({ pathname }) => window.ga('send', 'pageview', pathname));
+}
+
 // Disable contextual menus
 window.addEventListener('contextmenu', e => (
   e.preventDefault()

@@ -4,6 +4,7 @@ module.exports = {
     browser: true,
   },
   globals: {
+    __ANALYTICS__: '',
     __API__: '',
     __BASENAME__: '',
     __DOMAIN__: '',

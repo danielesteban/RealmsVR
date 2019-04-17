@@ -16,6 +16,8 @@ const outputPath = path.resolve(__dirname, 'dist');
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 const api = process.env.API || (mode === 'production' ? 'https://projects.gatunes.com/realmsvr/' : 'http://localhost:8081/');
 const basename = process.env.BASENAME || '/';
+const analyticsId = process.env.ANALYTICS_ID || 'UA-113342424-4';
+const analyticsCDN = 'https://www.google-analytics.com/';
 const fontsCDN = 'https://fonts.googleapis.com/';
 const robotoCDN = 'https://fonts.gstatic.com/s/roboto/';
 const soundcloudCDN = 'https://*.soundcloud.com/ https://*.sndcdn.com';
@@ -184,6 +186,7 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(mode),
       },
+      __ANALYTICS__: JSON.stringify(analyticsId),
       __API__: JSON.stringify(api),
       __BASENAME__: JSON.stringify(basename),
       __DOMAIN__: JSON.stringify(domain),
@@ -192,7 +195,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       csp: (
-        `default-src 'self' ${soundcloudCDN} ${api}${mode === 'development' ? " ws: 'unsafe-eval'" : ''};`
+        `default-src 'self' ${api} ${analyticsCDN} ${soundcloudCDN}${mode === 'development' ? " ws: 'unsafe-eval'" : ''};`
         + `font-src 'self' ${robotoCDN};`
         + `style-src 'self' ${fontsCDN} 'unsafe-inline';`
       ),
