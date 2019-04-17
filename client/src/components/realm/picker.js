@@ -24,17 +24,30 @@ class Picker extends Panel {
       x: renderer.width * 0.85,
       y: renderer.height * 0.05,
       width: renderer.width * 0.1,
-      height: renderer.height * 0.75,
+      height: renderer.height * 0.6,
     };
-    this.modeButton = {
+    this.colorModeButton = {
       label: 'MODE',
       x: renderer.width * 0.7,
       y: renderer.height * 0.85,
       width: renderer.width * 0.25,
       height: renderer.height * 0.1,
       onPointer: () => {
-        this.setMode(
-          this.mode === 'fg' ? 'bg' : 'fg'
+        this.setColorMode(
+          this.colorMode === 'fg' ? 'bg' : 'fg'
+        );
+        this.draw();
+      },
+    };
+    this.locomotionModeButton = {
+      label: 'MODE',
+      x: renderer.width * 0.375,
+      y: renderer.height * 0.85,
+      width: renderer.width * 0.25,
+      height: renderer.height * 0.1,
+      onPointer: () => {
+        this.setLocomotionMode(
+          this.locomotionMode === 'teleport' ? 'levitate' : 'teleport'
         );
         this.draw();
       },
@@ -48,14 +61,16 @@ class Picker extends Panel {
         height: renderer.height * 0.1,
         onPointer: () => history.push('/'),
       },
-      this.modeButton,
+      this.colorModeButton,
+      this.locomotionModeButton,
     ];
     this.colors = {
       bg: (new Color()).setHex(fog),
       fg: (new Color()).setHSL(Math.random(), 0.6, 0.8),
       block: new Color(),
     };
-    this.setMode('fg');
+    this.setColorMode('fg');
+    this.setLocomotionMode('teleport');
     this.updateFog = updateFog;
     Fonts
       .waitUntilLoaded('Roboto')
@@ -68,9 +83,9 @@ class Picker extends Panel {
     const {
       block,
       buttons,
+      colorMode,
       colors,
       context: ctx,
-      mode,
       renderer,
       strip,
     } = this;
@@ -127,10 +142,10 @@ class Picker extends Panel {
 
     {
       ctx.save();
-      const width = renderer.width * 0.25;
+      const width = renderer.width * 0.1;
       const height = renderer.width * 0.1;
-      ctx.translate(renderer.width * 0.375, renderer.height * 0.85);
-      ctx.fillStyle = `#${colors[mode].getHexString()}`;
+      ctx.translate(renderer.width * 0.85, renderer.height * 0.7);
+      ctx.fillStyle = `#${colors[colorMode].getHexString()}`;
       ctx.strokeStyle = '#333';
       ctx.beginPath();
       ctx.rect(0, 0, width, height);
@@ -163,11 +178,17 @@ class Picker extends Panel {
     });
   }
 
-  setMode(mode) {
-    const { colors, modeButton } = this;
+  setColorMode(mode) {
+    const { colors, colorModeButton } = this;
     colors.block.copy(colors[mode]);
-    modeButton.label = mode === 'fg' ? 'FG color' : 'BG color';
-    this.mode = mode;
+    colorModeButton.label = mode === 'fg' ? 'FG color' : 'BG color';
+    this.colorMode = mode;
+  }
+
+  setLocomotionMode(mode) {
+    const { locomotionModeButton } = this;
+    locomotionModeButton.label = `${mode.substr(0, 1).toUpperCase()}${mode.substr(1)}`;
+    this.locomotionMode = mode;
   }
 
   onPointer(point) {
@@ -176,7 +197,7 @@ class Picker extends Panel {
       buttons,
       colors,
       context: ctx,
-      mode,
+      colorMode,
       pointer,
       strip,
       updateFog,
@@ -210,13 +231,13 @@ class Picker extends Panel {
           imageData[2] / 0xFF
         );
       }
-      colors[mode].setRGB(
+      colors[colorMode].setRGB(
         imageData[0] / 0xFF,
         imageData[1] / 0xFF,
         imageData[2] / 0xFF
       );
-      if (mode === 'bg') {
-        updateFog(colors[mode].getHex());
+      if (colorMode === 'bg') {
+        updateFog(colors.bg.getHex());
       }
       this.draw();
     });

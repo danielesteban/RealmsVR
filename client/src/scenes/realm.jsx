@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Vector3 } from 'three';
+import { Matrix4, Vector3 } from 'three';
 import {
   fetch,
   reset,
@@ -40,6 +40,10 @@ class Realm extends PureComponent {
     this.head = new Vector3();
     this.intersects = [this.picker];
     this.renderer = renderer;
+    this.rocket = {
+      forward: new Vector3(),
+      matrix: new Matrix4(),
+    };
     this.scene = scene;
     scene.onBeforeRender = this.onBeforeRender.bind(this);
     // Fetch realm
@@ -105,7 +109,7 @@ class Realm extends PureComponent {
     reset();
   }
 
-  onBeforeRender(renderer, scene, camera) {
+  onBeforeRender({ animation: { delta, time } }, scene, camera) {
     const {
       head,
       intersects,
@@ -120,14 +124,29 @@ class Realm extends PureComponent {
         raycaster,
         room,
       },
+      rocket,
       voxels,
     } = this;
-
     voxels.updateFrustum(camera);
 
     // Handle controls
     hands.children.forEach((hand) => {
       const { buttons, pointer } = hand;
+      // Rocket locomotion
+      if (picker.locomotionMode === 'levitate' && buttons.pad) {
+        rocket.matrix.extractRotation(hand.matrixWorld);
+        rocket.forward
+          .set(0, 0, -1)
+          .applyMatrix4(rocket.matrix)
+          .multiplyScalar(5 * delta);
+        const [x, y, z] = ['x', 'y', 'z'].map((axis) => {
+          let position = room.position[axis] + rocket.forward[axis];
+          while (position < 0) position += size;
+          while (position >= size) position -= size;
+          return position;
+        });
+        room.position.set(x, y, z);
+      }
       hand.setupRaycaster(raycaster);
       const hit = raycaster.intersectObjects(intersects)[0] || false;
       if (!hit) {
@@ -188,7 +207,6 @@ class Realm extends PureComponent {
     // Animation for non-vr browsers
     if (!isScreenshot && size && camera.canLock) {
       if (!camera.isLocked) {
-        const { animation: { delta, time } } = renderer;
         const rotation = Math.sin(time * 0.1) * 0.0005;
         camera.rotateY(rotation);
         camera.rotateX(rotation);
