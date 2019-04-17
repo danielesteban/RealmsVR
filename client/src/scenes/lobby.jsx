@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Touches from 'touches';
 import {
@@ -15,7 +15,6 @@ import Ground from '@/components/lobby/ground';
 import Menu from '@/components/lobby/menu';
 import Starfield from '@/components/lobby/starfield';
 import Title from '@/components/lobby/title';
-import Discord from '@/components/discord';
 import Renderer from '@/components/renderer';
 
 class Lobby extends PureComponent {
@@ -209,7 +208,7 @@ class Lobby extends PureComponent {
   }
 
   render() {
-    return <Discord />;
+    return null;
   }
 }
 

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { hot } from 'react-hot-loader';
 import LoadingBar from 'react-redux-loading-bar';
 import styled from 'styled-components';
+import Discord from '@/components/discord';
 import Github from '@/components/github';
 import Music from '@/components/music';
 import Renderer from '@/components/renderer';
@@ -35,7 +36,12 @@ class Layout extends PureComponent {
         </Wrapper>
         <Scenes renderer={renderer} />
         <Music />
-        {!isScreenshot ? <Github /> : null}
+        {!isScreenshot ? (
+          <div>
+            <Discord />
+            <Github />
+          </div>
+        ) : null}
         <Session />
       </div>
     );
