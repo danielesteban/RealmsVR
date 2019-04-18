@@ -22,7 +22,7 @@
     "helmet": "^3.16.0",
     "hsv-rgb": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.5.1",
+    "mongoose": "^5.5.2",
     "mongoose-url-slugs": "^1.0.2",
     "multer": "^1.4.1",
     "namor": "^1.1.2",
@@ -35,7 +35,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "sharp": "^0.22.0",
-    "swagger-jsdoc": "^3.2.8",
+    "swagger-jsdoc": "^3.2.9",
     "swagger-ui-express": "^4.0.2",
     "uuid": "^3.3.2",
     "validator": "^10.11.0"

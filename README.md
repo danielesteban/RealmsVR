@@ -23,9 +23,9 @@
 
 #### Dev environment
 
- * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0.8
- * [Node.js](https://nodejs.org/en/download/) >= 10.15.3 LTS
- * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.15.2 Stable
+ * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0
+ * [Node.js](https://nodejs.org/en/download/) >= 10.15
+ * [Yarn](https://yarnpkg.com/en/docs/install) >= 1.15
 
 ```bash
 git clone https://github.com/danielesteban/RealmsVR.git
