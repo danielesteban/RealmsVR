@@ -1,3 +1,4 @@
+import fullscreen from 'fullscreen';
 import pointerlock from 'pointer-lock';
 import {
   PerspectiveCamera,
@@ -21,6 +22,7 @@ class Camera extends PerspectiveCamera {
       keyboard: new Vector3(0, 0, 0),
       pointer: new Vector2(0, 0),
     };
+    this.fullscreen = fullscreen(canvas);
     this.onBlur = this.onBlur.bind(this);
     this.onKeyboardDown = this.onKeyboardDown.bind(this);
     this.onKeyboardUp = this.onKeyboardUp.bind(this);
@@ -103,6 +105,7 @@ class Camera extends PerspectiveCamera {
   }
 
   onPointerLockAttain(movements) {
+    const { fullscreen } = this;
     this.isLocked = true;
     this.rotation.z = 0;
     window.addEventListener('blur', this.onBlur, false);
@@ -110,14 +113,19 @@ class Camera extends PerspectiveCamera {
     window.addEventListener('keyup', this.onKeyboardUp, false);
     movements.on('data', this.onPointerMovement.bind(this));
     movements.on('close', this.onPointerLockClose.bind(this));
+    fullscreen.request();
   }
 
   onPointerLockClose() {
-    const { input: { keyboard, pointer } } = this;
+    const {
+      fullscreen,
+      input: { keyboard, pointer },
+    } = this;
     window.removeEventListener('blur', this.onBlur);
     window.removeEventListener('keydown', this.onKeyboardDown);
     window.removeEventListener('keyup', this.onKeyboardUp);
     this.isLocked = false;
+    fullscreen.release();
     keyboard.set(0, 0, 0);
     pointer.set(0, 0);
   }
