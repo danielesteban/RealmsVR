@@ -130,6 +130,7 @@ class Realm extends PureComponent {
     voxels.updateFrustum(camera);
 
     // Handle controls
+    let isLevitating = false;
     hands.children.forEach((hand) => {
       const { buttons, pointer } = hand;
       // Rocket locomotion
@@ -146,6 +147,11 @@ class Realm extends PureComponent {
           return position;
         });
         room.position.set(x, y, z);
+        isLevitating = true;
+      }
+      if (isLevitating) {
+        pointer.visible = false;
+        return;
       }
       hand.setupRaycaster(raycaster);
       const hit = raycaster.intersectObjects(intersects)[0] || false;
