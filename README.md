@@ -2,26 +2,27 @@
 [![Build Status](https://travis-ci.org/danielesteban/RealmsVR.svg?branch=master)](https://travis-ci.org/danielesteban/RealmsVR)
 ===
 
-> A recursive VR experience
-
 [![screenshot](client/src/screenshot.jpg)](https://realmsvr.gatunes.com/)
 
-#### API dependencies
- * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api)
- * [![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api&type=dev)
+> A recursive VR experience
 
-#### Client dependencies
- * [![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client)
- * [![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client&type=dev)
+### API
 
-#### Live environment
+[![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api)
+[![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=api)](https://david-dm.org/danielesteban/RealmsVR?path=api&type=dev)
 
- * [API documentation](https://projects.gatunes.com/realmsvr/doc/)
- * [API docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
- * [Client](https://realmsvr.gatunes.com/)
+ * [Docker image](https://hub.docker.com/r/danigatunes/realmsvr_api)
+ * [Documentation](https://projects.gatunes.com/realmsvr/doc/)
+
+### Client
+
+[![dependencies Status](https://david-dm.org/danielesteban/RealmsVR/status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client)
+[![devDependencies Status](https://david-dm.org/danielesteban/RealmsVR/dev-status.svg?path=client)](https://david-dm.org/danielesteban/RealmsVR?path=client&type=dev)
+
  * [Discord server](https://discord.gg/9KyFbe8)
+ * [Live environment](https://realmsvr.gatunes.com/)
 
-#### Dev environment
+## Dev environment
 
  * [MongoDB](https://www.mongodb.com/download-center/community) >= 4.0
  * [Node.js](https://nodejs.org/en/download/) >= 10.15
