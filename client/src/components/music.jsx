@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
   TiMediaFastForward,
@@ -217,13 +218,14 @@ class Music extends PureComponent {
   }
 
   render() {
+    const { renderUI } = this.props;
     const {
       isPlaying,
       playhead,
       time,
       track,
     } = this.state;
-    if (!track) {
+    if (!track || !renderUI) {
       return null;
     }
     const {
@@ -282,6 +284,14 @@ class Music extends PureComponent {
     );
   }
 }
+
+Music.defaultProps = {
+  renderUI: true,
+};
+
+Music.propTypes = {
+  renderUI: PropTypes.bool,
+};
 
 /* eslint-disable */
 Music.tracks = [

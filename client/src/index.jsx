@@ -10,7 +10,7 @@ import thunkMiddleware from 'redux-thunk';
 import { refreshSession } from '@/actions/user';
 import syncTranslationWithStore, { load as reloadLocales } from '@/locales';
 import rootReducer from '@/reducers';
-import Layout from '@/layout';
+import getLayoutComponent from '@/layout';
 
 // Create Redux Store
 const devCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -64,6 +64,7 @@ window.addEventListener('contextmenu', e => (
 
 // Render the page
 const mount = document.getElementById('mount');
+const Layout = getLayoutComponent();
 render(
   <Provider store={store}>
     <Router history={history}>

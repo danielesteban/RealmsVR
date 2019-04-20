@@ -233,7 +233,8 @@ class Realm extends PureComponent {
 
   render() {
     const { isCreator } = this.props;
-    return isCreator ? (
+    const isExokit = ~window.navigator.userAgent.indexOf('Exokit');
+    return isCreator && !isExokit ? (
       <Metadata />
     ) : null;
   }

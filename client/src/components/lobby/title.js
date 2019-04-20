@@ -24,11 +24,13 @@ class Title extends Mesh {
     this.position.set(0, 2.5, -3);
     this.renderer = renderer;
     this.texture = texture;
+    this.visible = false;
     Fonts
       .waitUntilLoaded('Roboto')
-      .then(() => (
-        this.draw()
-      ));
+      .then(() => {
+        this.draw();
+        this.visible = true;
+      });
   }
 
   dispose() {
