@@ -50,7 +50,6 @@ if (mode === 'production') {
 module.exports = {
   mode,
   entry: [
-    '@babel/polyfill',
     path.join(srcPath, 'index.css'),
     path.join(srcPath, 'index.jsx'),
   ],
