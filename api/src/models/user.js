@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 const { createCanvas, registerFont } = require('canvas');
 const HSV2RGB = require('hsv-rgb');
 const mongoose = require('mongoose');
@@ -34,7 +34,7 @@ UserSchema.pre('save', function onSave(next) {
       new Promise((resolve, reject) => (
         bcrypt.genSalt(5, (err, salt) => {
           if (err) return reject(err);
-          return bcrypt.hash(user.password, salt, null, (err, hash) => {
+          return bcrypt.hash(user.password, salt, (err, hash) => {
             if (err) return reject(err);
             user.password = hash;
             return resolve();

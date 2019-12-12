@@ -48,32 +48,31 @@ class Hands extends Object3D {
 
   update() {
     const { children } = this;
-    const gamepads = ('getGamepads' in navigator ? navigator.getGamepads() : []);
-    children.forEach((hand) => {
-      hand.visible = false;
-    });
-    let hand = 0;
-    for (let i = 0; i < gamepads.length; i += 1) {
-      const gamepad = gamepads[i];
-      if (
+    const gamepads = ('getGamepads' in navigator ? [...navigator.getGamepads()] : [])
+      .filter((gamepad) => (
         gamepad
         && (
-          gamepad.id === 'OpenVR Gamepad'
+          gamepad.id === 'Daydream Controller'
+          || gamepad.id === 'Gear VR Controller'
+          || gamepad.id === 'Oculus Go Controller'
+          || gamepad.id === 'OpenVR Gamepad'
           || gamepad.id.startsWith('Oculus Touch')
+          || gamepad.id.startsWith('HTC Vive Focus')
           || gamepad.id.startsWith('Spatial Controller')
         )
-      ) {
-        if (gamepad.pose) {
-          this.updateHand({
-            hand: children[hand],
-            buttons: gamepad.buttons,
-            pose: gamepad.pose,
-          });
-        }
-        hand += 1;
-        if (hand > 1) break;
+      ));
+    gamepads.sort((a, b) => (b.id.localeCompare(a.id)));
+    children.forEach((hand, i) => {
+      const gamepad = gamepads[i];
+      hand.visible = !!gamepad && !!gamepad.pose;
+      if (hand.visible) {
+        this.updateHand({
+          hand,
+          buttons: gamepad.buttons,
+          pose: gamepad.pose,
+        });
       }
-    }
+    });
   }
 
   updateHand({
@@ -91,7 +90,6 @@ class Hands extends Object3D {
     hand.matrix.compose(hand.position, hand.quaternion, hand.scale);
     hand.matrix.premultiply(standingMatrix);
     hand.matrixWorldNeedsUpdate = true;
-    hand.visible = true;
 
     const menu = buttons[3] && buttons[3].pressed;
     hand.buttons.menuDown = menu && hand.buttons.menu !== menu;
