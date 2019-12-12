@@ -103,30 +103,31 @@ class Renderer extends Component {
 
   setupVR() {
     const { hands, renderer } = this;
-    const hasWebXR = 'xr' in navigator;
+    // const hasWebXR = 'xr' in navigator;
     const hasWebVR = 'getVRDisplays' in navigator;
-    if (hasWebXR) {
-      // TODO:
-      // Verify that this actually works
-      const enterVR = () => {
-        if (renderer.vr.isPresenting()) return;
-        const display = renderer.vr.getDevice();
-        if (!display) {
-          navigator.xr.requestDevice().then((display) => {
-            renderer.vr.enabled = true;
-            renderer.vr.setDevice(display);
-          });
-          return;
-        }
-        display
-          .requestSession({ immersive: true, exclusive: true /* DEPRECATED */ })
-          .then((session) => {
-            renderer.vr.setSession(session, { frameOfReferenceType: 'stage' });
-          });
-      };
-      window.addEventListener('mousedown', enterVR, false);
-      enterVR();
-    } else if (hasWebVR) {
+    // if (hasWebXR) {
+    //   // TODO:
+    //   // Verify that this actually works
+    //   const enterVR = () => {
+    //     if (renderer.vr.isPresenting()) return;
+    //     const display = renderer.vr.getDevice();
+    //     if (!display) {
+    //       navigator.xr.requestDevice().then((display) => {
+    //         renderer.vr.enabled = true;
+    //         renderer.vr.setDevice(display);
+    //       });
+    //       return;
+    //     }
+    //     display
+    //       .requestSession({ immersive: true, exclusive: true /* DEPRECATED */ })
+    //       .then((session) => {
+    //         renderer.vr.setSession(session, { frameOfReferenceType: 'stage' });
+    //       });
+    //   };
+    //   window.addEventListener('mousedown', enterVR, false);
+    //   enterVR();
+    // } else if (hasWebVR) {
+    if (hasWebVR) {
       const enterVR = () => {
         if (renderer.vr.isPresenting()) return;
         const display = renderer.vr.getDevice();
