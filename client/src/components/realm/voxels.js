@@ -1,6 +1,7 @@
 import {
   BufferAttribute,
   BufferGeometry,
+  DynamicDrawUsage,
   Frustum,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
@@ -110,15 +111,11 @@ class Voxels extends Object3D {
       mesh.frustumCulled = false;
       this.add(mesh);
       const offset = new Float32Array(this.instances.length * 3);
-      if (geometry.attributes.offset) {
-        geometry.attributes.offset.setArray(offset);
-      } else {
-        geometry.addAttribute('offset', new InstancedBufferAttribute(offset, 3));
-        geometry.attributes.offset.setDynamic(true);
-      }
+      geometry.setAttribute('offset', new InstancedBufferAttribute(offset, 3));
+      geometry.attributes.offset.setUsage(DynamicDrawUsage);
       geometry.maxInstancedCount = 0;
     } else {
-      this.instances.forEach(instance => this.add(instance));
+      this.instances.forEach((instance) => this.add(instance));
     }
   }
 
@@ -155,36 +152,11 @@ class Voxels extends Object3D {
     uv,
   }) {
     const { geometry, instances } = this;
-    if (geometry.attributes.position) {
-      geometry.attributes.position.setArray(position);
-      geometry.attributes.position.needsUpdate = true;
-    } else {
-      geometry.addAttribute('position', new BufferAttribute(position, 3));
-    }
-    if (geometry.attributes.color) {
-      geometry.attributes.color.setArray(color);
-      geometry.attributes.color.needsUpdate = true;
-    } else {
-      geometry.addAttribute('color', new BufferAttribute(color, 3));
-    }
-    if (geometry.attributes.normal) {
-      geometry.attributes.normal.setArray(normal);
-      geometry.attributes.normal.needsUpdate = true;
-    } else {
-      geometry.addAttribute('normal', new BufferAttribute(normal, 3));
-    }
-    if (geometry.attributes.uv) {
-      geometry.attributes.uv.setArray(uv);
-      geometry.attributes.uv.needsUpdate = true;
-    } else {
-      geometry.addAttribute('uv', new BufferAttribute(uv, 2));
-    }
-    if (geometry.index) {
-      geometry.index.setArray(index);
-      geometry.index.needsUpdate = true;
-    } else {
-      geometry.setIndex(new BufferAttribute(index, 1));
-    }
+    geometry.setAttribute('position', new BufferAttribute(position, 3));
+    geometry.setAttribute('color', new BufferAttribute(color, 3));
+    geometry.setAttribute('normal', new BufferAttribute(normal, 3));
+    geometry.setAttribute('uv', new BufferAttribute(uv, 2));
+    geometry.setIndex(new BufferAttribute(index, 1));
     geometry.computeBoundingSphere();
     instances.forEach((instance) => {
       instance.worldSphere = geometry.boundingSphere
@@ -214,7 +186,7 @@ Voxels.shader = {
   ),
   fragment: ShaderLib.basic.fragmentShader,
   uniforms: UniformsUtils.clone(ShaderLib.basic.uniforms),
-  defines: { USE_MAP: true },
+  defines: { USE_MAP: true, USE_UV: true },
 };
 
 export default Voxels;

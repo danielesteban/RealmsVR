@@ -15,7 +15,7 @@ api.set('testUser', {
 });
 
 before(function wipeAndPopulate(done) {
-  this.timeout(10000);
+  this.timeout(30000);
   mongoose.connection.once('connected', () => {
     console.log(colors.red('Wiping test db...'));
     mongoose.connection.db.dropDatabase().then(() => (

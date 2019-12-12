@@ -22,7 +22,7 @@ class Starfield extends Points {
   }
 
   onBeforeRender({ animation: { time } }) {
-    this.rotation.x = Math.sin(time * 0.01) * 1 / 3;
+    this.rotation.x = Math.sin(time * 0.01) * (1 / 3);
   }
 
   static setup() {
@@ -50,8 +50,8 @@ class Starfield extends Points {
         color[i + 2] = c - Math.random() * 0.1;
       }
       Starfield.geometry = new BufferGeometry();
-      Starfield.geometry.addAttribute('position', new BufferAttribute(position, 3));
-      Starfield.geometry.addAttribute('color', new BufferAttribute(color, 3));
+      Starfield.geometry.setAttribute('position', new BufferAttribute(position, 3));
+      Starfield.geometry.setAttribute('color', new BufferAttribute(color, 3));
     }
     if (!Starfield.material) {
       Starfield.material = new PointsMaterial({

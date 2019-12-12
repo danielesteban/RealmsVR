@@ -20,12 +20,12 @@ export function generateGeometry({ size, voxels }) {
 }
 
 export function fetch(slug) {
-  return dispatch => dispatch({
+  return (dispatch) => dispatch({
     type: types.REALM_FETCH,
     payload: API.fetch({
       endpoint: `realm/${slug}`,
     })
-      .then(realm => (
+      .then((realm) => (
         API.fetch({
           endpoint: `realm/${realm._id}/voxels`,
         })

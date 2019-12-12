@@ -90,7 +90,7 @@ const Controls = styled.div`
 
 const MAX_UINT32 = (2 ** 32) - 1;
 const aux = new Uint32Array(1);
-const getRandomValue = ceiling => Math.floor(
+const getRandomValue = (ceiling) => Math.floor(
   (
     window.crypto && window.crypto.getRandomValues ? (
       window.crypto.getRandomValues(aux)[0] / MAX_UINT32
@@ -116,6 +116,7 @@ class Music extends PureComponent {
     }
     // Initialize state
     this.player = document.createElement('audio');
+    this.player.crossOrigin = 'anonymous';
     this.player.ontimeupdate = this.onTimeUpdate.bind(this);
     this.player.onended = this.next;
     this.player.volume = 0.5;

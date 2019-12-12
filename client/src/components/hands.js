@@ -40,7 +40,7 @@ class Hands extends Object3D {
       hand.pointer.visible = false;
       hand.add(hand.pointer);
       hand.matrixAutoUpdate = false;
-      hand.setupRaycaster = raycaster => Hands.setupRaycaster({ hand, raycaster });
+      hand.setupRaycaster = (raycaster) => Hands.setupRaycaster({ hand, raycaster });
       hand.visible = false;
       this.add(hand);
     }

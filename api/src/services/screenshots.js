@@ -22,7 +22,7 @@ class Screenshots {
     const { browser } = this;
     return browser
       .newPage()
-      .then(page => (
+      .then((page) => (
         page
           // .on('console', msg => console.log('PAGE LOG:', msg.text()))
           .evaluateOnNewDocument('window.__SCREENSHOT__ = true')

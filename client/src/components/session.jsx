@@ -106,7 +106,8 @@ class Session extends PureComponent {
     this.state = { tab: 'login' };
   }
 
-  componentWillReceiveProps({ isSigningIn }) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps({ isSigningIn }) {
     const { isSigningIn: wasSigningIn } = this.props;
     if (isSigningIn && !wasSigningIn) {
       this.setState({ tab: 'login' });

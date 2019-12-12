@@ -58,7 +58,7 @@ if (__ANALYTICS__ && __PRODUCTION__) {
 }
 
 // Disable contextual menus
-window.addEventListener('contextmenu', e => (
+window.addEventListener('contextmenu', (e) => (
   e.preventDefault()
 ), false);
 

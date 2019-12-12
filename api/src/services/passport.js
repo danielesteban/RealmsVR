@@ -78,7 +78,7 @@ module.exports.setup = () => {
           photo,
         }
       )
-      .then(user => done(null, user))
+      .then((user) => done(null, user))
       .catch(done);
   }));
 

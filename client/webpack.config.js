@@ -63,6 +63,7 @@ module.exports = {
   resolve: {
     alias: {
       '@': srcPath,
+      three: 'three-optionalxr',
       ...(mode === 'development' ? {
         'react-dom': '@hot-loader/react-dom',
       } : {}),

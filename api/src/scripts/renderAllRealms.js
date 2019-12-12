@@ -17,7 +17,7 @@ Realm
   .sort('-createdAt')
   .then((realms) => {
     // Render realms
-    realms.map(realm => (
+    realms.map((realm) => (
       realm
         .updateScreenshot()
     ));

@@ -10,7 +10,7 @@ class Fonts {
     }
     return Promise.all(
       fonts
-        .map(font => (
+        .map((font) => (
           new Promise((resolve) => {
             if (loaded[font]) {
               resolve();

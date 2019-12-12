@@ -30,7 +30,7 @@ class Ground extends Mesh {
       const origin = new Vector3();
       geometry.vertices.forEach((vertex) => {
         const distance = Math.floor(vertex.distanceTo(origin)) / 4;
-        const height = Math.floor(distance * distance / 3) / 6;
+        const height = Math.floor((distance ** 2) / 3) / 6;
         vertex.y = (
           height * (Math.random() * 0.4 + 0.6)
           + Math.max(Math.min(-(distance - 1.25), 0), -2)
@@ -42,7 +42,7 @@ class Ground extends Mesh {
           const v = [
             face.a, face.b, face.c,
             p.a, p.b, p.c,
-          ].map(v => geometry.vertices[v]);
+          ].map((v) => geometry.vertices[v]);
           const height = v.reduce((avg, v) => (
             avg + v.y
           ), 0) / v.length;

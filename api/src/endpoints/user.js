@@ -1,5 +1,5 @@
 const { notFound, unauthorized } = require('boom');
-const { body, param } = require('express-validator/check');
+const { body, param } = require('express-validator');
 const passport = require('passport');
 const config = require('../config');
 const { User } = require('../models');

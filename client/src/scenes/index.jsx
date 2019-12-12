@@ -15,7 +15,7 @@ const Scenes = ({ renderer }) => (
         exact
         key={path}
         path={path}
-        render={props => (
+        render={(props) => (
           <Component {...props} renderer={renderer} />
         )}
       />

@@ -9,7 +9,7 @@ export function hideSessionPopup() {
 }
 
 export function register({ email, name, password }) {
-  return dispatch => dispatch({
+  return (dispatch) => dispatch({
     type: types.USER_REGISTER,
     payload: API.fetch({
       body: {
@@ -24,7 +24,7 @@ export function register({ email, name, password }) {
 }
 
 export function refreshSession() {
-  return dispatch => dispatch({
+  return (dispatch) => dispatch({
     type: types.USER_REFRESH_SESSION,
     payload: API.fetch({
       endpoint: 'user',
@@ -46,7 +46,7 @@ export function showSessionPopup() {
 }
 
 export function login({ email, password }) {
-  return dispatch => dispatch({
+  return (dispatch) => dispatch({
     type: types.USER_LOGIN,
     payload: API.fetch({
       body: {

@@ -59,14 +59,14 @@ const meshVoxels = ({ promiseId, size, voxels }) => {
       light.unshift(light.pop());
       uvs.unshift(uvs.pop());
     }
-    vertices.forEach(vertex => position.push(...vertex));
-    light.forEach(light => color.push(
+    vertices.forEach((vertex) => position.push(...vertex));
+    light.forEach((light) => color.push(
       c[0] * light,
       c[1] * light,
       c[2] * light
     ));
     normal.push(...n, ...n, ...n, ...n);
-    uvs.forEach(coords => uv.push(...coords));
+    uvs.forEach((coords) => uv.push(...coords));
     index.push(
       offset, offset + 1, offset + 2,
       offset + 2, offset + 3, offset

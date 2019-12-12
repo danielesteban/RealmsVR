@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import {
   BufferGeometry,
   Color,
@@ -543,7 +544,7 @@ class Menu extends Object3D {
 
   dispose() {
     const { children } = this;
-    children.forEach(child => child.dispose && child.dispose());
+    children.forEach((child) => child.dispose && child.dispose());
   }
 
   setHover({ hand, realm }) {

@@ -1,5 +1,5 @@
 const { badData, notFound } = require('boom');
-const { body, param } = require('express-validator/check');
+const { body, param } = require('express-validator');
 const namor = require('namor');
 const generators = Object.keys(require('../generators'));
 const { Realm } = require('../models');
@@ -143,7 +143,7 @@ module.exports.getVoxels = [
   },
 ];
 
-module.exports.list = filter => ([
+module.exports.list = (filter) => ([
   param('page')
     .isInt(),
   checkValidationResult,
@@ -154,7 +154,7 @@ module.exports.list = filter => ([
     const sorting = `${filter === 'popular' ? '-views ' : '-createdAt'}`;
     Realm
       .countDocuments(selector)
-      .then(count => (
+      .then((count) => (
         Realm
           .find(selector)
           .sort(sorting)
@@ -162,7 +162,7 @@ module.exports.list = filter => ([
           .limit(pageSize)
           .select('creator name slug createdAt')
           .populate('creator', 'name')
-          .then(realms => (
+          .then((realms) => (
             res.json({
               pages: Math.ceil(count / pageSize),
               realms,

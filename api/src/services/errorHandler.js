@@ -1,6 +1,6 @@
 const { badData, boomify } = require('boom');
 const callsiteRecord = require('callsite-record');
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const colors = require('colors/safe');
 const config = require('../config');
 
@@ -25,7 +25,7 @@ module.exports.setup = (api) => {
       const record = callsiteRecord({
         forError: err,
       });
-      const stackFilter = frame => (
+      const stackFilter = (frame) => (
         !frame.getFileName().includes('node_modules')
       );
       console.log([
