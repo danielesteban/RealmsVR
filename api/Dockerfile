@@ -1,4 +1,4 @@
-FROM node:dubnium
+FROM node:erbium
 
 # Install puppeteer dependencies
 RUN apt-get -qq update && \
