@@ -6104,10 +6104,10 @@ three-optionalxr@^0.111.0:
   resolved "https://registry.yarnpkg.com/three-optionalxr/-/three-optionalxr-0.111.0.tgz#8176e8a64f7a26ddd522b656d9a045af2dfe26d7"
   integrity sha512-b1KdOtyl+62c9JWpFcjNcpyIiGUObRUpexLc/8NXJhkdYFkvULu0pJt+e7UwQNjpaRX3+W3z867PNZi7ZNeXaw==
 
-three@^0.111.0:
-  version "0.111.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.111.0.tgz#9cedb73e79b7f6bf2440cb67a273f883faa923b6"
-  integrity sha512-AcTqyGJ3H75AIusOuADy0LsP958QKQwm/YhABHFMzd6RFXPNVay1rlSbbG6WYv7KM72G2THMMwqbjQd4dVHMkQ==
+three@^0.125.0:
+  version "0.125.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.125.0.tgz#19e922b9dc51ad0b706893aeee888de68e99850a"
+  integrity sha512-qL36qUGsPQ/Ofo/RZdXwHwM7A8wzUSAIyawtjIebJSPvounUQeneSqxI0aBY2iwKpseGy+RUtj3C5f/z4poyXw==
 
 through2@^2.0.0:
   version "2.0.5"

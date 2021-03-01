@@ -29,7 +29,7 @@
     "redux-thunk": "^2.3.0",
     "stats.js": "^0.17.0",
     "styled-components": "^4.4.1",
-    "three": "^0.111.0",
+    "three": "^0.125.0",
     "three-optionalxr": "^0.111.0",
     "touches": "^1.2.2"
   },
